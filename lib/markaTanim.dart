@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stok_takip_uygulamasi/Servis.dart';
 import 'package:stok_takip_uygulamasi/isTaslak.dart';
 import 'package:stok_takip_uygulamasi/tanimlamalar.dart';
+import 'package:http/http.dart' as http;
 
 class MarkaTanim extends StatefulWidget {
   const MarkaTanim({Key? key}) : super(key: key);
@@ -11,6 +16,43 @@ class MarkaTanim extends StatefulWidget {
 
 class _MarkaTanimState extends State<MarkaTanim> {
   var tfMarkaAdi = TextEditingController();
+
+  Future<void> markaEkle() async {
+    setState(() {});
+    // SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    // var data = sharedPreferences.getString('TesisId');
+
+    var url = Uri.parse(
+        'https://stok.bahcelievler.bel.tr/api/brands');
+    http.Response response = await http.post(url,
+        headers: {'Accept': '*/*', 'Content-Type': 'application/json'},
+        body: json.encoder.convert({
+          "markaAdi": tfMarkaAdi.text
+        }));
+    tfMarkaAdi.text = "";
+
+    print(response.body);
+    print(response.statusCode);
+    if (response.statusCode == 201 ) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Marka kayıt işlemi başarılı."),
+        backgroundColor: Colors.green,
+      ));
+      setState(() {});
+    } else if(tfMarkaAdi.text == "" || tfMarkaAdi.text.isEmpty){
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Marka kayıt işlemi gerçekleştirilemedi."),
+        backgroundColor: Colors.red,
+      ));
+    }
+    else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Marka kaydı oluşturulamadı."),
+        backgroundColor: Colors.red,
+      ));
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -104,17 +146,9 @@ class _MarkaTanimState extends State<MarkaTanim> {
                         side: BorderSide(width: 1.0, color: Color(0XFF463848)),
                       ),
                       onPressed: () {
-                        // kategori ekleme api
-                        if(true){
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(SnackBar(
-                            backgroundColor: Colors.green.shade300,
-                            content: const Text(
-                                'Marka Eklendi'),
-                            duration:
-                            const Duration(seconds: 2),
-                          ));
-                        }
+                        Servis().markaEkle(tfMarkaAdi.text);
+
+
                       },
                       child: (Text(
                         'MARKA EKLE',

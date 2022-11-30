@@ -411,7 +411,7 @@ class _isBaslatState extends State<isBaslat> {
                                 'Kayıtlı Envanter Sayısı',
                                 style: GoogleFonts.notoSansTaiLe(
                                   fontSize: 18,
-                                  color: Color(0XFF976775),
+                                  color: Color(0XFF6E3F52),
                                   fontWeight: FontWeight.bold,
                                   letterSpacing: 2,
                                 ),
@@ -420,7 +420,7 @@ class _isBaslatState extends State<isBaslat> {
                                 '7689',
                                 style: GoogleFonts.notoSansTaiLe(
                                   fontSize: 18,
-                                  color: Color(0XFF976775),
+                                  color: Color(0XFF6E3F52),
                                   fontWeight: FontWeight.bold,
                                   letterSpacing: 2,
                                 ),
@@ -447,7 +447,7 @@ class _isBaslatState extends State<isBaslat> {
                                 'Kayıtlı Envanter Çeşidi',
                                 style: GoogleFonts.notoSansTaiLe(
                                   fontSize: 18,
-                                  color: Color(0XFF976775),
+                                  color: Color(0XFF6E3F52),
                                   fontWeight: FontWeight.bold,
                                   letterSpacing: 2,
                                 ),
@@ -456,7 +456,7 @@ class _isBaslatState extends State<isBaslat> {
                                 '7689',
                                 style: GoogleFonts.notoSansTaiLe(
                                   fontSize: 18,
-                                  color: Color(0XFF976775),
+                                  color: Color(0XFF6E3F52),
                                   fontWeight: FontWeight.bold,
                                   letterSpacing: 2,
                                 ),
@@ -483,7 +483,7 @@ class _isBaslatState extends State<isBaslat> {
                                 'Kayıtlı Marka Sayısı',
                                 style: GoogleFonts.notoSansTaiLe(
                                   fontSize: 18,
-                                  color: Color(0XFF976775),
+                                  color: Color(0XFF6E3F52),
                                   fontWeight: FontWeight.bold,
                                   letterSpacing: 2,
                                 ),
@@ -492,7 +492,7 @@ class _isBaslatState extends State<isBaslat> {
                                 '7689',
                                 style: GoogleFonts.notoSansTaiLe(
                                   fontSize: 18,
-                                  color: Color(0XFF976775),
+                                  color: Color(0XFF6E3F52),
                                   fontWeight: FontWeight.bold,
                                   letterSpacing: 2,
                                 ),
@@ -519,7 +519,7 @@ class _isBaslatState extends State<isBaslat> {
                                 'Kayıtlı Depo Sayısı',
                                 style: GoogleFonts.notoSansTaiLe(
                                   fontSize: 18,
-                                  color: Color(0XFF976775),
+                                  color: Color(0XFF6E3F52),
                                   fontWeight: FontWeight.bold,
                                   letterSpacing: 2,
                                 ),
@@ -528,7 +528,7 @@ class _isBaslatState extends State<isBaslat> {
                                 '7689',
                                 style: GoogleFonts.notoSansTaiLe(
                                   fontSize: 18,
-                                  color: Color(0XFF976775),
+                                  color: Color(0XFF6E3F52),
                                   fontWeight: FontWeight.bold,
                                   letterSpacing: 2,
                                 ),
