@@ -3,6 +3,8 @@ import 'package:stok_takip_uygulamasi/isTaslak.dart';
 import 'package:stok_takip_uygulamasi/kategoriTanim.dart';
 import 'package:stok_takip_uygulamasi/markaTanim.dart';
 import 'package:stok_takip_uygulamasi/modelTanim.dart';
+import 'package:stok_takip_uygulamasi/varyantElemanTanim.dart';
+import 'package:stok_takip_uygulamasi/varyantTanim.dart';
 
 class Tanimlamalar extends StatefulWidget {
   const Tanimlamalar({Key? key}) : super(key: key);
@@ -133,6 +135,45 @@ class _TanimlamalarState extends State<Tanimlamalar> {
             ),
             trailing: Icon(Icons.arrow_right, color: Color(0XFFAAA3B4)),
           ),
+          ListTile(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => VaryantTanim()));
+            },
+            leading: Icon(
+              Icons.view_in_ar,
+              color: Color(0XFF6E3F52),
+            ),
+            title: Text(
+              'Varyant Tanım',
+              style: TextStyle(color: Color(0XFF976775)),
+            ),
+            subtitle: Text(
+              'Yeni varyant tanımlayın',
+              style: TextStyle(color: Color(0XFFAAA3B4)),
+            ),
+            trailing: Icon(Icons.arrow_right, color: Color(0XFFAAA3B4)),
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => VaryantElemanTanim()));
+            },
+            leading: Icon(
+              Icons.fitbit,
+              color: Color(0XFF6E3F52),
+            ),
+            title: Text(
+              'Varyant Eleman Tanım',
+              style: TextStyle(color: Color(0XFF976775)),
+            ),
+            subtitle: Text(
+              'Yeni varyant eleman tanımlayın',
+              style: TextStyle(color: Color(0XFFAAA3B4)),
+            ),
+            trailing: Icon(Icons.arrow_right, color: Color(0XFFAAA3B4)),
+          ),
+
         ],
       ),
     );
