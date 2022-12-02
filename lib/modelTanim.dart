@@ -50,10 +50,7 @@ class _ModelTanimState extends State<ModelTanim> {
     setState(() {});
     var url = Uri.parse('https://stok.bahcelievler.bel.tr/api/BrandModels');
     print(dropdownvalue);
-    print("e: ${dropdownvalue.toString().replaceRange(0, 3, '')}");
-    trimmedValue = (dropdownvalue.toString().replaceRange(0, 3, '')).replaceRange(1, 4, '');
-    // var t2 = t1.replaceRange(1, 4, '');
-    // print(t2);
+    trimmedValue = ((((dropdownvalue.replaceAll('[','')).replaceAll(']','')).replaceAll('<','')).replaceAll('>', '')).replaceAll("'",'');
     print("model: ${tfModelAdi.text}");
     http.Response response = await http.post(url,
         headers: {'Accept': '*/*', 'Content-Type': 'application/json'},
@@ -152,7 +149,7 @@ class _ModelTanimState extends State<ModelTanim> {
     }
   }
 
-  void showGuncellemeDialog(){
+  void showGuncellemeDialog(int trimmedValue){
     AwesomeDialog(
       context: context,
       body: Padding(
@@ -675,20 +672,41 @@ class _ModelTanimState extends State<ModelTanim> {
                                 .map(
                                   (e) => SearchFieldListItem<Marka>(
                                 e.markaAdi.toString(),
-                                    child: GestureDetector(
                                       child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(e.markaAdi.toString()),
-                                          Icon(
-                                            Icons.border_color_outlined,
-                                            color: Color(0XFFAAA3B4),
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(e.markaAdi.toString(), style: TextStyle(color: Color(0XFF6E3F52))),
                                           ),
+
+                                          Row(
+
+                                             children: [
+                                              GestureDetector(
+                                                child: Icon(
+                                                  Icons.delete_outline,
+                                                  color: Color(0XFF6E3F52),
+                                                ),
+                                                onTap: (){
+                                                  markaSil(e.id!);
+                                                },
+                                              ),
+                                              SizedBox(width: 10,),
+                                              GestureDetector(
+                                                child: Icon(
+                                                  Icons.border_color_outlined,
+                                                  color: Color(0XFF6E3F52),
+                                                ),
+                                                onTap: () {
+                                                  showGuncellemeDialog(e.id!);
+                                                },
+                                              ),
+                                            ],
+                                          ),
+
                                         ],
                                       ),
-                                      onTap: () {
-                                        showGuncellemeDialog();
-                                      },
-                                    ),
                                     key: Key(e.id.toString())
 
                               ),
@@ -703,7 +721,7 @@ class _ModelTanimState extends State<ModelTanim> {
                     } else if (snapshot.hasError) {
                       return Text('${snapshot.error}');
                     }
-                    return const CircularProgressIndicator();
+                    return const CircularProgressIndicator(color: Color(0XFF976775),);
                   },
                 ),
                 SizedBox(

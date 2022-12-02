@@ -89,7 +89,7 @@ class _TanimlamalarState extends State<Tanimlamalar> {
             ),
             title: Text(
               'Kategori Tanım',
-              style: TextStyle(color: Color(0XFF976775)),
+              style: TextStyle(color: Color(0XFF976775), fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
               'Yeni kategori tanımlayın',
@@ -108,7 +108,7 @@ class _TanimlamalarState extends State<Tanimlamalar> {
             ),
             title: Text(
               'Marka Tanım',
-              style: TextStyle(color: Color(0XFF976775)),
+              style: TextStyle(color: Color(0XFF976775), fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
               'Yeni marka tanımlayın',
@@ -127,7 +127,7 @@ class _TanimlamalarState extends State<Tanimlamalar> {
             ),
             title: Text(
               'Model Tanım',
-              style: TextStyle(color: Color(0XFF976775)),
+              style: TextStyle(color: Color(0XFF976775), fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
               'Yeni model tanımlayın',
@@ -146,7 +146,7 @@ class _TanimlamalarState extends State<Tanimlamalar> {
             ),
             title: Text(
               'Varyant Tanım',
-              style: TextStyle(color: Color(0XFF976775)),
+              style: TextStyle(color: Color(0XFF976775), fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
               'Yeni varyant tanımlayın',
@@ -165,7 +165,7 @@ class _TanimlamalarState extends State<Tanimlamalar> {
             ),
             title: Text(
               'Varyant Eleman Tanım',
-              style: TextStyle(color: Color(0XFF976775)),
+              style: TextStyle(color: Color(0XFF976775), fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
               'Yeni varyant eleman tanımlayın',
