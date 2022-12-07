@@ -109,7 +109,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 const TextField(
                   style: TextStyle(color: Color(0XFF976775)),
                   controller: null,
-                  keyboardType: TextInputType.number,
                   decoration: InputDecoration( 
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(width: 1, color: Color(0XFF976775)),
@@ -123,7 +122,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 const TextField(
                   style: TextStyle(color: Color(0XFF976775)),
                   controller: null,
-                  keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(width: 1, color: Color(0XFF976775)),

@@ -2,6 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:searchfield/searchfield.dart';
 import 'package:stok_takip_uygulamasi/isTaslak.dart';
 import 'package:stok_takip_uygulamasi/tanimlamalar.dart';
 
@@ -148,29 +149,126 @@ class _IslemTanimState extends State<IslemTanim> {
             SizedBox(
               height: 40,
             ),
-            DropdownButtonFormField(
-              decoration: InputDecoration(
-                  hintStyle: TextStyle(color: Color(0XFF976775)),
-                  hintText: "Ürün Seçiniz..",
-                  border: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Color(0XFF6E3F52), width: 3))),
-              items: list.map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child:
-                      Text(value, style: TextStyle(color: Color(0XFF976775))),
-                );
-              }).toList(),
-              onChanged: (newVal) {
+            SearchField<String>(
+              hint: 'Ürün Seçiniz',
+
+              onSuggestionTap: (e) {
+                urun = e.searchKey;
+
                 setState(() {
-                  urun = newVal;
+                  urun = e.key.toString();
                 });
               },
+              suggestionAction: SuggestionAction.unfocus,
+              itemHeight: 50,
+              searchStyle: TextStyle(color: Color(0XFF976775)),
+              suggestionStyle: TextStyle(color: Color(0XFF976775)),
+              // suggestionsDecoration: BoxDecoration(color: Colors.red),
+              suggestions: list
+                  .map(
+                    (e) => SearchFieldListItem<String>(e.toString(),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(e.toString(),
+                                  style: TextStyle(color: Color(0XFF6E3F52))),
+                            ),
+                          ],
+                        ),
+                        key: Key(e.toString())),
+                  )
+                  .toList(),
             ),
+            // DropdownButtonFormField(
+            //   decoration: InputDecoration(
+            //       hintStyle: TextStyle(color: Color(0XFF976775)),
+            //       hintText: "Ürün Seçiniz..",
+            //       border: OutlineInputBorder(
+            //           borderSide:
+            //               BorderSide(color: Color(0XFF6E3F52), width: 3))),
+            //   items: list.map<DropdownMenuItem<String>>((String value) {
+            //     return DropdownMenuItem<String>(
+            //       value: value,
+            //       child:
+            //           Text(value, style: TextStyle(color: Color(0XFF976775))),
+            //     );
+            //   }).toList(),
+            //   onChanged: (newVal) {
+            //     setState(() {
+            //       urun = newVal;
+            //     });
+            //   },
+            // ),
             SizedBox(
               height: 40,
             ),
+            AnimatedButton(
+                color: Color(0XFF463848),
+                text: 'Seç',
+                pressEvent: () {
+                  setState(() {
+
+                  });
+                  // print(tfIslemAdi.text);
+                  // if (tfIslemAdi.text == "") {
+                  //   ScaffoldMessenger.of(context)
+                  //       .showSnackBar(SnackBar(
+                  //     backgroundColor: Colors.red,
+                  //     content: const Text(
+                  //         'İşlem adını boş bırakamazsınız.'),
+                  //     duration:
+                  //     const Duration(seconds: 2),
+                  //   ));
+                  // } else if (tfIslemAciklamasi.text ==
+                  //     "") {
+                  //   ScaffoldMessenger.of(context)
+                  //       .showSnackBar(SnackBar(
+                  //     backgroundColor: Colors.red,
+                  //     content: const Text(
+                  //         'İşlem açıklamasını boş bırakamazsınız.'),
+                  //     duration:
+                  //     const Duration(seconds: 2),
+                  //   ));
+                  // } else if (tfIslemAciklamasi.text ==
+                  //     "") {
+                  //   ScaffoldMessenger.of(context)
+                  //       .showSnackBar(SnackBar(
+                  //     backgroundColor: Colors.red,
+                  //     content: const Text(
+                  //         'İşlem tarihini boş bırakamazsınız.'),
+                  //     duration:
+                  //     const Duration(seconds: 2),
+                  //   ));
+                  // } else {
+                  //
+                  //   String islemAdi = tfIslemAdi.text;
+                  //   String islemTarihi = tfIslemTarihi.text;
+                  //   String islemAciklamasi = tfIslemAciklamasi.text;
+                  //   print("*");
+                  //   print(islemAdi);
+                  //   print(islemTarihi);
+                  //   print("*");
+                  //
+                  //   tfIslemAdi.clear();
+                  //   tfIslemAciklamasi.clear();
+                  //   tfIslemTarihi.clear();
+                  //   Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //           builder: (context) =>
+                  //               IslemTurDetay(
+                  //                   islemTuru:
+                  //                   islemTuru,
+                  //                   islemAdi:
+                  //                   islemAdi,
+                  //                   islemAciklamasi:
+                  //                   islemAciklamasi,
+                  //                   islemTarihi:
+                  //                   islemTarihi)));
+                  // }
+                })
           ],
         ),
       ),
@@ -192,6 +290,13 @@ class _IslemTanimState extends State<IslemTanim> {
   }
 
   final ScrollController _controllerOne = ScrollController();
+  var tfRenk = TextEditingController();
+  List<String> myList = [
+    'Widget 1',
+    'Widget 2',
+    'Widget 3',
+
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -392,7 +497,7 @@ class _IslemTanimState extends State<IslemTanim> {
                     ],
                   ),
                 ),
-              )
+              ),
               // DataTable(
               //   columns: const <DataColumn>[
               //     DataColumn(
@@ -444,8 +549,80 @@ class _IslemTanimState extends State<IslemTanim> {
               //     ),
               //   ],
               // ),
+              getTextWidgets(myList),
+              ElevatedButton(
+                onPressed: () {},
+                child: Text('Ekle'),
+              )
             ],
           ))),
         ));
   }
+  Widget getTextWidgets(List<String> strings) {
+
+    List<Widget> list = <Widget>[];
+    List<String> liste = ['e','3'];
+    var varyant;
+    for (var i = 0; i < strings.length; i++) {
+      Text(urun.toString().toString().isEmpty ? '' : urun.toString().replaceAll(RegExp('[^a-zA-Z0-9ğüşöçiİĞÜŞÖÇ]', unicode: true), ''));
+
+      list.add(SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 5),
+          child: Row(
+            children: [
+              Expanded(
+                child: SearchField<String>(
+                  hint: '${strings[i]} Seçiniz',
+
+                  onSuggestionTap: (e) {
+                    varyant = e.searchKey;
+
+                    setState(() {
+                      varyant = e.key.toString();
+                    });
+                  },
+                  suggestionAction: SuggestionAction.unfocus,
+                  itemHeight: 50,
+                  searchStyle: TextStyle(color: Color(0XFF976775)),
+                  suggestionStyle: TextStyle(color: Color(0XFF976775)),
+                  // suggestionsDecoration: BoxDecoration(color: Colors.red),
+                  suggestions: liste
+                      .map(
+                        (e) => SearchFieldListItem<String>(e.toString(),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(e.toString(),
+                                  style: TextStyle(color: Color(0XFF6E3F52))),
+                            ),
+                          ],
+                        ),
+                        key: Key(e.toString())),
+                  )
+                      .toList(),
+                ),
+              ),
+              Expanded(
+                child: TextField(
+                    decoration: InputDecoration(
+                      hintText: strings[i],
+                      hintStyle: const TextStyle(color: Color(0XFF976775)),
+                      enabledBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(width: 1, color: Color(0XFF463848)),
+                      ),
+                    )),
+              ),
+            ],
+          ),
+        ),
+      ));
+    }
+    return Column(children: [Column(children: list)]);
+  }
 }
+
+ 
+

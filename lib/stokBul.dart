@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:searchfield/searchfield.dart';
 import 'package:stok_takip_uygulamasi/Envanter.dart';
 import 'package:stok_takip_uygulamasi/isTaslak.dart';
 import 'package:stok_takip_uygulamasi/tanimlamalar.dart';
@@ -23,25 +24,14 @@ class _stokBulState extends State<stokBul> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> liste = ['e','3'];
+    var varyant;
     return Scaffold(
         appBar: AppBar(
           primary: true,
           backgroundColor: Color(0XFF976775),
 
-          title: TextField(
-            style: GoogleFonts.notoSansTaiLe(
-              fontSize: 13,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 2,
-            ),
-            controller: null,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderSide: BorderSide(width: 3, color: Colors.redAccent),
-              ),
-                hintText: 'Ara', hintStyle: TextStyle(color: Colors.white60)),
-          ),
+          title: Text('Stok Bul')
         ),
         endDrawer: Drawer(
           child: ListView(
@@ -99,111 +89,150 @@ class _stokBulState extends State<stokBul> {
             ],
           ),
         ),
-        body: ListView(
-          padding: const EdgeInsets.all(8),
-          children: <Widget>[
-            Container(
-              height: 50,
-              color: Color(0XFFDBDCE8),
-              child: Row(
-                children: [
-                  Image.network(
-                      'https://www.bahcelievler.istanbul/style/images/favicon.png'),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+        body:Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SearchField<String>(
+            hint: 'Ürün Ara',
+
+            onSuggestionTap: (e) {
+              varyant = e.searchKey;
+
+              setState(() {
+                varyant = e.key.toString();
+                //detay getir apisi çalışacak widget ın içine basacak.
+              });
+            },
+            suggestionAction: SuggestionAction.unfocus,
+            itemHeight: 50,
+            searchStyle: TextStyle(color: Color(0XFF976775)),
+            suggestionStyle: TextStyle(color: Color(0XFF976775)),
+            // suggestionsDecoration: BoxDecoration(color: Colors.red),
+            suggestions: liste
+                .map(
+                  (e) => SearchFieldListItem<String>(e.toString(),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.all(3.0),
-                        child: Text(
-                          'Ürün Adı: TV',
-                          style: TextStyle(
-                              color: Color(0XFF976775),
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(3.0),
-                        child: Text(
-                          'Ürün Adedi: 23',
-                          style: TextStyle(
-                              color: Color(0XFF976775),
-                              fontWeight: FontWeight.bold),
-                        ),
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(e.toString(),
+                            style: TextStyle(color: Color(0XFF6E3F52))),
                       ),
                     ],
-                  )
-                ],
-              ),
-            ),
-            Divider(),
-            Container(
-              height: 50,
-              color: Color(0XFFDBDCE8),
-              child: Row(
-                children: [
-                  Image.network(
-                      'https://www.bahcelievler.istanbul/style/images/favicon.png'),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(3.0),
-                        child: Text(
-                          'Ürün Adı: TV',
-                          style: TextStyle(
-                              color: Color(0XFF976775),
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(3.0),
-                        child: Text(
-                          'Ürün Adedi: 23',
-                          style: TextStyle(
-                              color: Color(0XFF976775),
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-            Divider(),
-            Container(
-              height: 50,
-              color: Color(0XFFDBDCE8),
-              child: Row(
-                children: [
-                  Image.network(
-                      'https://www.bahcelievler.istanbul/style/images/favicon.png'),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(3.0),
-                        child: Text(
-                          'Ürün Adı: TV',
-                          style: TextStyle(
-                              color: Color(0XFF976775),
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(3.0),
-                        child: Text(
-                          'Ürün Adedi: 23',
-                          style: TextStyle(
-                              color: Color(0XFF976775),
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ],
-        ));
+                  ),
+                  key: Key(e.toString())),
+            )
+                .toList(),
+          ),
+        ),
+
+        // ListView(
+        //   padding: const EdgeInsets.all(8),
+        //   children: <Widget>[
+        //     Container(
+        //       height: 50,
+        //       color: Color(0XFFDBDCE8),
+        //       child: Row(
+        //         children: [
+        //           Image.network(
+        //               'https://www.bahcelievler.istanbul/style/images/favicon.png'),
+        //           Column(
+        //             crossAxisAlignment: CrossAxisAlignment.start,
+        //             children: [
+        //               Padding(
+        //                 padding: const EdgeInsets.all(3.0),
+        //                 child: Text(
+        //                   'Ürün Adı: TV',
+        //                   style: TextStyle(
+        //                       color: Color(0XFF976775),
+        //                       fontWeight: FontWeight.bold),
+        //                 ),
+        //               ),
+        //               Padding(
+        //                 padding: const EdgeInsets.all(3.0),
+        //                 child: Text(
+        //                   'Ürün Adedi: 23',
+        //                   style: TextStyle(
+        //                       color: Color(0XFF976775),
+        //                       fontWeight: FontWeight.bold),
+        //                 ),
+        //               ),
+        //             ],
+        //           )
+        //         ],
+        //       ),
+        //     ),
+        //     Divider(),
+        //     Container(
+        //       height: 50,
+        //       color: Color(0XFFDBDCE8),
+        //       child: Row(
+        //         children: [
+        //           Image.network(
+        //               'https://www.bahcelievler.istanbul/style/images/favicon.png'),
+        //           Column(
+        //             crossAxisAlignment: CrossAxisAlignment.start,
+        //             children: [
+        //               Padding(
+        //                 padding: const EdgeInsets.all(3.0),
+        //                 child: Text(
+        //                   'Ürün Adı: TV',
+        //                   style: TextStyle(
+        //                       color: Color(0XFF976775),
+        //                       fontWeight: FontWeight.bold),
+        //                 ),
+        //               ),
+        //               Padding(
+        //                 padding: const EdgeInsets.all(3.0),
+        //                 child: Text(
+        //                   'Ürün Adedi: 23',
+        //                   style: TextStyle(
+        //                       color: Color(0XFF976775),
+        //                       fontWeight: FontWeight.bold),
+        //                 ),
+        //               ),
+        //             ],
+        //           )
+        //         ],
+        //       ),
+        //     ),
+        //     Divider(),
+        //     Container(
+        //       height: 50,
+        //       color: Color(0XFFDBDCE8),
+        //       child: Row(
+        //         children: [
+        //           Image.network(
+        //               'https://www.bahcelievler.istanbul/style/images/favicon.png'),
+        //           Column(
+        //             crossAxisAlignment: CrossAxisAlignment.start,
+        //             children: [
+        //               Padding(
+        //                 padding: const EdgeInsets.all(3.0),
+        //                 child: Text(
+        //                   'Ürün Adı: TV',
+        //                   style: TextStyle(
+        //                       color: Color(0XFF976775),
+        //                       fontWeight: FontWeight.bold),
+        //                 ),
+        //               ),
+        //               Padding(
+        //                 padding: const EdgeInsets.all(3.0),
+        //                 child: Text(
+        //                   'Ürün Adedi: 23',
+        //                   style: TextStyle(
+        //                       color: Color(0XFF976775),
+        //                       fontWeight: FontWeight.bold),
+        //                 ),
+        //               ),
+        //             ],
+        //           )
+        //         ],
+        //       ),
+        //     ),
+        //   ],
+        // )
+
+    );
   }
 }
