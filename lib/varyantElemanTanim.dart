@@ -22,12 +22,31 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
   var dropdownvalue;
   var trimmedValue;
 
-  Future<Varyant> varyantListele() async {
-    http.Response res = await http
-        .get(Uri.parse('https://stok.bahcelievler.bel.tr/api/Variants'));
-    var cevap = Varyant.fromJson(json.decode(res.body));
-    // print(cevap);
-    // print(cevap.data[0].markaAdi);
+  // Future<Varyant> varyantListele() async {
+  //   http.Response res = await http
+  //       .get(Uri.parse('https://stok.bahcelievler.bel.tr/api/Variants'));
+  //   var cevap = Varyant.fromJson(json.decode(res.body));
+  //   // print(cevap);
+  //   // print(cevap.data[0].markaAdi);
+  //   return cevap;
+  // }
+  var cevap;
+  Future<Varyant> varyanListeleWithFilter(String VaryantAdiFilter, int Page,
+      int PageSize, String Orderby, bool Desc, bool isDeleted) async {
+    //https://stok.bahcelievler.bel.tr/api/Brands/GetAll?MarkaAdiFilter=a&Page=1&PageSize=12&Orderby=Id&Desc=false
+
+    http.Response res = await http.get(Uri.parse(
+        'https://stok.bahcelievler.bel.tr/api/Variants/GetAll?VaryantAdiFilter=${VaryantAdiFilter}&Page=${Page}&PageSize=${PageSize}&Orderby=${Orderby}&Desc=${Desc}&isDeleted=${isDeleted}'));
+    cevap = Varyant.fromJson(json.decode(res.body));
+    print('----*');
+    print(res.body);
+    print(cevap.data);
+    print(cevap.data[0]);
+    print(cevap.data[0].varyantAdi);
+    print(cevap);
+    print(cevap.data[0].varyantAdi);
+    print('----');
+
     return cevap;
   }
 
@@ -35,12 +54,19 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
     setState(() {});
     var url = Uri.parse('https://stok.bahcelievler.bel.tr/api/VariantElements');
     print(dropdownvalue);
-    trimmedValue = ((((dropdownvalue.replaceAll('[', '')).replaceAll(']', ''))
-                .replaceAll('<', ''))
-            .replaceAll('>', ''))
-        .replaceAll("'", '');
-    print(trimmedValue);
-    print(trimmedValue);
+    if(dropdownvalue == null){
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Lütfen listeden bir varyant seçin."),
+        backgroundColor: Colors.red,
+      ));
+    }
+    else{
+      trimmedValue = ((((dropdownvalue.replaceAll('[', '')).replaceAll(']', ''))
+          .replaceAll('<', ''))
+          .replaceAll('>', ''))
+          .replaceAll("'", '');
+    }
+
     http.Response response = await http.post(url,
         headers: {'Accept': '*/*', 'Content-Type': 'application/json'},
         body: json.encoder.convert({
@@ -215,6 +241,10 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
     ).show();
   }
 
+  int pageNum = 1;
+  int pageSize = 5;
+  ScrollController _controller = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -287,15 +317,18 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
               shrinkWrap: true,
               children: [
                 FutureBuilder<Varyant>(
-                  future: varyantListele(),
+                  future:
+                  varyanListeleWithFilter('', pageNum, pageSize, 'Id', true,false),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return ListView.builder(
+                        controller: _controller,
                         shrinkWrap: true,
                         itemCount: 1,
                         itemBuilder: (context, index) {
-                          //   title: Text(snapshot.data!.data[index].markaAdi.toString()),
+                          // TfTest.addListener(() => markaListeleWithFilter(TfTest.text, 1, 2, 'Id', true));
                           return SearchField<Varyant>(
+                            autoCorrect: true,
                             hint: 'Varyant Seçiniz',
                             onSuggestionTap: (e) {
                               dropdownvalue = e.searchKey;
@@ -307,236 +340,156 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
                             itemHeight: 50,
                             searchStyle: TextStyle(color: Color(0XFF976775)),
                             suggestionStyle:
-                                TextStyle(color: Color(0XFF976775)),
+                            TextStyle(color: Color(0XFF976775)),
                             // suggestionsDecoration: BoxDecoration(color: Colors.red),
                             suggestions: snapshot.data!.data
                                 .map(
                                   (e) => SearchFieldListItem<Varyant>(
-                                      e.varyantAdi.toString(),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                  e.varyantAdi.toString(),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(e.varyantAdi.toString(),
+                                            style: TextStyle(
+                                                color: Color(0XFF6E3F52))),
+                                      ),
+                                      Row(
                                         children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text(e.varyantAdi.toString(), style: TextStyle(color: Color(0XFF6E3F52)),),
+                                          GestureDetector(
+                                            child: Text('Load More'),
+                                            onTap: () {
+                                              // pageNum +=1;
+                                              pageSize += 5;
+                                              setState(() {});
+                                            },
                                           ),
-                                          Row(
-                                            children: [
-                                              GestureDetector(
-                                                child: Icon(
-                                                  Icons.delete_outline,
-                                                  color: Color(0XFF6E3F52),
-                                                ),
-                                                onTap: () {
-                                                  varyantElemanSil(e.id!);
-                                                },
-                                              ),
-                                              SizedBox(width: 10,),
-                                              GestureDetector(
-                                                child: Icon(
-                                                  Icons.border_color_outlined,
-                                                  color: Color(0XFF6E3F52),
-                                                ),
-                                                onTap: () {
-                                                  showGuncellemeDialog(e.id!);
-                                                },
-                                              ),
-                                            ],
+                                          GestureDetector(
+                                            child: Icon(
+                                              Icons.delete_outline,
+                                              color: Color(0XFF6E3F52),
+                                            ),
+                                            onTap: () {
+                                              varyantElemanSil(e.id!);
+                                            },
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          GestureDetector(
+                                            child: Icon(
+                                              Icons.border_color_outlined,
+                                              color: Color(0XFF6E3F52),
+                                            ),
+                                            onTap: () {
+                                              showGuncellemeDialog(e.id!);
+                                            },
                                           ),
                                         ],
                                       ),
-                                      key: Key(e.id.toString())),
-                                )
+                                    ],
+                                  ),
+                                  key: Key(e.id.toString())),
+                            )
                                 .toList(),
                           );
+
+                          // SearchField<Marka>(
+                          //   hint: 'Marka Seçiniz',
+                          //   onSuggestionTap: (e) {
+                          //     markaListeleWithFilter(
+                          //         e.searchKey, 1, 50, e.key.toString(), true);
+                          //
+                          //     dropdownvalue = e.searchKey;
+                          //     // print('object');
+                          //     // print(e.key);
+                          //     // print(e.item);
+                          //     // print(e.child);
+                          //     // print(e.searchKey);
+                          //     // print(e.key.toString());
+                          //
+                          //     setState(() {
+                          //       dropdownvalue = e.key.toString();
+                          //     });
+                          //   },
+                          //   suggestionAction: SuggestionAction.unfocus,
+                          //   itemHeight: 50,
+                          //   searchStyle: TextStyle(color: Color(0XFF976775)),
+                          //   suggestionStyle:
+                          //       TextStyle(color: Color(0XFF976775)),
+                          //   // suggestionsDecoration: BoxDecoration(color: Colors.red),
+                          //   suggestions: snapshot.data!.data!
+                          //       .map(
+                          //         (e) => SearchFieldListItem<Marka>(
+                          //             e.markaAdi.toString(),
+                          //             child: Row(
+                          //               mainAxisAlignment:
+                          //                   MainAxisAlignment.spaceBetween,
+                          //               children: [
+                          //                 Padding(
+                          //                   padding: const EdgeInsets.all(8.0),
+                          //                   child: Text(e.markaAdi.toString(),
+                          //                       style: TextStyle(
+                          //                           color: Color(0XFF6E3F52))),
+                          //                 ),
+                          //                 Row(
+                          //                   children: [
+                          //                     GestureDetector(
+                          //                       child: Icon(
+                          //                         Icons.delete_outline,
+                          //                         color: Color(0XFF6E3F52),
+                          //                       ),
+                          //                       onTap: () {
+                          //                         markaSil(e.id!);
+                          //                       },
+                          //                     ),
+                          //                     SizedBox(
+                          //                       width: 10,
+                          //                     ),
+                          //                     GestureDetector(
+                          //                       child: Icon(
+                          //                         Icons.border_color_outlined,
+                          //                         color: Color(0XFF6E3F52),
+                          //                       ),
+                          //                       onTap: () {
+                          //                         showGuncellemeDialog(e.id!);
+                          //                       },
+                          //                     ),
+                          //                   ],
+                          //                 ),
+                          //               ],
+                          //             ),
+                          //             key: Key(e.id.toString())),
+                          //       )
+                          //       .toList(),
+                          // );
                         },
                       );
-                    } else if (snapshot.hasError) {
-                      return Text('${snapshot.error}');
+                    } else if (!(snapshot.hasError)) {
+                      return SearchField(
+                        suggestions: [],
+                      ).emptyWidget;
                     }
                     return const CircularProgressIndicator(
                       color: Color(0XFF976775),
                     );
                   },
                 ),
-                // FutureBuilder<Varyant>(
-                //   future: varyantListele(),
-                //   builder: (context, snapshot) {
-                //     if (snapshot.hasData) {
-                //       return ListView.builder(
-                //         shrinkWrap: true,
-                //         itemCount: 1,
-                //         itemBuilder: (context, index) {
-                //           //   title: Text(snapshot.data!.data[index].markaAdi.toString()),
-                //           return DropdownButtonFormField(
-                //             hint: Row(
-                //               children: [
-                //                 Icon(
-                //                   Icons.view_in_ar,
-                //                   color: Color(0XFF6E3F52),
-                //                 ),
-                //                 Text(
-                //                   ' Varyant Seçiniz',
-                //                   style: TextStyle(color: Color(0XFF976775)),
-                //                 ),
-                //               ],
-                //             ),
-                //             items: snapshot.data!.data.map(
-                //                   (map) => DropdownMenuItem(
-                //                 value: map.id,
-                //                 child: Row(
-                //                   mainAxisAlignment:
-                //                   MainAxisAlignment.spaceBetween,
-                //                   children: [
-                //                     Text(map.varyantAdi.toString(),
-                //                         style: TextStyle(
-                //                             color: Color(0XFF976775))),
-                //
-                //                     GestureDetector(
-                //                       child: Icon(
-                //                         Icons.delete_outline,
-                //                         color: Color(0XFF6E3F52),
-                //                       ),
-                //                       onTap: (){
-                //                         varyantElemanSil(map.id!);
-                //                       },
-                //                     ),
-                //                     GestureDetector(
-                //                       child: Icon(
-                //                         Icons.border_color_outlined,
-                //                         color: Color(0XFFAAA3B4),
-                //                       ),
-                //                       onTap: () {
-                //                         AwesomeDialog(
-                //                           context: context,
-                //                           body: Padding(
-                //                             padding:
-                //                             const EdgeInsets.all(8.0),
-                //                             child: Column(
-                //                               children: [
-                //                                 SizedBox(
-                //                                   height: 15,
-                //                                 ),
-                //                                 Text(
-                //                                     'Lütfen güncellemek istediğiniz yeni varyant adını girin.',
-                //                                     style: GoogleFonts
-                //                                         .notoSansTaiLe(
-                //                                       fontSize: 15,
-                //                                       color:
-                //                                       Color(0XFF976775),
-                //                                     )),
-                //                                 SizedBox(
-                //                                   height: 15,
-                //                                 ),
-                //                                 TextField(
-                //                                   controller: tfVaryantAdi,
-                //                                   decoration:
-                //                                   InputDecoration(
-                //                                     hintText: 'Varyant Adı',
-                //                                     hintStyle: TextStyle(
-                //                                         color: Color(
-                //                                             0XFF976775)),
-                //                                     enabledBorder:
-                //                                     OutlineInputBorder(
-                //                                       borderSide: BorderSide(
-                //                                           width: 1,
-                //                                           color: Color(
-                //                                               0XFF463848)),
-                //                                     ),
-                //                                   ),
-                //                                 ),
-                //                                 SizedBox(
-                //                                   height: 15,
-                //                                 ),
-                //                                 AnimatedButton(
-                //                                     color:
-                //                                     Color(0XFF463848),
-                //                                     text: 'Güncelle',
-                //                                     pressEvent: () {
-                //                                       print(
-                //                                           tfVaryantAdi.text);
-                //                                       if (tfVaryantAdi.text ==
-                //                                           "") {
-                //                                         ScaffoldMessenger
-                //                                             .of(context)
-                //                                             .showSnackBar(
-                //                                             SnackBar(
-                //                                               backgroundColor:
-                //                                               Colors.red,
-                //                                               content: const Text(
-                //                                                   'Varyant adını boş bırakamazsınız.'),
-                //                                               duration:
-                //                                               const Duration(
-                //                                                   seconds:
-                //                                                   2),
-                //                                             ));
-                //                                       } else {
-                //                                         varyantGuncelle(
-                //                                             map.id!);
-                //                                         print(
-                //                                             "mapid:${map.id!}");
-                //                                         Navigator.pop(
-                //                                             context);
-                //                                       }
-                //                                     })
-                //                               ],
-                //                             ),
-                //                           ),
-                //                           dialogType: DialogType.noHeader,
-                //                           borderSide: const BorderSide(
-                //                             color: Color(0XFF6E3F52),
-                //                             width: 2,
-                //                           ),
-                //                           width: MediaQuery.of(context)
-                //                               .size
-                //                               .width,
-                //                           buttonsBorderRadius:
-                //                           const BorderRadius.all(
-                //                             Radius.circular(2),
-                //                           ),
-                //                           dismissOnTouchOutside: true,
-                //                           dismissOnBackKeyPress: false,
-                //                           headerAnimationLoop: false,
-                //                           animType: AnimType.bottomSlide,
-                //                           showCloseIcon: true,
-                //                         ).show();
-                //                       },
-                //                     )
-                //                   ],
-                //                 ),
-                //               ),
-                //             )
-                //                 .toList(),
-                //             onChanged: (newVal) {
-                //               setState(() {
-                //                 dropdownvalue = newVal;
-                //               });
-                //             },
-                //             value: dropdownvalue,
-                //           );
-                //         },
-                //       );
-                //     } else if (snapshot.hasError) {
-                //       return Text('${snapshot.error}');
-                //     }
-                //     return const CircularProgressIndicator();
-                //   },
-                // ),
                 SizedBox(
                   height: 10,
                 ),
-
                 TextFormField(
-                  controller: tfVaryantElemanAdi,
+                  controller: tfVaryantAdi,
                   style: TextStyle(color: Color(0XFF976775)),
                   decoration: InputDecoration(
                       prefixIcon: Icon(
-                        Icons.fitbit,
+                        Icons.model_training,
                         color: Color(0XFF6E3F52),
                       ),
                       hintStyle: TextStyle(color: Color(0XFF976775)),
-                      hintText: "Varyant Eleman Adı",
+                      hintText: "Varyant Adı",
                       border: OutlineInputBorder(
                           borderSide: BorderSide(color: Color(0XFF6E3F52)))),
                 ),

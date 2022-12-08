@@ -31,10 +31,6 @@ class _ModelTanimState extends State<ModelTanim> {
     // markaListele();
   }
 
-  getMoreData() {
-    print("Get more");
-  }
-
   var cevap;
   var dropdownvalue;
 
@@ -72,11 +68,19 @@ class _ModelTanimState extends State<ModelTanim> {
   Future<void> modelEkle() async {
     setState(() {});
     var url = Uri.parse('https://stok.bahcelievler.bel.tr/api/BrandModels');
-    print(dropdownvalue);
-    trimmedValue = ((((dropdownvalue.replaceAll('[', '')).replaceAll(']', ''))
-                .replaceAll('<', ''))
-            .replaceAll('>', ''))
-        .replaceAll("'", '');
+    print("ddd: ${dropdownvalue}");
+    if (dropdownvalue == null) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Lütfen listeden bir varyant seçin."),
+        backgroundColor: Colors.red,
+      ));
+    } else {
+      trimmedValue = ((((dropdownvalue.replaceAll('[', '')).replaceAll(']', ''))
+                  .replaceAll('<', ''))
+              .replaceAll('>', ''))
+          .replaceAll("'", '');
+    }
+
     print("model: ${tfModelAdi.text}");
     http.Response response = await http.post(url,
         headers: {'Accept': '*/*', 'Content-Type': 'application/json'},
@@ -97,6 +101,11 @@ class _ModelTanimState extends State<ModelTanim> {
     } else if (tfModelAdi.text == "" || tfModelAdi.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Model kayıt işlemi gerçekleştirilemedi."),
+        backgroundColor: Colors.red,
+      ));
+    } else if (trimmedValue == null || dropdownvalue == null) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Lütfen listeden bir marka seçin."),
         backgroundColor: Colors.red,
       ));
     } else {
@@ -164,6 +173,11 @@ class _ModelTanimState extends State<ModelTanim> {
     } else if (tfMarkaAdi.text == "" || tfMarkaAdi.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Marka adı boş olamaz."),
+        backgroundColor: Colors.red,
+      ));
+    } else if (markaId == null) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Lütfen listeden bir marka seçin."),
         backgroundColor: Colors.red,
       ));
     } else {
@@ -244,11 +258,10 @@ class _ModelTanimState extends State<ModelTanim> {
     ).show();
   }
 
-
-
   int pageNum = 1;
   int pageSize = 5;
   ScrollController _controller = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -319,9 +332,9 @@ class _ModelTanimState extends State<ModelTanim> {
             child: ListView(
               shrinkWrap: true,
               children: [
-
                 FutureBuilder<Marka>(
-                  future: markaListeleWithFilter('', pageNum, pageSize, 'Id', true),
+                  future:
+                      markaListeleWithFilter('', pageNum, pageSize, 'Id', true),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return ListView.builder(
@@ -331,11 +344,11 @@ class _ModelTanimState extends State<ModelTanim> {
                         itemBuilder: (context, index) {
                           // TfTest.addListener(() => markaListeleWithFilter(TfTest.text, 1, 2, 'Id', true));
                           return SearchField<Marka>(
+                            autoCorrect: true,
                             hint: 'Marka Seçiniz',
                             onSuggestionTap: (e) {
                               dropdownvalue = e.searchKey;
                               setState(() {
-
                                 dropdownvalue = e.key.toString();
                               });
                             },
@@ -353,28 +366,22 @@ class _ModelTanimState extends State<ModelTanim> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-
                                           Padding(
-                                            padding:
-                                                const EdgeInsets.all(8.0),
+                                            padding: const EdgeInsets.all(8.0),
                                             child: Text(e.markaAdi.toString(),
                                                 style: TextStyle(
-                                                    color:
-                                                        Color(0XFF6E3F52))),
+                                                    color: Color(0XFF6E3F52))),
                                           ),
                                           Row(
                                             children: [
-                                              GestureDetector(child: Text('Load More'), onTap: (){
-
-                                                // pageNum +=1;
-                                                pageSize +=5;
-                                                setState(() {
-
-                                                });
-
-
-
-                                              },),
+                                              GestureDetector(
+                                                child: Text('Load More'),
+                                                onTap: () {
+                                                  // pageNum +=1;
+                                                  pageSize += 5;
+                                                  setState(() {});
+                                                },
+                                              ),
                                               GestureDetector(
                                                 child: Icon(
                                                   Icons.delete_outline,
@@ -401,11 +408,10 @@ class _ModelTanimState extends State<ModelTanim> {
                                         ],
                                       ),
                                       key: Key(e.id.toString())),
-
                                 )
                                 .toList(),
-
                           );
+
                           // SearchField<Marka>(
                           //   hint: 'Marka Seçiniz',
                           //   onSuggestionTap: (e) {
@@ -477,9 +483,10 @@ class _ModelTanimState extends State<ModelTanim> {
                           // );
                         },
                       );
-                    }
-                    else if (!(snapshot.hasError)) {
-                      return SearchField(suggestions: [],).emptyWidget;
+                    } else if (!(snapshot.hasError)) {
+                      return SearchField(
+                        suggestions: [],
+                      ).emptyWidget;
                     }
                     return const CircularProgressIndicator(
                       color: Color(0XFF976775),
