@@ -29,18 +29,9 @@ class _ModelTanimState extends State<ModelTanim> {
   initState() {
     super.initState();
     // markaListele();
-    _scrollController.addListener(() {
-      if(_scrollController.position.pixels == _scrollController.position.maxScrollExtent){
-        getMoreData();
-        print('object');
-      }
-      else{
-        print('jkhdflks');
-      }
-    });
   }
 
-  getMoreData(){
+  getMoreData() {
     print("Get more");
   }
 
@@ -253,13 +244,13 @@ class _ModelTanimState extends State<ModelTanim> {
     ).show();
   }
 
-  ScrollController _scrollController = ScrollController();
 
+
+  int pageNum = 1;
+  int pageSize = 5;
+  ScrollController _controller = ScrollController();
   @override
   Widget build(BuildContext context) {
-
-
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -323,88 +314,95 @@ class _ModelTanimState extends State<ModelTanim> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child:
-        SingleChildScrollView(
+        child: SingleChildScrollView(
           child: Form(
             child: ListView(
               shrinkWrap: true,
               children: [
+
                 FutureBuilder<Marka>(
-                  future: markaListeleWithFilter('', 1, 100, 'Id', true),
+                  future: markaListeleWithFilter('', pageNum, pageSize, 'Id', true),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      // print("***object");
-                      // print(snapshot.data!.data[0].markaAdi);
-                      // print(snapshot.hasData);
-                      // print("object");
                       return ListView.builder(
-
-                        controller: _scrollController,
-
-
+                        controller: _controller,
                         shrinkWrap: true,
                         itemCount: 1,
                         itemBuilder: (context, index) {
                           // TfTest.addListener(() => markaListeleWithFilter(TfTest.text, 1, 2, 'Id', true));
-                          return  SearchField<Marka>(
+                          return SearchField<Marka>(
                             hint: 'Marka Seçiniz',
-                            onSuggestionTap: (e){
+                            onSuggestionTap: (e) {
                               dropdownvalue = e.searchKey;
                               setState(() {
+
                                 dropdownvalue = e.key.toString();
                               });
                             },
                             suggestionAction: SuggestionAction.unfocus,
                             itemHeight: 50,
                             searchStyle: TextStyle(color: Color(0XFF976775)),
-                            suggestionStyle: TextStyle(color: Color(0XFF976775)),
+                            suggestionStyle:
+                                TextStyle(color: Color(0XFF976775)),
                             // suggestionsDecoration: BoxDecoration(color: Colors.red),
                             suggestions: snapshot.data!.data
                                 .map(
                                   (e) => SearchFieldListItem<Marka>(
-                                  e.markaAdi.toString(),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(e.markaAdi.toString(), style: TextStyle(color: Color(0XFF6E3F52))),
-                                      ),
-
-                                      Row(
-
+                                      e.markaAdi.toString(),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
 
-                                          GestureDetector(
-                                            child: Icon(
-                                              Icons.delete_outline,
-                                              color: Color(0XFF6E3F52),
-                                            ),
-                                            onTap: (){
-                                              markaSil(e.id!);
-                                            },
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.all(8.0),
+                                            child: Text(e.markaAdi.toString(),
+                                                style: TextStyle(
+                                                    color:
+                                                        Color(0XFF6E3F52))),
                                           ),
-                                          SizedBox(width: 10,),
-                                          GestureDetector(
-                                            child: Icon(
-                                              Icons.border_color_outlined,
-                                              color: Color(0XFF6E3F52),
-                                            ),
-                                            onTap: () {
-                                              showGuncellemeDialog(e.id!);
-                                            },
+                                          Row(
+                                            children: [
+                                              GestureDetector(child: Text('Load More'), onTap: (){
+
+                                                // pageNum +=1;
+                                                pageSize +=5;
+                                                setState(() {
+
+                                                });
+
+
+
+                                              },),
+                                              GestureDetector(
+                                                child: Icon(
+                                                  Icons.delete_outline,
+                                                  color: Color(0XFF6E3F52),
+                                                ),
+                                                onTap: () {
+                                                  markaSil(e.id!);
+                                                },
+                                              ),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              GestureDetector(
+                                                child: Icon(
+                                                  Icons.border_color_outlined,
+                                                  color: Color(0XFF6E3F52),
+                                                ),
+                                                onTap: () {
+                                                  showGuncellemeDialog(e.id!);
+                                                },
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
+                                      key: Key(e.id.toString())),
 
-                                    ],
-                                  ),
-                                  key: Key(e.id.toString())
-
-                              ),
-
-                            )
-
+                                )
                                 .toList(),
 
                           );
@@ -479,8 +477,9 @@ class _ModelTanimState extends State<ModelTanim> {
                           // );
                         },
                       );
-                    } else if (snapshot.hasError) {
-                      return Text('${snapshot.error}');
+                    }
+                    else if (!(snapshot.hasError)) {
+                      return SearchField(suggestions: [],).emptyWidget;
                     }
                     return const CircularProgressIndicator(
                       color: Color(0XFF976775),
