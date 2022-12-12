@@ -345,11 +345,13 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
                             suggestions: snapshot.data!.data
                                 .map(
                                   (e) => SearchFieldListItem<Varyant>(
+
                                   e.varyantAdi.toString(),
                                   child: Row(
                                     mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                     children: [
+
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(e.varyantAdi.toString(),
@@ -360,9 +362,15 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
                                         children: [
                                           GestureDetector(
                                             child: Text('Load More'),
+
                                             onTap: () {
                                               // pageNum +=1;
+                                              print("e: ${e.varyantAdi}");
+
+                                                List<Data> dtListesi = <Data>[];
+
                                               pageSize += 5;
+
                                               setState(() {});
                                             },
                                           ),
