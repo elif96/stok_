@@ -396,6 +396,7 @@ class _ModelTanimState extends State<ModelTanim> {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
+
                 RefreshIndicator(
                   triggerMode: RefreshIndicatorTriggerMode.onEdge,
                   onRefresh: _refresh,
