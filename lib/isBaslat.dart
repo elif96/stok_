@@ -24,9 +24,17 @@ class _isBaslatState extends State<isBaslat> {
 
   var islemTuru;
   List<String> list = <String>[
-    'Giriş İşlemleri',
-    'Departman İçi Hareket',
-    'Çıkış İşlemleri'
+    'Avans Yoluyla',
+    'İhale Yoluyla',
+    'Satın Alma',
+    'Üretim',
+    'Transfer',
+    'Zimmet',
+    'Zimmet İade',
+    'Devir',
+    'Hibe',
+    'Hurda',
+    'Tüketim'
   ];
 
   @override
@@ -253,6 +261,60 @@ class _isBaslatState extends State<isBaslat> {
                                                   color: Color(0XFF976775))),
                                         );
                                       }).toList(),
+                                      onChanged: (newVal) {
+                                        setState(() {
+                                          islemTuru = newVal;
+                                        });
+                                      },
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    DropdownButtonFormField(
+                                      decoration: InputDecoration(
+                                          hintStyle: TextStyle(
+                                              color: Color(0XFF976775)),
+                                          hintText: "Ana Nokta",
+                                          border: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Color(0XFF6E3F52),
+                                                  width: 3))),
+                                      items: list.map<DropdownMenuItem<String>>(
+                                              (String value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(value,
+                                                  style: TextStyle(
+                                                      color: Color(0XFF976775))),
+                                            );
+                                          }).toList(),
+                                      onChanged: (newVal) {
+                                        setState(() {
+                                          islemTuru = newVal;
+                                        });
+                                      },
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    DropdownButtonFormField(
+                                      decoration: InputDecoration(
+                                          hintStyle: TextStyle(
+                                              color: Color(0XFF976775)),
+                                          hintText: "Hedef Nokta",
+                                          border: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Color(0XFF6E3F52),
+                                                  width: 3))),
+                                      items: list.map<DropdownMenuItem<String>>(
+                                              (String value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(value,
+                                                  style: TextStyle(
+                                                      color: Color(0XFF976775))),
+                                            );
+                                          }).toList(),
                                       onChanged: (newVal) {
                                         setState(() {
                                           islemTuru = newVal;

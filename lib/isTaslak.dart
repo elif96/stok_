@@ -64,7 +64,7 @@ class _IsTaslakState extends State<IsTaslak> {
                     MaterialPageRoute(builder: (context) => IsTaslak()));              },
             ),
             ListTile(
-              leading: Icon(
+              leading: const Icon(
                 Icons.description,
                 color: Color(0XFF976775),
               ),
@@ -101,7 +101,7 @@ class _IsTaslakState extends State<IsTaslak> {
               title: Text('İŞLEM ADI',style: TextStyle(color: Color(0XFF976775))),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: const [
                   Text("İşlem Türü: İşlem Türü"),
                   Text("İşlem Açıklaması: İşlem Açıklaması"),
                   Text("İşlem Tarihi: İşlem Tarihi"),
@@ -115,10 +115,10 @@ class _IsTaslakState extends State<IsTaslak> {
               // Navigator.push(context, MaterialPageRoute(builder: (context)=>IslemTurDetay(islemTuru: this.widget.islemTuru.toString(), islemAdi: this.widget.islemAdi, islemAciklamasi: this.widget.islemAciklamasi, islemTarihi: this.widget.islemTarihi,)));
             },
             child: ListTile(
-              title: Text('İşlem Adı',style: TextStyle(color: Color(0XFF976775))),
+              title: const Text('İşlem Adı',style: TextStyle(color: Color(0XFF976775))),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: const [
                   Text("İşlem Türü: İşlem türü"),
                   Text("İşlem Açıklaması: İşlem açıklaması"),
                   Text("İşlem Tarihi: İşlem tarihi"),

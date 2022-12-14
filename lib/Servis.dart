@@ -34,7 +34,7 @@ class Servis {
         .toList();
 
 
-    print(markalar.length);
+    // print(markalar.length);
     return markalar;
   }
 }
