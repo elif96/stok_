@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:searchfield/searchfield.dart';
+import 'package:stok_takip_uygulamasi/DrawerMenu.dart';
 import 'package:stok_takip_uygulamasi/isTaslak.dart';
 import 'package:stok_takip_uygulamasi/tanimlamalar.dart';
 
@@ -312,63 +313,7 @@ class _IslemTanimState extends State<IslemTanim> {
                 letterSpacing: 2,
               )),
         ),
-        endDrawer: Drawer(
-          child: ListView(
-            // Important: Remove any padding from the ListView.
-            padding: EdgeInsets.zero,
-            children: [
-              const DrawerHeader(
-                decoration: BoxDecoration(color: const Color(0XFF6E3F52)),
-                child: Text(' '),
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.description,
-                  color: Color(0XFF976775),
-                ),
-                title: const Text(
-                  'TANIMLAMALAR',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Color(0XFF976775)),
-                ),
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Tanimlamalar()));
-                },
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.description,
-                  color: Color(0XFF976775),
-                ),
-                title: const Text(
-                  'İŞLEM TASLAKLARI',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Color(0XFF976775)),
-                ),
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => IsTaslak()));
-                },
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.description,
-                  color: Color(0XFF976775),
-                ),
-                title: const Text(
-                  'ONAY İŞLEMLERİ',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Color(0XFF976775)),
-                ),
-                onTap: () {
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (context) => IsTaslak()));
-                },
-              ),
-            ],
-          ),
-        ),
+        endDrawer: DrawerMenu(),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: SingleChildScrollView(
