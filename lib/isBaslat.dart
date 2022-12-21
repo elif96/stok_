@@ -1,17 +1,11 @@
 import 'dart:convert';
-
-import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:custom_searchable_dropdown/custom_searchable_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stok_takip_uygulamasi/DrawerMenu.dart';
-import 'package:stok_takip_uygulamasi/isTaslak.dart';
 import 'package:stok_takip_uygulamasi/islemTanim.dart';
-import 'package:stok_takip_uygulamasi/islemTurDetay.dart';
 import 'package:stok_takip_uygulamasi/model/Warehouse.dart';
 import 'package:stok_takip_uygulamasi/stokBul.dart';
 import 'package:intl/intl.dart';
-import 'package:stok_takip_uygulamasi/tanimlamalar.dart';
 import 'package:http/http.dart' as http;
 
 class isBaslat extends StatefulWidget {
@@ -258,6 +252,7 @@ class _isBaslatState extends State<isBaslat> {
                                                           onTap: () async {
                                                             DateTime? pickedDate =
                                                                 await showDatePicker(
+                                                                  locale: const Locale("tr", "TR"),
                                                                     builder:
                                                                         (context,
                                                                             child) {
