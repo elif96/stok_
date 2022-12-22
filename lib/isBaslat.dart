@@ -70,7 +70,8 @@ class _isBaslatState extends State<isBaslat> {
     'Tüketim'
   ];
 
-  // List<Data> cevap = <Data>[];
+
+
   List<Data> cevap = <Data>[];
 
   Future<List<Data>> warehouseListele() async {
@@ -110,8 +111,7 @@ class _isBaslatState extends State<isBaslat> {
       appBar: AppBar(
         primary: true,
         backgroundColor: Color(0xFF976775),
-        title:
-        Text('STOK İŞLEMLERİ',
+        title: Text('STOK İŞLEMLERİ',
             style: GoogleFonts.notoSansTaiLe(
               fontSize: 18,
               color: Colors.white,
@@ -157,16 +157,19 @@ class _isBaslatState extends State<isBaslat> {
                                           child: SingleChildScrollView(
                                             child: Theme(
                                               data: ThemeData(
-                                                colorScheme: Theme.of(context).colorScheme.copyWith(
-                                                  primary: Color(0xFF976775),
-                                                  background: Colors.red,
-                                                  secondary: Colors.red,
-                                                ),
+                                                colorScheme: Theme.of(context)
+                                                    .colorScheme
+                                                    .copyWith(
+                                                      primary:
+                                                          Color(0xFF976775),
+                                                      background: Colors.red,
+                                                      secondary: Colors.red,
+                                                    ),
                                               ),
                                               child: Stepper(
-                                                controlsBuilder:
-                                                    (BuildContext context,
-                                                        ControlsDetails details) {
+                                                controlsBuilder: (BuildContext
+                                                        context,
+                                                    ControlsDetails details) {
                                                   return Row(
                                                     children: <Widget>[],
                                                   );
@@ -188,10 +191,12 @@ class _isBaslatState extends State<isBaslat> {
                                                     content: Column(
                                                       children: <Widget>[
                                                         TextField(
-                                                          controller: tfIslemAdi,
+                                                          controller:
+                                                              tfIslemAdi,
                                                           decoration:
                                                               InputDecoration(
-                                                            hintText: 'İşlem Adı',
+                                                            hintText:
+                                                                'İşlem Adı',
                                                             hintStyle: TextStyle(
                                                                 color: Color(
                                                                     0XFF976775)),
@@ -248,17 +253,17 @@ class _isBaslatState extends State<isBaslat> {
                                                             ),
                                                           ),
                                                           readOnly: true,
-                                                          //set it true, so that user will not able to edit text
                                                           onTap: () async {
                                                             DateTime? pickedDate =
                                                                 await showDatePicker(
-                                                                  locale: const Locale("tr", "TR"),
+                                                                    locale: const Locale(
+                                                                        "tr",
+                                                                        "TR"),
                                                                     builder:
                                                                         (context,
                                                                             child) {
                                                                       return Theme(
-                                                                        data: Theme.of(
-                                                                                context)
+                                                                        data: Theme.of(context)
                                                                             .copyWith(
                                                                           colorScheme:
                                                                               ColorScheme.light(
@@ -275,8 +280,7 @@ class _isBaslatState extends State<isBaslat> {
                                                                               TextButtonThemeData(
                                                                             style:
                                                                                 TextButton.styleFrom(
-                                                                              primary:
-                                                                                  Color(0XFF463848), // button text color
+                                                                              foregroundColor: Color(0XFF463848), // button text color
                                                                             ),
                                                                           ),
                                                                         ),
@@ -326,62 +330,81 @@ class _isBaslatState extends State<isBaslat> {
                                                           height: 15,
                                                         ),
                                                         Row(
-                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
                                                           children: [
                                                             Expanded(
-                                                              child: OutlinedButton(
-                                                                style:
-                                                                OutlinedButton
+                                                              child:
+                                                                  OutlinedButton(
+                                                                style: OutlinedButton
                                                                     .styleFrom(
                                                                   backgroundColor:
-                                                                  Color(
-                                                                      0XFF463848),
+                                                                      Color(
+                                                                          0XFF463848),
                                                                   side: BorderSide(
-                                                                      width: 1.0,
+                                                                      width:
+                                                                          1.0,
                                                                       color: Color(
                                                                           0XFF463848)),
                                                                 ),
                                                                 onPressed: () {
-                                                                  _currentStep > 0
+                                                                  _currentStep >
+                                                                          0
                                                                       ? setState(() =>
-                                                                  _currentStep -=
-                                                                  1)
+                                                                          _currentStep -=
+                                                                              1)
                                                                       : null;
                                                                 },
-                                                                child:
-                                                                Text("Geri",style: TextStyle(color: Color(0XFFDBDCE8), fontSize: 15, letterSpacing: 2.0)),
+                                                                child: Text(
+                                                                    "Geri",
+                                                                    style: TextStyle(
+                                                                        color: Color(
+                                                                            0XFFDBDCE8),
+                                                                        fontSize:
+                                                                            15,
+                                                                        letterSpacing:
+                                                                            2.0)),
                                                               ),
                                                             ),
                                                             SizedBox(
                                                               width: 15,
                                                             ),
                                                             Expanded(
-                                                              child: OutlinedButton(
-                                                                style:
-                                                                OutlinedButton
+                                                              child:
+                                                                  OutlinedButton(
+                                                                style: OutlinedButton
                                                                     .styleFrom(
                                                                   backgroundColor:
-                                                                  Color(
-                                                                      0XFF463848),
+                                                                      Color(
+                                                                          0XFF463848),
                                                                   side: BorderSide(
-                                                                      width: 1.0,
+                                                                      width:
+                                                                          1.0,
                                                                       color: Color(
                                                                           0XFF463848)),
                                                                 ),
                                                                 onPressed: () {
-                                                                  _currentStep < 2
+                                                                  _currentStep <
+                                                                          2
                                                                       ? setState(() =>
-                                                                  _currentStep +=
-                                                                  1)
+                                                                          _currentStep +=
+                                                                              1)
                                                                       : null;
-                                                                  setState(() {});
+                                                                  setState(
+                                                                      () {});
                                                                 },
-                                                                child:
-                                                                Text("İleri",style: TextStyle(color: Color(0XFFDBDCE8), fontSize: 15, letterSpacing: 2.0)),
+                                                                child: Text(
+                                                                    "İleri",
+                                                                    style: TextStyle(
+                                                                        color: Color(
+                                                                            0XFFDBDCE8),
+                                                                        fontSize:
+                                                                            15,
+                                                                        letterSpacing:
+                                                                            2.0)),
                                                               ),
                                                             ),
-
-
                                                           ],
                                                         ),
                                                       ],
@@ -413,7 +436,8 @@ class _isBaslatState extends State<isBaslat> {
                                                                   borderSide: BorderSide(
                                                                       color: Color(
                                                                           0XFF6E3F52),
-                                                                      width: 3))),
+                                                                      width:
+                                                                          3))),
                                                           items: list.map<
                                                               DropdownMenuItem<
                                                                   String>>((String
@@ -429,7 +453,8 @@ class _isBaslatState extends State<isBaslat> {
                                                           }).toList(),
                                                           onChanged: (newVal) {
                                                             setState(() {
-                                                              islemTuru = newVal;
+                                                              islemTuru =
+                                                                  newVal;
                                                             });
                                                           },
                                                         ),
@@ -437,61 +462,81 @@ class _isBaslatState extends State<isBaslat> {
                                                           height: 15,
                                                         ),
                                                         Row(
-                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
                                                           children: [
                                                             Expanded(
-                                                              child: OutlinedButton(
-                                                                style:
-                                                                OutlinedButton
+                                                              child:
+                                                                  OutlinedButton(
+                                                                style: OutlinedButton
                                                                     .styleFrom(
                                                                   backgroundColor:
-                                                                  Color(
-                                                                      0XFF463848),
+                                                                      Color(
+                                                                          0XFF463848),
                                                                   side: BorderSide(
-                                                                      width: 1.0,
+                                                                      width:
+                                                                          1.0,
                                                                       color: Color(
                                                                           0XFF463848)),
                                                                 ),
                                                                 onPressed: () {
-                                                                  _currentStep > 0
+                                                                  _currentStep >
+                                                                          0
                                                                       ? setState(() =>
-                                                                  _currentStep -=
-                                                                  1)
+                                                                          _currentStep -=
+                                                                              1)
                                                                       : null;
                                                                 },
-                                                                child:
-                                                                Text("Geri",style: TextStyle(color: Color(0XFFDBDCE8), fontSize: 15, letterSpacing: 2.0)),
+                                                                child: Text(
+                                                                    "Geri",
+                                                                    style: TextStyle(
+                                                                        color: Color(
+                                                                            0XFFDBDCE8),
+                                                                        fontSize:
+                                                                            15,
+                                                                        letterSpacing:
+                                                                            2.0)),
                                                               ),
                                                             ),
                                                             SizedBox(
                                                               width: 15,
                                                             ),
                                                             Expanded(
-                                                              child: OutlinedButton(
-                                                                style:
-                                                                OutlinedButton
+                                                              child:
+                                                                  OutlinedButton(
+                                                                style: OutlinedButton
                                                                     .styleFrom(
                                                                   backgroundColor:
-                                                                  Color(
-                                                                      0XFF463848),
+                                                                      Color(
+                                                                          0XFF463848),
                                                                   side: BorderSide(
-                                                                      width: 1.0,
+                                                                      width:
+                                                                          1.0,
                                                                       color: Color(
                                                                           0XFF463848)),
                                                                 ),
                                                                 onPressed: () {
-                                                                  _currentStep < 2
+                                                                  _currentStep <
+                                                                          2
                                                                       ? setState(() =>
-                                                                  _currentStep +=
-                                                                  1)
+                                                                          _currentStep +=
+                                                                              1)
                                                                       : null;
-                                                                  setState(() {});
+                                                                  setState(
+                                                                      () {});
                                                                 },
-                                                                child:
-                                                                Text("İleri",style: TextStyle(color: Color(0XFFDBDCE8), fontSize: 15, letterSpacing: 2.0)),
+                                                                child: Text(
+                                                                    "İleri",
+                                                                    style: TextStyle(
+                                                                        color: Color(
+                                                                            0XFFDBDCE8),
+                                                                        fontSize:
+                                                                            15,
+                                                                        letterSpacing:
+                                                                            2.0)),
                                                               ),
                                                             ),
-
                                                           ],
                                                         ),
                                                       ],
@@ -523,9 +568,10 @@ class _isBaslatState extends State<isBaslat> {
                                                                   borderSide: BorderSide(
                                                                       color: Color(
                                                                           0XFF6E3F52),
-                                                                      width: 3))),
-                                                          items: cevap
-                                                              .map((Data value) {
+                                                                      width:
+                                                                          3))),
+                                                          items: cevap.map(
+                                                              (Data value) {
                                                             return DropdownMenuItem<
                                                                 String>(
                                                               value: value.id
@@ -540,7 +586,8 @@ class _isBaslatState extends State<isBaslat> {
                                                           }).toList(),
                                                           onChanged: (newVal) {
                                                             setState(() {
-                                                              islemTuru = newVal;
+                                                              islemTuru =
+                                                                  newVal;
                                                             });
                                                           },
                                                         ),
@@ -558,10 +605,10 @@ class _isBaslatState extends State<isBaslat> {
                                                                   borderSide: BorderSide(
                                                                       color: Color(
                                                                           0XFF6E3F52),
-                                                                      width: 3))),
-
-                                                          items: cevap
-                                                              .map((Data value) {
+                                                                      width:
+                                                                          3))),
+                                                          items: cevap.map(
+                                                              (Data value) {
                                                             return DropdownMenuItem<
                                                                 String>(
                                                               value: value.id
@@ -576,7 +623,8 @@ class _isBaslatState extends State<isBaslat> {
                                                           }).toList(),
                                                           onChanged: (newVal) {
                                                             setState(() {
-                                                              islemTuru = newVal;
+                                                              islemTuru =
+                                                                  newVal;
                                                             });
                                                           },
                                                         ),
@@ -585,44 +633,53 @@ class _isBaslatState extends State<isBaslat> {
                                                         ),
                                                         Row(
                                                           children: [
-
                                                             Expanded(
-                                                              child: OutlinedButton(
-                                                                style:
-                                                                OutlinedButton
+                                                              child:
+                                                                  OutlinedButton(
+                                                                style: OutlinedButton
                                                                     .styleFrom(
                                                                   backgroundColor:
-                                                                  Color(
-                                                                      0XFF463848),
+                                                                      Color(
+                                                                          0XFF463848),
                                                                   side: BorderSide(
-                                                                      width: 1.0,
+                                                                      width:
+                                                                          1.0,
                                                                       color: Color(
                                                                           0XFF463848)),
                                                                 ),
                                                                 onPressed: () {
-                                                                  _currentStep > 0
+                                                                  _currentStep >
+                                                                          0
                                                                       ? setState(() =>
-                                                                  _currentStep -=
-                                                                  1)
+                                                                          _currentStep -=
+                                                                              1)
                                                                       : null;
                                                                 },
-                                                                child:
-                                                                Text("Geri",style: TextStyle(color: Color(0XFFDBDCE8), fontSize: 15, letterSpacing: 2.0)),
+                                                                child: Text(
+                                                                    "Geri",
+                                                                    style: TextStyle(
+                                                                        color: Color(
+                                                                            0XFFDBDCE8),
+                                                                        fontSize:
+                                                                            15,
+                                                                        letterSpacing:
+                                                                            2.0)),
                                                               ),
                                                             ),
                                                             SizedBox(
                                                               width: 15,
                                                             ),
                                                             Expanded(
-                                                              child: OutlinedButton(
-                                                                style:
-                                                                OutlinedButton
+                                                              child:
+                                                                  OutlinedButton(
+                                                                style: OutlinedButton
                                                                     .styleFrom(
                                                                   backgroundColor:
-                                                                  Color(
-                                                                      0XFF463848),
+                                                                      Color(
+                                                                          0XFF463848),
                                                                   side: BorderSide(
-                                                                      width: 1.0,
+                                                                      width:
+                                                                          1.0,
                                                                       color: Color(
                                                                           0XFF463848)),
                                                                 ),
@@ -632,21 +689,158 @@ class _isBaslatState extends State<isBaslat> {
                                                                   // _currentStep +=
                                                                   // 1)
                                                                   //     : null;
-                                                                  Navigator.push(
-                                                                      context,
-                                                                      MaterialPageRoute(
-                                                                          builder: (context) =>
-                                                                              IslemTanim(islemTuru: islemTuru, islemAdi: tfIslemAdi.text, islemAciklamasi: tfIslemAciklamasi.text, islemTarihi: tfIslemTarihi.text)
-                                                                      ));
 
-                                                                  print('object');
-                                                                  setState(() {});
+                                                                  if (tfIslemAdi
+                                                                          .text ==
+                                                                      "") {
+                                                                    ScaffoldMessenger.of(
+                                                                            context)
+                                                                        .showSnackBar(
+                                                                            SnackBar(
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .red,
+                                                                      content:
+                                                                          const Text(
+                                                                              'İşlem adını boş bırakamazsınız.'),
+                                                                      duration: const Duration(
+                                                                          seconds:
+                                                                              2),
+                                                                    ));
+                                                                  } else if (tfIslemAciklamasi
+                                                                          .text ==
+                                                                      "") {
+                                                                    ScaffoldMessenger.of(
+                                                                            context)
+                                                                        .showSnackBar(
+                                                                            SnackBar(
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .red,
+                                                                      content:
+                                                                          const Text(
+                                                                              'İşlem açıklamasını boş bırakamazsınız.'),
+                                                                      duration: const Duration(
+                                                                          seconds:
+                                                                              2),
+                                                                    ));
+                                                                  } else if (tfIslemTarihi
+                                                                          .text ==
+                                                                      "") {
+                                                                    ScaffoldMessenger.of(
+                                                                            context)
+                                                                        .showSnackBar(
+                                                                            SnackBar(
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .red,
+                                                                      content:
+                                                                          const Text(
+                                                                              'İşlem tarihini boş bırakamazsınız.'),
+                                                                      duration: const Duration(
+                                                                          seconds:
+                                                                              2),
+                                                                    ));
+                                                                  } else if (islemTuru ==
+                                                                      "" || islemTuru==null) {
+                                                                    ScaffoldMessenger.of(
+                                                                            context)
+                                                                        .showSnackBar(
+                                                                            SnackBar(
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .red,
+                                                                      content:
+                                                                          const Text(
+                                                                              'İşlem türü seçmelisiniz.'),
+                                                                      duration: const Duration(
+                                                                          seconds:
+                                                                              2),
+                                                                    ));
+                                                                  } else if (cevap ==
+                                                                      "" || cevap==null) {
+                                                                    ScaffoldMessenger.of(
+                                                                        context)
+                                                                        .showSnackBar(
+                                                                        SnackBar(
+                                                                          backgroundColor:
+                                                                          Colors
+                                                                              .red,
+                                                                          content:
+                                                                          const Text(
+                                                                              'Ana nokta seçmelisiniz.'),
+                                                                          duration: const Duration(
+                                                                              seconds:
+                                                                              2),
+                                                                        ));
+                                                                  } else if (cevap ==
+                                                                      "" || cevap==null) {
+                                                                    ScaffoldMessenger.of(
+                                                                        context)
+                                                                        .showSnackBar(
+                                                                        SnackBar(
+                                                                          backgroundColor:
+                                                                          Colors
+                                                                              .red,
+                                                                          content:
+                                                                          const Text(
+                                                                              'Hedef nokta seçmelisiniz.'),
+                                                                          duration: const Duration(
+                                                                              seconds:
+                                                                              2),
+                                                                        ));
+                                                                  } else {
+                                                                    String
+                                                                        islemAdi =
+                                                                        tfIslemAdi
+                                                                            .text;
+                                                                    String
+                                                                        islemTarihi =
+                                                                        tfIslemTarihi
+                                                                            .text;
+                                                                    String
+                                                                        islemAciklamasi =
+                                                                        tfIslemAciklamasi
+                                                                            .text;
+                                                                    print("*");
+                                                                    print(
+                                                                        islemAdi);
+                                                                    print(
+                                                                        islemTarihi);
+                                                                    print("*");
+
+                                                                    tfIslemAdi
+                                                                        .clear();
+                                                                    tfIslemAciklamasi
+                                                                        .clear();
+                                                                    tfIslemTarihi
+                                                                        .clear();
+                                                                    Navigator.push(
+                                                                        context,
+                                                                        MaterialPageRoute(
+                                                                            builder: (context) => IslemTanim(
+                                                                                islemTuru: islemTuru,
+                                                                                islemAdi: tfIslemAdi.text,
+                                                                                islemAciklamasi: tfIslemAciklamasi.text,
+                                                                                islemTarihi: tfIslemTarihi.text)));
+                                                                  }
+
+                                                                  print(
+                                                                      'object');
+                                                                  setState(
+                                                                      () {});
                                                                 },
-                                                                child:
-                                                                Text("Başlat",style: TextStyle(color: Color(0XFFDBDCE8), fontSize: 15, letterSpacing: 2.0)),
+                                                                child: Text(
+                                                                    "Başlat",
+                                                                    style: TextStyle(
+                                                                        color: Color(
+                                                                            0XFFDBDCE8),
+                                                                        fontSize:
+                                                                            15,
+                                                                        letterSpacing:
+                                                                            2.0)),
                                                               ),
                                                             ),
-
                                                           ],
                                                         ),
                                                       ],
