@@ -15,7 +15,7 @@ class DrawerMenu extends StatefulWidget {
 }
 
 class _DrawerMenuState extends State<DrawerMenu> {
-  var List = ["İşlem Taslakları", "Onayımı Bekleyen İşlemler", "Onaya Gönderdiğim İşlemler", "Reddedilen İşlemler", "Onayladığım İşlemler", "Reddettiğim İşlemler"];
+  var List = ["İşlem Taslakları", "Onayımı Bekleyen İşlemler", "Onay Beklediğim İşlemler", "Reddedilen İşlemler", "Onayladığım İşlemler", "Reddettiğim İşlemler"];
   @override
   Widget build(BuildContext context) {
     return Drawer(

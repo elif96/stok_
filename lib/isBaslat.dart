@@ -28,6 +28,9 @@ class _isBaslatState extends State<isBaslat> {
   }
 
   var islemTuru;
+  var anaDepo;
+  var hedefDepo;
+
   List<String> list = <String>[
     'Avans Yoluyla',
     'İhale Yoluyla',
@@ -42,36 +45,6 @@ class _isBaslatState extends State<isBaslat> {
     'Tüketim'
   ];
 
-  List<String> anaList = <String>[
-    'Avans Yoluyla',
-    'İhale Yoluyla',
-    'Satın Alma',
-    'Üretim',
-    'Transfer',
-    'Zimmet',
-    'Zimmet İade',
-    'Devir',
-    'Hibe',
-    'Hurda',
-    'Tüketim'
-  ];
-
-  List<String> hedefList = <String>[
-    'Avans Yoluyla',
-    'İhale Yoluyla',
-    'Satın Alma',
-    'Üretim',
-    'Transfer',
-    'Zimmet',
-    'Zimmet İade',
-    'Devir',
-    'Hibe',
-    'Hurda',
-    'Tüketim'
-  ];
-
-
-
   List<Data> cevap = <Data>[];
 
   Future<List<Data>> warehouseListele() async {
@@ -84,25 +57,71 @@ class _isBaslatState extends State<isBaslat> {
   }
 
   int _currentStep = 0;
-  StepperType stepperType = StepperType.vertical;
-
-  switchStepsType() {
-    setState(() => stepperType == StepperType.vertical
-        ? stepperType = StepperType.horizontal
-        : stepperType = StepperType.vertical);
-  }
 
   tapped(int step) {
     setState(() => _currentStep = step);
   }
 
-  continued() {
-    _currentStep < 2 ? setState(() => _currentStep += 1) : null;
-    setState(() {});
-  }
+  Future<void> isBaslat(String islemAdi, String islemAciklama, int islemTuru,
+      int anaDepoId, int hedefDepoId, String islemTarihi) async {
+    // "islemAdi": "test",
+    // "islemAciklama": "test açıklaması",
+    // "islemTuru": 1,
+    // "anaDepoId": 5,
+    // "hedefDepoID": 6,
+    var url =
+        Uri.parse('https://stok.bahcelievler.bel.tr/api/ProductProcesses');
+    http.Response response = await http.post(url,
+        headers: {'Accept': '*/*', 'Content-Type': 'application/json'},
+        body: json.encoder.convert({
+          "islemAdi": tfIslemAdi.text,
+          "islemAciklama": tfIslemAciklamasi.text,
+          "islemTuru": islemTuru,
+          "anaDepoId": int.parse(anaDepo),
+          "hedefDepoID": int.parse(hedefDepo),
+          "islemTarihi": tfIslemTarihi.text
+        }));
+    // tfIslemAdi.text = "";
+    // tfIslemAciklamasi.text = "";
 
-  cancel() {
-    _currentStep > 0 ? setState(() => _currentStep -= 1) : null;
+    print(tfIslemAdi.text);
+    print(tfIslemAciklamasi.text);
+    print(islemTuru);
+    print(anaDepo);
+    print(hedefDepo);
+    print(tfIslemTarihi.text);
+
+    print(response.body);
+    print(response.statusCode);
+    print(response.reasonPhrase);
+
+    // if(tfVaryantAdi.text ==""){
+    //   //silinecek marka bulunamadı
+    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    //     content: Text("Lütfen varyant adı girin."),
+    //     backgroundColor: Colors.red,
+    //   ));
+    //   tfVaryantAdi.clear();
+    //   setState(() {});
+    // }
+    // else if(response.reasonPhrase == 'Bad Request'){
+    //   //model olduğu için marka silinemedi
+    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    //     content: Text("Eklemek istediğiniz varyant zaten var."),
+    //     backgroundColor: Colors.red,
+    //   ));
+    //   tfVaryantAdi.clear();
+    //   setState(() {});
+    // }
+    // else if(response.reasonPhrase == 'Created'){
+    //   // başarılı
+    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    //     content: Text("Varyant ekleme işlemi başarıyla gerçekleştirildi."),
+    //     backgroundColor: Colors.green,
+    //   ));
+    //   tfVaryantAdi.clear();
+    //   setState(() {});
+    // }
   }
 
   @override
@@ -439,8 +458,7 @@ class _isBaslatState extends State<isBaslat> {
                                                                       width:
                                                                           3))),
                                                           items: list.map<
-                                                              DropdownMenuItem<
-                                                                  String>>((String
+                                                              DropdownMenuItem>((String
                                                               value) {
                                                             return DropdownMenuItem<
                                                                 String>(
@@ -452,6 +470,7 @@ class _isBaslatState extends State<isBaslat> {
                                                             );
                                                           }).toList(),
                                                           onChanged: (newVal) {
+                                                            print(islemTuru.hashCode);
                                                             setState(() {
                                                               islemTuru =
                                                                   newVal;
@@ -586,7 +605,7 @@ class _isBaslatState extends State<isBaslat> {
                                                           }).toList(),
                                                           onChanged: (newVal) {
                                                             setState(() {
-                                                              islemTuru =
+                                                              anaDepo =
                                                                   newVal;
                                                             });
                                                           },
@@ -623,7 +642,7 @@ class _isBaslatState extends State<isBaslat> {
                                                           }).toList(),
                                                           onChanged: (newVal) {
                                                             setState(() {
-                                                              islemTuru =
+                                                              hedefDepo =
                                                                   newVal;
                                                             });
                                                           },
@@ -684,11 +703,6 @@ class _isBaslatState extends State<isBaslat> {
                                                                           0XFF463848)),
                                                                 ),
                                                                 onPressed: () {
-                                                                  // _currentStep < 2
-                                                                  //     ? setState(() =>
-                                                                  // _currentStep +=
-                                                                  // 1)
-                                                                  //     : null;
 
                                                                   if (tfIslemAdi
                                                                           .text ==
@@ -742,7 +756,9 @@ class _isBaslatState extends State<isBaslat> {
                                                                               2),
                                                                     ));
                                                                   } else if (islemTuru ==
-                                                                      "" || islemTuru==null) {
+                                                                          "" ||
+                                                                      islemTuru ==
+                                                                          null) {
                                                                     ScaffoldMessenger.of(
                                                                             context)
                                                                         .showSnackBar(
@@ -758,37 +774,41 @@ class _isBaslatState extends State<isBaslat> {
                                                                               2),
                                                                     ));
                                                                   } else if (cevap ==
-                                                                      "" || cevap==null) {
+                                                                          "" ||
+                                                                      cevap ==
+                                                                          null) {
                                                                     ScaffoldMessenger.of(
-                                                                        context)
+                                                                            context)
                                                                         .showSnackBar(
-                                                                        SnackBar(
-                                                                          backgroundColor:
+                                                                            SnackBar(
+                                                                      backgroundColor:
                                                                           Colors
                                                                               .red,
-                                                                          content:
+                                                                      content:
                                                                           const Text(
                                                                               'Ana nokta seçmelisiniz.'),
-                                                                          duration: const Duration(
-                                                                              seconds:
+                                                                      duration: const Duration(
+                                                                          seconds:
                                                                               2),
-                                                                        ));
+                                                                    ));
                                                                   } else if (cevap ==
-                                                                      "" || cevap==null) {
+                                                                          "" ||
+                                                                      cevap ==
+                                                                          null) {
                                                                     ScaffoldMessenger.of(
-                                                                        context)
+                                                                            context)
                                                                         .showSnackBar(
-                                                                        SnackBar(
-                                                                          backgroundColor:
+                                                                            SnackBar(
+                                                                      backgroundColor:
                                                                           Colors
                                                                               .red,
-                                                                          content:
+                                                                      content:
                                                                           const Text(
                                                                               'Hedef nokta seçmelisiniz.'),
-                                                                          duration: const Duration(
-                                                                              seconds:
+                                                                      duration: const Duration(
+                                                                          seconds:
                                                                               2),
-                                                                        ));
+                                                                    ));
                                                                   } else {
                                                                     String
                                                                         islemAdi =
@@ -802,12 +822,12 @@ class _isBaslatState extends State<isBaslat> {
                                                                         islemAciklamasi =
                                                                         tfIslemAciklamasi
                                                                             .text;
-                                                                    print("*");
-                                                                    print(
-                                                                        islemAdi);
-                                                                    print(
-                                                                        islemTarihi);
-                                                                    print("*");
+                                                                    // print("*");
+                                                                    // print(
+                                                                    //     islemAdi);
+                                                                    // print(
+                                                                    //     islemTarihi);
+                                                                    // print("*");
 
                                                                     tfIslemAdi
                                                                         .clear();
@@ -815,18 +835,30 @@ class _isBaslatState extends State<isBaslat> {
                                                                         .clear();
                                                                     tfIslemTarihi
                                                                         .clear();
-                                                                    Navigator.push(
-                                                                        context,
-                                                                        MaterialPageRoute(
-                                                                            builder: (context) => IslemTanim(
-                                                                                islemTuru: islemTuru,
-                                                                                islemAdi: tfIslemAdi.text,
-                                                                                islemAciklamasi: tfIslemAciklamasi.text,
-                                                                                islemTarihi: tfIslemTarihi.text)));
+                                                                    print("Ana Depo: ${anaDepo}");
+                                                                    print("Hedef Depo: ${hedefDepo}");
+                                                                    print(tfIslemAdi.text.runtimeType);
+                                                                    print(tfIslemAciklamasi.text.runtimeType);
+                                                                    print(islemTuru.runtimeType);
+                                                                    print(islemTuru);
+                                                                    print(int.parse(anaDepo).runtimeType);
+                                                                    print(int.parse(hedefDepo).runtimeType);
+                                                                    print(tfIslemTarihi.text.runtimeType);
+
+                                                                    isBaslat(tfIslemAdi.text, tfIslemAciklamasi.text, islemTuru,
+                                                                        int.parse(anaDepo), int.parse(hedefDepo), tfIslemTarihi.text);
+                                                                    // Navigator.push(
+                                                                    //     context,
+                                                                    //     MaterialPageRoute(
+                                                                    //         builder: (context) => IslemTanim(
+                                                                    //             islemTuru: islemTuru,
+                                                                    //             islemAdi: tfIslemAdi.text,
+                                                                    //             islemAciklamasi: tfIslemAciklamasi.text,
+                                                                    //             islemTarihi: tfIslemTarihi.text)));
                                                                   }
 
-                                                                  print(
-                                                                      'object');
+                                                                  // print(
+                                                                  //     'object');
                                                                   setState(
                                                                       () {});
                                                                 },

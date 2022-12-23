@@ -31,7 +31,7 @@ class _stokBulState extends State<stokBul> {
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-          '#ff6666', 'Cancel', true, ScanMode.BARCODE)!;
+          '#ff6666', 'Cancel', true, ScanMode.BARCODE);
       print(barcodeScanRes);
     } catch (e) {
       barcodeScanRes = 'Failed to get platform version.';

@@ -45,8 +45,8 @@ class _IslemlerDetayState extends State<IslemlerDetay> {
                 islemAdi: this.widget.islemAdi,
               );
             }
-            if (this.widget.islemAdi == 'Onaya Gönderdiğim İşlemler') {
-              title = 'Onaya Gönderdiğim İşlemler';
+            if (this.widget.islemAdi == 'Onay Beklediğim İşlemler') {
+              title = 'Onay Beklediğim İşlemler';
               return WaitingForConfirmations(
                 islemAdi: this.widget.islemAdi,
               );
@@ -108,16 +108,12 @@ class _DraftsState extends State<Drafts> {
   List<ProductProcessData> drafts = <ProductProcessData>[];
   List<ProductProcessData> draftsList = <ProductProcessData>[];
   int pageNum = 1;
-  int pageSize = 5;
 
   Future<List<ProductProcessData>> draftsListele() async {
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/ProductProcesses/GetAllDrafts?AnaDepoIDFilter=0&HedefDepoIdFilter=0&Page=1&PageSize=12&Orderby=Id&Desc=false&isDeleted=false'));
     drafts = ProductProcess.fromJson(json.decode(res.body)).data.toList();
 
-    // print(cevap);
-    // print(drafts[0].islemTuru);
-    // print(drafts[0].islemAdi);
     setState(() {});
     return drafts;
   }
@@ -168,6 +164,7 @@ class _DraftsState extends State<Drafts> {
       return RefreshIndicator(
         onRefresh: _refresh,
         child: LoadMore(
+          textBuilder: DefaultLoadMoreTextBuilder.turkish,
           isFinish: drafts.length==0,
           onLoadMore: _loadMore,
           child: ListView.builder(
@@ -202,80 +199,116 @@ class _DraftsState extends State<Drafts> {
 class WaitingForMyConfirmations extends StatefulWidget {
   final String islemAdi;
 
-  const WaitingForMyConfirmations({Key? key, required this.islemAdi})
-      : super(key: key);
+  const WaitingForMyConfirmations({Key? key, required this.islemAdi}) : super(key: key);
 
   @override
-  State<WaitingForMyConfirmations> createState() =>
-      _WaitingForMyConfirmationsState();
+  State<WaitingForMyConfirmations> createState() => _WaitingForMyConfirmationsState();
 }
 
 class _WaitingForMyConfirmationsState extends State<WaitingForMyConfirmations> {
-  var title = 'Onayımı Bekleyen İşlemler';
+  var title = 'WaitingForMyConfirmations';
+  late ScrollController scrollController;
 
   @override
   initState() {
     super.initState();
 
-    WaitingForMyConfirmationsListele();
+    // draftsListele();
+    WaitingForMyConfirmationsWithFilter(1, 3, 'Id', false, false);
+    scrollController = ScrollController()..addListener(_loadMore);
+
     setState(() {
-      title = 'Onayımı Bekleyen İşlemler';
-      print('onay bekleyenler çalıştı');
+      title = 'WaitingForMyConfirmations';
+      print('WaitingForMyConfirmations çalıştı');
     });
   }
 
-  List<ProductProcessData> onayimiBekleyenIslemler = <ProductProcessData>[];
+  List<ProductProcessData> WaitingForMyConfirmations = <ProductProcessData>[];
+  List<ProductProcessData> WaitingForMyConfirmationsList = <ProductProcessData>[];
+  int pageNumWaitingForMyConfirmations = 1;
 
   Future<List<ProductProcessData>> WaitingForMyConfirmationsListele() async {
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/ProductProcesses/GetAllWaitingForMyConfirmations?AnaDepoIDFilter=0&HedefDepoIdFilter=0&Page=1&PageSize=12&Orderby=Id&Desc=false&isDeleted=false'));
-    onayimiBekleyenIslemler =
-        ProductProcess.fromJson(json.decode(res.body)).data.toList();
-    // print(cevap);
-    // print(onayimiBekleyenIslemler[0].islemTuru);
-    // print(onayimiBekleyenIslemler[0].islemAdi);
+    WaitingForMyConfirmations = ProductProcess.fromJson(json.decode(res.body)).data.toList();
+
     setState(() {});
-    return onayimiBekleyenIslemler;
+    return WaitingForMyConfirmations;
   }
+
+  Future<List<ProductProcessData>> WaitingForMyConfirmationsWithFilter(
+      int Page,
+      int PageSize,
+      String Orderby,
+      bool Desc,
+      bool isDeleted) async {
+
+    WaitingForMyConfirmations.clear();
+    http.Response res = await http.get(Uri.parse(
+        'https://stok.bahcelievler.bel.tr/api/ProductProcesses/GetAllWaitingForMyConfirmations?AnaDepoIDFilter=0&HedefDepoIdFilter=0&Page=${Page}&PageSize=${PageSize}&Orderby=${Orderby}&Desc=${Desc}&isDeleted=${isDeleted}'));
+    WaitingForMyConfirmations = ProductProcess.fromJson(json.decode(res.body)).data.toList();
+
+
+    for (int i = 0; i < WaitingForMyConfirmations.length; i++) {
+      WaitingForMyConfirmationsList.add(WaitingForMyConfirmations[i]);
+
+
+    }
+
+
+    setState(() {});
+    return WaitingForMyConfirmationsList;
+  }
+
+  Future<void> _refresh() async {
+    await Future.delayed(Duration(seconds: 0, milliseconds: 2000));
+  }
+
+  Future<bool> _loadMore() async {
+    await Future.delayed(Duration(seconds: 0, milliseconds: 2000));
+
+
+    pageNumWaitingForMyConfirmations = pageNumWaitingForMyConfirmations+1;
+    WaitingForMyConfirmationsWithFilter(pageNumWaitingForMyConfirmations, 3, 'Id', false, false);
+    print(pageNumWaitingForMyConfirmations);
+    return true;
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    if (onayimiBekleyenIslemler.isEmpty) {
-      return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Center(
-          child: CircularProgressIndicator(
-            semanticsValue: 'sd',
-            strokeWidth: 3.0,
-            color: Color(0XFFDBDCE8),
-            backgroundColor: Color(0XFFAAA3B4),
-          ),
+
+
+    return RefreshIndicator(
+      onRefresh: _refresh,
+      child: LoadMore(
+        textBuilder: DefaultLoadMoreTextBuilder.turkish,
+        isFinish: WaitingForMyConfirmations.length==0,
+        onLoadMore: _loadMore,
+        child: ListView.builder(
+          controller: scrollController,
+          shrinkWrap: true,
+          // controller: controller,
+          itemBuilder: (context, index) {
+            return Card(
+                child: Column(
+                  children: [
+                    Text(WaitingForMyConfirmationsList[index].islemAdi.toString()),
+                    Text(WaitingForMyConfirmationsList[index].islemTuru.toString()),
+                    Text(WaitingForMyConfirmationsList[index].islemTarihi.toString()),
+                    Text(WaitingForMyConfirmationsList[index].islemAciklama.toString()),
+                    Text(WaitingForMyConfirmationsList[index].onayiBeklenenUser.toString()),
+                    Text(WaitingForMyConfirmationsList[index].onayIsteyenUser.toString()),
+                    Text(WaitingForMyConfirmationsList[index].anaDepoId.toString()),
+                    Text(WaitingForMyConfirmationsList[index].hedefDepoID.toString()),
+                  ],
+                ));
+          },
+          itemCount: WaitingForMyConfirmationsList.length,
         ),
-      );
-    } else {
-      return ListView.builder(
-        shrinkWrap: true,
-        // controller: controller,
-        itemBuilder: (context, index) {
-          return Card(
-              child: Column(
-            children: [
-              onayimiBekleyenIslemler[index].islemAdi == ''
-                  ? Text('data')
-                  : Text(onayimiBekleyenIslemler[index].islemAdi.toString()),
-              Text(onayimiBekleyenIslemler[index].islemTuru.toString()),
-              Text(onayimiBekleyenIslemler[index].islemTarihi.toString()),
-              Text(onayimiBekleyenIslemler[index].islemAciklama.toString()),
-              Text(onayimiBekleyenIslemler[index].onayiBeklenenUser.toString()),
-              Text(onayimiBekleyenIslemler[index].onayIsteyenUser.toString()),
-              Text(onayimiBekleyenIslemler[index].anaDepoId.toString()),
-              Text(onayimiBekleyenIslemler[index].hedefDepoID.toString()),
-            ],
-          ));
-        },
-        itemCount: onayimiBekleyenIslemler.length,
-      );
-    }
+      ),
+    );
+
   }
 }
 //endregion
@@ -293,71 +326,109 @@ class WaitingForConfirmations extends StatefulWidget {
 }
 
 class _WaitingForConfirmationsState extends State<WaitingForConfirmations> {
-  var title = 'Onayıma Gönderdiğim İşlemler';
+  var title = 'WaitingForConfirmations';
+  late ScrollController scrollController;
 
   @override
   initState() {
     super.initState();
-    WaitingForConfirmationsListele();
+
+    // draftsListele();
+    WaitingForConfirmationsWithFilter(1, 3, 'Id', false, false);
+    scrollController = ScrollController()..addListener(_loadMore);
+
     setState(() {
-      title = 'Onaya Gönderdiğim İşlemler';
-      print('onaya gönderdiğim çalıştı');
+      title = 'WaitingForConfirmations';
+      print('WaitingForConfirmations çalıştı');
     });
   }
 
-  List<ProductProcessData> onayaGonderdigimIslemler = <ProductProcessData>[];
+  List<ProductProcessData> WaitingForConfirmations = <ProductProcessData>[];
+  List<ProductProcessData> WaitingForConfirmationsList = <ProductProcessData>[];
+  int pageNumWaitingForConfirmations = 1;
 
   Future<List<ProductProcessData>> WaitingForConfirmationsListele() async {
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/ProductProcesses/GetAllWaitingForConfirmations?AnaDepoIDFilter=0&HedefDepoIdFilter=0&Page=1&PageSize=12&Orderby=Id&Desc=false&isDeleted=false'));
-    onayaGonderdigimIslemler =
-        ProductProcess.fromJson(json.decode(res.body)).data.toList();
-    // print(cevap);
-    print(onayaGonderdigimIslemler[0].islemTuru);
-    print(onayaGonderdigimIslemler[0].islemAdi);
-    print(onayaGonderdigimIslemler[0].onayiBeklenenUser);
-    print(onayaGonderdigimIslemler[0].islemAciklama);
+    WaitingForConfirmations = ProductProcess.fromJson(json.decode(res.body)).data.toList();
+
     setState(() {});
-    return onayaGonderdigimIslemler;
+    return WaitingForConfirmations;
   }
+
+  Future<List<ProductProcessData>> WaitingForConfirmationsWithFilter(
+      int Page,
+      int PageSize,
+      String Orderby,
+      bool Desc,
+      bool isDeleted) async {
+
+    WaitingForConfirmations.clear();
+    http.Response res = await http.get(Uri.parse(
+        'https://stok.bahcelievler.bel.tr/api/ProductProcesses/GetAllWaitingForConfirmations?AnaDepoIDFilter=0&HedefDepoIdFilter=0&Page=${Page}&PageSize=${PageSize}&Orderby=${Orderby}&Desc=${Desc}&isDeleted=${isDeleted}'));
+    WaitingForConfirmations = ProductProcess.fromJson(json.decode(res.body)).data.toList();
+
+
+    for (int i = 0; i < WaitingForConfirmations.length; i++) {
+      WaitingForConfirmationsList.add(WaitingForConfirmations[i]);
+
+
+    }
+
+
+    setState(() {});
+    return WaitingForConfirmationsList;
+  }
+
+  Future<void> _refresh() async {
+    await Future.delayed(Duration(seconds: 0, milliseconds: 2000));
+  }
+
+  Future<bool> _loadMore() async {
+    await Future.delayed(Duration(seconds: 0, milliseconds: 2000));
+
+
+    pageNumWaitingForConfirmations = pageNumWaitingForConfirmations+1;
+    WaitingForConfirmationsWithFilter(pageNumWaitingForConfirmations, 3, 'Id', false, false);
+    print(pageNumWaitingForConfirmations);
+    return true;
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    if (onayaGonderdigimIslemler.isEmpty) {
-      return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Center(
-          child: CircularProgressIndicator(
-            semanticsValue: 'sd',
-            strokeWidth: 3.0,
-            color: Color(0XFFDBDCE8),
-            backgroundColor: Color(0XFFAAA3B4),
-          ),
+
+
+    return RefreshIndicator(
+      onRefresh: _refresh,
+      child: LoadMore(
+        textBuilder: DefaultLoadMoreTextBuilder.turkish,
+        isFinish: WaitingForConfirmations.length==0,
+        onLoadMore: _loadMore,
+        child: ListView.builder(
+          controller: scrollController,
+          shrinkWrap: true,
+          // controller: controller,
+          itemBuilder: (context, index) {
+            return Card(
+                child: Column(
+                  children: [
+                    Text(WaitingForConfirmationsList[index].islemAdi.toString()),
+                    Text(WaitingForConfirmationsList[index].islemTuru.toString()),
+                    Text(WaitingForConfirmationsList[index].islemTarihi.toString()),
+                    Text(WaitingForConfirmationsList[index].islemAciklama.toString()),
+                    Text(WaitingForConfirmationsList[index].onayiBeklenenUser.toString()),
+                    Text(WaitingForConfirmationsList[index].onayIsteyenUser.toString()),
+                    Text(WaitingForConfirmationsList[index].anaDepoId.toString()),
+                    Text(WaitingForConfirmationsList[index].hedefDepoID.toString()),
+                  ],
+                ));
+          },
+          itemCount: WaitingForConfirmationsList.length,
         ),
-      );
-    } else {
-      return ListView.builder(
-        shrinkWrap: true,
-        // controller: controller,
-        itemBuilder: (context, index) {
-          return Card(
-              child: Column(
-            children: [
-              Text(onayaGonderdigimIslemler[index].islemAdi.toString()),
-              Text(onayaGonderdigimIslemler[index].islemTuru.toString()),
-              Text(onayaGonderdigimIslemler[index].islemTarihi.toString()),
-              Text(onayaGonderdigimIslemler[index].islemAciklama.toString()),
-              Text(
-                  onayaGonderdigimIslemler[index].onayiBeklenenUser.toString()),
-              Text(onayaGonderdigimIslemler[index].onayIsteyenUser.toString()),
-              Text(onayaGonderdigimIslemler[index].anaDepoId.toString()),
-              Text(onayaGonderdigimIslemler[index].hedefDepoID.toString()),
-            ],
-          ));
-        },
-        itemCount: onayaGonderdigimIslemler.length,
-      );
-    }
+      ),
+    );
+
   }
 }
 //endregion
@@ -373,70 +444,109 @@ class Rejecteds extends StatefulWidget {
 }
 
 class _RejectedsState extends State<Rejecteds> {
-  var title = 'Reddedilen İşlemler';
+  var title = 'Rejecteds';
+  late ScrollController scrollController;
 
   @override
   initState() {
     super.initState();
-    RejectedsListele();
+
+    // draftsListele();
+    RejectedsWithFilter(1, 3, 'Id', false, false);
+    scrollController = ScrollController()..addListener(_loadMore);
+
     setState(() {
-      title = 'Reddedilen İşlemler';
-      print('Reddedilen Islemler çalıştı');
+      title = 'Rejecteds';
+      print('Rejecteds çalıştı');
     });
   }
 
-  List<ProductProcessData> reddedilenIslemler = <ProductProcessData>[];
+  List<ProductProcessData> Rejecteds = <ProductProcessData>[];
+  List<ProductProcessData> RejectedsList = <ProductProcessData>[];
+  int pageNumRejecteds = 1;
 
   Future<List<ProductProcessData>> RejectedsListele() async {
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/ProductProcesses/GetAllRejecteds?AnaDepoIDFilter=0&HedefDepoIdFilter=0&Page=1&PageSize=12&Orderby=Id&Desc=false&isDeleted=false'));
-    reddedilenIslemler =
-        ProductProcess.fromJson(json.decode(res.body)).data.toList();
-    // print(cevap);
-    print(reddedilenIslemler[0].islemTuru);
-    print(reddedilenIslemler[0].islemAdi);
-    print(reddedilenIslemler[0].onayiBeklenenUser);
-    print(reddedilenIslemler[0].islemAciklama);
+    Rejecteds = ProductProcess.fromJson(json.decode(res.body)).data.toList();
+
     setState(() {});
-    return reddedilenIslemler;
+    return Rejecteds;
   }
+
+  Future<List<ProductProcessData>> RejectedsWithFilter(
+      int Page,
+      int PageSize,
+      String Orderby,
+      bool Desc,
+      bool isDeleted) async {
+
+    Rejecteds.clear();
+    http.Response res = await http.get(Uri.parse(
+        'https://stok.bahcelievler.bel.tr/api/ProductProcesses/GetAllRejecteds?AnaDepoIDFilter=0&HedefDepoIdFilter=0&Page=${Page}&PageSize=${PageSize}&Orderby=${Orderby}&Desc=${Desc}&isDeleted=${isDeleted}'));
+    Rejecteds = ProductProcess.fromJson(json.decode(res.body)).data.toList();
+
+
+    for (int i = 0; i < Rejecteds.length; i++) {
+      RejectedsList.add(Rejecteds[i]);
+
+
+    }
+
+
+    setState(() {});
+    return RejectedsList;
+  }
+
+  Future<void> _refresh() async {
+    await Future.delayed(Duration(seconds: 0, milliseconds: 2000));
+  }
+
+  Future<bool> _loadMore() async {
+    await Future.delayed(Duration(seconds: 0, milliseconds: 2000));
+
+
+    pageNumRejecteds = pageNumRejecteds+1;
+    RejectedsWithFilter(pageNumRejecteds, 3, 'Id', false, false);
+    print(pageNumRejecteds);
+    return true;
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    if (reddedilenIslemler.isEmpty) {
-      return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Center(
-          child: CircularProgressIndicator(
-            semanticsValue: 'sd',
-            strokeWidth: 3.0,
-            color: Color(0XFFDBDCE8),
-            backgroundColor: Color(0XFFAAA3B4),
-          ),
+
+
+    return RefreshIndicator(
+      onRefresh: _refresh,
+      child: LoadMore(
+        textBuilder: DefaultLoadMoreTextBuilder.turkish,
+        isFinish: Rejecteds.length==0,
+        onLoadMore: _loadMore,
+        child: ListView.builder(
+          controller: scrollController,
+          shrinkWrap: true,
+          // controller: controller,
+          itemBuilder: (context, index) {
+            return Card(
+                child: Column(
+                  children: [
+                    Text(RejectedsList[index].islemAdi.toString()),
+                    Text(RejectedsList[index].islemTuru.toString()),
+                    Text(RejectedsList[index].islemTarihi.toString()),
+                    Text(RejectedsList[index].islemAciklama.toString()),
+                    Text(RejectedsList[index].onayiBeklenenUser.toString()),
+                    Text(RejectedsList[index].onayIsteyenUser.toString()),
+                    Text(RejectedsList[index].anaDepoId.toString()),
+                    Text(RejectedsList[index].hedefDepoID.toString()),
+                  ],
+                ));
+          },
+          itemCount: RejectedsList.length,
         ),
-      );
-    } else {
-      return ListView.builder(
-        shrinkWrap: true,
-        // controller: controller,
-        itemBuilder: (context, index) {
-          return Card(
-              child: Column(
-            children: [
-              Text(reddedilenIslemler[index].islemAdi.toString()),
-              Text(reddedilenIslemler[index].islemTuru.toString()),
-              Text(reddedilenIslemler[index].islemTarihi.toString()),
-              Text(reddedilenIslemler[index].islemAciklama.toString()),
-              Text(reddedilenIslemler[index].onayiBeklenenUser.toString()),
-              Text(reddedilenIslemler[index].onayIsteyenUser.toString()),
-              Text(reddedilenIslemler[index].anaDepoId.toString()),
-              Text(reddedilenIslemler[index].hedefDepoID.toString()),
-            ],
-          ));
-        },
-        itemCount: reddedilenIslemler.length,
-      );
-    }
+      ),
+    );
+
   }
 }
 //endregion
@@ -452,60 +562,109 @@ class MyConfirmation extends StatefulWidget {
 }
 
 class _MyConfirmationState extends State<MyConfirmation> {
-  var title = 'Onayladigim İşlemler';
+  var title = 'MyConfirmation';
+  late ScrollController scrollController;
 
   @override
   initState() {
     super.initState();
-    MyConfirmationListele();
+
+    // draftsListele();
+    MyConfirmationWithFilter(1, 3, 'Id', false, false);
+    scrollController = ScrollController()..addListener(_loadMore);
+
     setState(() {
-      title = 'Onayladigim İşlemler';
-      print('Onayladigim Islemler çalıştı');
+      title = 'MyConfirmation';
+      print('MyConfirmation çalıştı');
     });
   }
 
-  List<ProductProcessData> onayladigimIslemler = <ProductProcessData>[];
+  List<ProductProcessData> MyConfirmation = <ProductProcessData>[];
+  List<ProductProcessData> MyConfirmationList = <ProductProcessData>[];
+  int pageNumMyConfirmation = 1;
 
   Future<List<ProductProcessData>> MyConfirmationListele() async {
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/ProductProcesses/GetAllMyConfirmation?AnaDepoIDFilter=0&HedefDepoIdFilter=0&Page=1&PageSize=12&Orderby=Id&Desc=false&isDeleted=false'));
-    onayladigimIslemler =
-        ProductProcess.fromJson(json.decode(res.body)).data.toList();
-    // print(cevap);
-    print(onayladigimIslemler[0].islemTuru);
-    print(onayladigimIslemler[0].islemAdi);
-    print(onayladigimIslemler[0].onayiBeklenenUser);
-    print(onayladigimIslemler[0].islemAciklama);
+    MyConfirmation = ProductProcess.fromJson(json.decode(res.body)).data.toList();
+
     setState(() {});
-    return onayladigimIslemler;
+    return MyConfirmation;
   }
+
+  Future<List<ProductProcessData>> MyConfirmationWithFilter(
+      int Page,
+      int PageSize,
+      String Orderby,
+      bool Desc,
+      bool isDeleted) async {
+
+    MyConfirmation.clear();
+    http.Response res = await http.get(Uri.parse(
+        'https://stok.bahcelievler.bel.tr/api/ProductProcesses/GetAllMyConfirmation?AnaDepoIDFilter=0&HedefDepoIdFilter=0&Page=${Page}&PageSize=${PageSize}&Orderby=${Orderby}&Desc=${Desc}&isDeleted=${isDeleted}'));
+    MyConfirmation = ProductProcess.fromJson(json.decode(res.body)).data.toList();
+
+
+    for (int i = 0; i < MyConfirmation.length; i++) {
+      MyConfirmationList.add(MyConfirmation[i]);
+
+
+    }
+
+
+    setState(() {});
+    return MyConfirmationList;
+  }
+
+  Future<void> _refresh() async {
+    await Future.delayed(Duration(seconds: 0, milliseconds: 2000));
+  }
+
+  Future<bool> _loadMore() async {
+    await Future.delayed(Duration(seconds: 0, milliseconds: 2000));
+
+
+    pageNumMyConfirmation = pageNumMyConfirmation+1;
+    MyConfirmationWithFilter(pageNumMyConfirmation, 3, 'Id', false, false);
+    print(pageNumMyConfirmation);
+    return true;
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    if (onayladigimIslemler.isEmpty) {
-      return CircularProgressIndicator();
-    } else {
-      return ListView.builder(
-        shrinkWrap: true,
-        // controller: controller,
-        itemBuilder: (context, index) {
-          return Card(
-              child: Column(
-            children: [
-              Text(onayladigimIslemler[index].islemAdi.toString()),
-              Text(onayladigimIslemler[index].islemTuru.toString()),
-              Text(onayladigimIslemler[index].islemTarihi.toString()),
-              Text(onayladigimIslemler[index].islemAciklama.toString()),
-              Text(onayladigimIslemler[index].onayiBeklenenUser.toString()),
-              Text(onayladigimIslemler[index].onayIsteyenUser.toString()),
-              Text(onayladigimIslemler[index].anaDepoId.toString()),
-              Text(onayladigimIslemler[index].hedefDepoID.toString()),
-            ],
-          ));
-        },
-        itemCount: onayladigimIslemler.length,
-      );
-    }
+
+
+    return RefreshIndicator(
+      onRefresh: _refresh,
+      child: LoadMore(
+        textBuilder: DefaultLoadMoreTextBuilder.turkish,
+        isFinish: MyConfirmation.length==0,
+        onLoadMore: _loadMore,
+        child: ListView.builder(
+          controller: scrollController,
+          shrinkWrap: true,
+          // controller: controller,
+          itemBuilder: (context, index) {
+            return Card(
+                child: Column(
+                  children: [
+                    Text(MyConfirmationList[index].islemAdi.toString()),
+                    Text(MyConfirmationList[index].islemTuru.toString()),
+                    Text(MyConfirmationList[index].islemTarihi.toString()),
+                    Text(MyConfirmationList[index].islemAciklama.toString()),
+                    Text(MyConfirmationList[index].onayiBeklenenUser.toString()),
+                    Text(MyConfirmationList[index].onayIsteyenUser.toString()),
+                    Text(MyConfirmationList[index].anaDepoId.toString()),
+                    Text(MyConfirmationList[index].hedefDepoID.toString()),
+                  ],
+                ));
+          },
+          itemCount: MyConfirmationList.length,
+        ),
+      ),
+    );
+
   }
 }
 //endregion
@@ -521,70 +680,109 @@ class RejectedsByMe extends StatefulWidget {
 }
 
 class _RejectedsByMeState extends State<RejectedsByMe> {
-  var title = 'Reddettigim İşlemler';
+  var title = 'RejectedsByMe';
+  late ScrollController scrollController;
 
   @override
   initState() {
     super.initState();
-    RejectedsByMeListele();
+
+    // draftsListele();
+    RejectedsByMeWithFilter(1, 3, 'Id', false, false);
+    scrollController = ScrollController()..addListener(_loadMore);
+
     setState(() {
-      title = 'Reddettigim İşlemler';
-      print('Reddettigim Islemler çalıştı');
+      title = 'RejectedsByMe';
+      print('RejectedsByMe çalıştı');
     });
   }
 
-  List<ProductProcessData> reddettigimIslemler = <ProductProcessData>[];
+  List<ProductProcessData> RejectedsByMe = <ProductProcessData>[];
+  List<ProductProcessData> RejectedsByMeList = <ProductProcessData>[];
+  int pageNumRejectedsByMe = 1;
 
   Future<List<ProductProcessData>> RejectedsByMeListele() async {
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/ProductProcesses/GetAllRejectedsByMe?AnaDepoIDFilter=0&HedefDepoIdFilter=0&Page=1&PageSize=12&Orderby=Id&Desc=false&isDeleted=false'));
-    reddettigimIslemler =
-        ProductProcess.fromJson(json.decode(res.body)).data.toList();
-    // print(cevap);
-    print(reddettigimIslemler[0].islemTuru);
-    print(reddettigimIslemler[0].islemAdi);
-    print(reddettigimIslemler[0].onayiBeklenenUser);
-    print(reddettigimIslemler[0].islemAciklama);
+    RejectedsByMe = ProductProcess.fromJson(json.decode(res.body)).data.toList();
+
     setState(() {});
-    return reddettigimIslemler;
+    return RejectedsByMe;
   }
+
+  Future<List<ProductProcessData>> RejectedsByMeWithFilter(
+      int Page,
+      int PageSize,
+      String Orderby,
+      bool Desc,
+      bool isDeleted) async {
+
+    RejectedsByMe.clear();
+    http.Response res = await http.get(Uri.parse(
+        'https://stok.bahcelievler.bel.tr/api/ProductProcesses/GetAllRejectedsByMe?AnaDepoIDFilter=0&HedefDepoIdFilter=0&Page=${Page}&PageSize=${PageSize}&Orderby=${Orderby}&Desc=${Desc}&isDeleted=${isDeleted}'));
+    RejectedsByMe = ProductProcess.fromJson(json.decode(res.body)).data.toList();
+
+
+    for (int i = 0; i < RejectedsByMe.length; i++) {
+      RejectedsByMeList.add(RejectedsByMe[i]);
+
+
+    }
+
+
+    setState(() {});
+    return RejectedsByMeList;
+  }
+
+  Future<void> _refresh() async {
+    await Future.delayed(Duration(seconds: 0, milliseconds: 2000));
+  }
+
+  Future<bool> _loadMore() async {
+    await Future.delayed(Duration(seconds: 0, milliseconds: 2000));
+
+
+    pageNumRejectedsByMe = pageNumRejectedsByMe+1;
+    RejectedsByMeWithFilter(pageNumRejectedsByMe, 3, 'Id', false, false);
+    print(pageNumRejectedsByMe);
+    return true;
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    if (reddettigimIslemler.isEmpty) {
-      return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Center(
-          child: CircularProgressIndicator(
-            semanticsValue: 'sd',
-            strokeWidth: 3.0,
-            color: Color(0XFFDBDCE8),
-            backgroundColor: Color(0XFFAAA3B4),
-          ),
+
+
+    return RefreshIndicator(
+      onRefresh: _refresh,
+      child: LoadMore(
+        textBuilder: DefaultLoadMoreTextBuilder.turkish,
+        isFinish: RejectedsByMe.length==0,
+        onLoadMore: _loadMore,
+        child: ListView.builder(
+          controller: scrollController,
+          shrinkWrap: true,
+          // controller: controller,
+          itemBuilder: (context, index) {
+            return Card(
+                child: Column(
+                  children: [
+                    Text(RejectedsByMeList[index].islemAdi.toString()),
+                    Text(RejectedsByMeList[index].islemTuru.toString()),
+                    Text(RejectedsByMeList[index].islemTarihi.toString()),
+                    Text(RejectedsByMeList[index].islemAciklama.toString()),
+                    Text(RejectedsByMeList[index].onayiBeklenenUser.toString()),
+                    Text(RejectedsByMeList[index].onayIsteyenUser.toString()),
+                    Text(RejectedsByMeList[index].anaDepoId.toString()),
+                    Text(RejectedsByMeList[index].hedefDepoID.toString()),
+                  ],
+                ));
+          },
+          itemCount: RejectedsByMeList.length,
         ),
-      );
-    } else {
-      return ListView.builder(
-        shrinkWrap: true,
-        // controller: controller,
-        itemBuilder: (context, index) {
-          return Card(
-              child: Column(
-            children: [
-              Text(reddettigimIslemler[index].islemAdi.toString()),
-              Text(reddettigimIslemler[index].islemTuru.toString()),
-              Text(reddettigimIslemler[index].islemTarihi.toString()),
-              Text(reddettigimIslemler[index].islemAciklama.toString()),
-              Text(reddettigimIslemler[index].onayiBeklenenUser.toString()),
-              Text(reddettigimIslemler[index].onayIsteyenUser.toString()),
-              Text(reddettigimIslemler[index].anaDepoId.toString()),
-              Text(reddettigimIslemler[index].hedefDepoID.toString()),
-            ],
-          ));
-        },
-        itemCount: reddettigimIslemler.length,
-      );
-    }
+      ),
+    );
+
   }
 }
 //endregion
