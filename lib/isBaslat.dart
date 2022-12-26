@@ -31,18 +31,13 @@ class _isBaslatState extends State<isBaslat> {
   var anaDepo;
   var hedefDepo;
 
+
+
   List<String> list = <String>[
-    'Avans Yoluyla',
-    'İhale Yoluyla',
-    'Satın Alma',
-    'Üretim',
-    'Transfer',
-    'Zimmet',
-    'Zimmet İade',
-    'Devir',
-    'Hibe',
-    'Hurda',
-    'Tüketim'
+    '1',
+    '2',
+    '3',
+    '4'
   ];
 
   List<Data> cevap = <Data>[];
@@ -64,11 +59,14 @@ class _isBaslatState extends State<isBaslat> {
 
   Future<void> isBaslat(String islemAdi, String islemAciklama, int islemTuru,
       int anaDepoId, int hedefDepoId, String islemTarihi) async {
-    // "islemAdi": "test",
-    // "islemAciklama": "test açıklaması",
-    // "islemTuru": 1,
-    // "anaDepoId": 5,
-    // "hedefDepoID": 6,
+    print('object');
+    print(tfIslemAdi.text);
+    print(tfIslemAciklamasi.text);
+    print(islemTuru);
+    print(anaDepo);
+    print(hedefDepo);
+    print(tfIslemTarihi.text);
+    print('object');
     var url =
         Uri.parse('https://stok.bahcelievler.bel.tr/api/ProductProcesses');
     http.Response response = await http.post(url,
@@ -84,44 +82,86 @@ class _isBaslatState extends State<isBaslat> {
     // tfIslemAdi.text = "";
     // tfIslemAciklamasi.text = "";
 
-    print(tfIslemAdi.text);
-    print(tfIslemAciklamasi.text);
-    print(islemTuru);
-    print(anaDepo);
-    print(hedefDepo);
-    print(tfIslemTarihi.text);
-
     print(response.body);
     print(response.statusCode);
     print(response.reasonPhrase);
 
-    // if(tfVaryantAdi.text ==""){
+    // if(tfIslemAdi.text ==""){
     //   //silinecek marka bulunamadı
     //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    //     content: Text("Lütfen varyant adı girin."),
+    //     content: Text("Lütfen işlem adı girin."),
     //     backgroundColor: Colors.red,
     //   ));
-    //   tfVaryantAdi.clear();
+    //   tfIslemAdi.clear();
     //   setState(() {});
     // }
-    // else if(response.reasonPhrase == 'Bad Request'){
-    //   //model olduğu için marka silinemedi
+    // else if(tfIslemAciklamasi == ""){
     //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    //     content: Text("Eklemek istediğiniz varyant zaten var."),
+    //     content: Text("Lütfen işlem açıklaması girin."),
     //     backgroundColor: Colors.red,
     //   ));
-    //   tfVaryantAdi.clear();
+    //   tfIslemAciklamasi.clear();
     //   setState(() {});
     // }
-    // else if(response.reasonPhrase == 'Created'){
-    //   // başarılı
+    // else if(tfIslemTarihi == ""){
     //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    //     content: Text("Varyant ekleme işlemi başarıyla gerçekleştirildi."),
-    //     backgroundColor: Colors.green,
+    //     content: Text("Lütfen işlem tarihi girin."),
+    //     backgroundColor: Colors.red,
     //   ));
-    //   tfVaryantAdi.clear();
+    //   tfIslemAciklamasi.clear();
+    //   setState(() {});
+    // }else if(islemTuru == ""){
+    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    //     content: Text("Lütfen işlem türü seçin."),
+    //     backgroundColor: Colors.red,
+    //   ));
+    //   tfIslemAciklamasi.clear();
     //   setState(() {});
     // }
+    // else if(anaDepo == ""){
+    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    //     content: Text("Lütfen ana depo seçin."),
+    //     backgroundColor: Colors.red,
+    //   ));
+    //   tfIslemAciklamasi.clear();
+    //   setState(() {});
+    // }
+    // else if(hedefDepo == ""){
+    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    //     content: Text("Lütfen hedef depo seçin."),
+    //     backgroundColor: Colors.red,
+    //   ));
+    //   tfIslemAciklamasi.clear();
+    //   setState(() {});
+    // }
+    if(response.reasonPhrase == 'Bad Request'){
+      //model olduğu için marka silinemedi
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Bir sorun oluştu."),
+        backgroundColor: Colors.red,
+      ));
+      // tfIslemAdi.clear();
+      setState(() {});
+    }
+    else if(response.reasonPhrase == 'Created'){
+      // başarılı
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("İş başlatma işlemi başarıyla gerçekleştirildi."),
+        backgroundColor: Colors.green,
+      ));
+      // tfIslemAdi.clear();
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => IslemTanim(
+                  islemTuru: islemTuru.toString(),
+                  anaDepo: int.parse(anaDepo),
+                  hedefDepo: int.parse(hedefDepo),
+                  islemAdi: tfIslemAdi.text,
+                  islemAciklamasi: tfIslemAciklamasi.text,
+                  islemTarihi: tfIslemTarihi.text)));
+      setState(() {});
+    }
   }
 
   @override
@@ -330,7 +370,7 @@ class _isBaslatState extends State<isBaslat> {
                                                               String
                                                                   formattedDate =
                                                                   DateFormat(
-                                                                          'dd-MM-yyyy')
+                                                                          'yyyy-MM-dd')
                                                                       .format(
                                                                           pickedDate);
                                                               // print(formattedDate);
@@ -457,9 +497,8 @@ class _isBaslatState extends State<isBaslat> {
                                                                           0XFF6E3F52),
                                                                       width:
                                                                           3))),
-                                                          items: list.map<
-                                                              DropdownMenuItem>((String
-                                                              value) {
+                                                          items: list.map(
+                                                              (String value) {
                                                             return DropdownMenuItem<
                                                                 String>(
                                                               value: value,
@@ -470,7 +509,6 @@ class _isBaslatState extends State<isBaslat> {
                                                             );
                                                           }).toList(),
                                                           onChanged: (newVal) {
-                                                            print(islemTuru.hashCode);
                                                             setState(() {
                                                               islemTuru =
                                                                   newVal;
@@ -605,8 +643,7 @@ class _isBaslatState extends State<isBaslat> {
                                                           }).toList(),
                                                           onChanged: (newVal) {
                                                             setState(() {
-                                                              anaDepo =
-                                                                  newVal;
+                                                              anaDepo = newVal;
                                                             });
                                                           },
                                                         ),
@@ -703,7 +740,6 @@ class _isBaslatState extends State<isBaslat> {
                                                                           0XFF463848)),
                                                                 ),
                                                                 onPressed: () {
-
                                                                   if (tfIslemAdi
                                                                           .text ==
                                                                       "") {
@@ -773,9 +809,9 @@ class _isBaslatState extends State<isBaslat> {
                                                                           seconds:
                                                                               2),
                                                                     ));
-                                                                  } else if (cevap ==
+                                                                  } else if (anaDepo ==
                                                                           "" ||
-                                                                      cevap ==
+                                                                      anaDepo ==
                                                                           null) {
                                                                     ScaffoldMessenger.of(
                                                                             context)
@@ -791,9 +827,9 @@ class _isBaslatState extends State<isBaslat> {
                                                                           seconds:
                                                                               2),
                                                                     ));
-                                                                  } else if (cevap ==
+                                                                  } else if (hedefDepo ==
                                                                           "" ||
-                                                                      cevap ==
+                                                                      hedefDepo ==
                                                                           null) {
                                                                     ScaffoldMessenger.of(
                                                                             context)
@@ -810,51 +846,44 @@ class _isBaslatState extends State<isBaslat> {
                                                                               2),
                                                                     ));
                                                                   } else {
-                                                                    String
-                                                                        islemAdi =
+                                                                    // String
+                                                                    //     islemAdi =
+                                                                    //     tfIslemAdi
+                                                                    //         .text;
+                                                                    // String
+                                                                    //     islemTarihi =
+                                                                    //     tfIslemTarihi
+                                                                    //         .text;
+                                                                    // String
+                                                                    //     islemAciklamasi =
+                                                                    //     tfIslemAciklamasi
+                                                                    //         .text;
+                                                                    //
+                                                                    // tfIslemAdi
+                                                                    //     .clear();
+                                                                    // tfIslemAciklamasi
+                                                                    //     .clear();
+                                                                    // tfIslemTarihi
+                                                                    //     .clear();
+                                                                    print(
+                                                                        "Ana Depo: ${anaDepo}");
+                                                                    print(
+                                                                        "Hedef Depo: ${hedefDepo}");
+
+
+                                                                    isBaslat(
                                                                         tfIslemAdi
-                                                                            .text;
-                                                                    String
-                                                                        islemTarihi =
-                                                                        tfIslemTarihi
-                                                                            .text;
-                                                                    String
-                                                                        islemAciklamasi =
+                                                                            .text,
                                                                         tfIslemAciklamasi
-                                                                            .text;
-                                                                    // print("*");
-                                                                    // print(
-                                                                    //     islemAdi);
-                                                                    // print(
-                                                                    //     islemTarihi);
-                                                                    // print("*");
+                                                                            .text,
+                                                                        int.parse(islemTuru),
+                                                                        int.parse(
+                                                                            anaDepo),
+                                                                        int.parse(
+                                                                            hedefDepo),
+                                                                        tfIslemTarihi
+                                                                            .text);
 
-                                                                    tfIslemAdi
-                                                                        .clear();
-                                                                    tfIslemAciklamasi
-                                                                        .clear();
-                                                                    tfIslemTarihi
-                                                                        .clear();
-                                                                    print("Ana Depo: ${anaDepo}");
-                                                                    print("Hedef Depo: ${hedefDepo}");
-                                                                    print(tfIslemAdi.text.runtimeType);
-                                                                    print(tfIslemAciklamasi.text.runtimeType);
-                                                                    print(islemTuru.runtimeType);
-                                                                    print(islemTuru);
-                                                                    print(int.parse(anaDepo).runtimeType);
-                                                                    print(int.parse(hedefDepo).runtimeType);
-                                                                    print(tfIslemTarihi.text.runtimeType);
-
-                                                                    isBaslat(tfIslemAdi.text, tfIslemAciklamasi.text, islemTuru,
-                                                                        int.parse(anaDepo), int.parse(hedefDepo), tfIslemTarihi.text);
-                                                                    // Navigator.push(
-                                                                    //     context,
-                                                                    //     MaterialPageRoute(
-                                                                    //         builder: (context) => IslemTanim(
-                                                                    //             islemTuru: islemTuru,
-                                                                    //             islemAdi: tfIslemAdi.text,
-                                                                    //             islemAciklamasi: tfIslemAciklamasi.text,
-                                                                    //             islemTarihi: tfIslemTarihi.text)));
                                                                   }
 
                                                                   // print(

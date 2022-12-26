@@ -60,7 +60,7 @@ class WidgetGiris extends StatelessWidget {
           title: Text("Avans Yoluyla",style: TextStyle(color: Color(0XFF976775))),
           trailing: Icon(Icons.arrow_forward_ios),
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>  IslemTanim(islemTuru: this.islemTuru, islemAdi: this.islemAdi, islemAciklamasi: this.islemAciklamasi, islemTarihi: this.islemTarihi)));
+            // Navigator.push(context, MaterialPageRoute(builder: (context)=>  IslemTanim(islemTuru: this.islemTuru, islemAdi: this.islemAdi, islemAciklamasi: this.islemAciklamasi, islemTarihi: this.islemTarihi)));
 
           },
         ),
@@ -69,7 +69,7 @@ class WidgetGiris extends StatelessWidget {
           title: Text("İhale Yoluyla",style: TextStyle(color: Color(0XFF976775))),
           trailing: Icon(Icons.arrow_forward_ios),
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>  IslemTanim(islemTuru: this.islemTuru, islemAdi: this.islemAdi, islemAciklamasi: this.islemAciklamasi, islemTarihi: this.islemTarihi)));
+            // Navigator.push(context, MaterialPageRoute(builder: (context)=>  IslemTanim(islemTuru: this.islemTuru, islemAdi: this.islemAdi, islemAciklamasi: this.islemAciklamasi, islemTarihi: this.islemTarihi)));
 
           },
         ),
@@ -78,7 +78,7 @@ class WidgetGiris extends StatelessWidget {
           title: Text("Satın Alma",style: TextStyle(color: Color(0XFF976775))),
           trailing: Icon(Icons.arrow_forward_ios),
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>  IslemTanim(islemTuru: this.islemTuru, islemAdi: this.islemAdi, islemAciklamasi: this.islemAciklamasi, islemTarihi: this.islemTarihi)));
+            // Navigator.push(context, MaterialPageRoute(builder: (context)=>  IslemTanim(islemTuru: this.islemTuru, islemAdi: this.islemAdi, islemAciklamasi: this.islemAciklamasi, islemTarihi: this.islemTarihi)));
 
           },
         ),
@@ -87,7 +87,7 @@ class WidgetGiris extends StatelessWidget {
           title: Text("Üretim",style: TextStyle(color: Color(0XFF976775))),
           trailing: Icon(Icons.arrow_forward_ios),
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>  IslemTanim(islemTuru: this.islemTuru, islemAdi: this.islemAdi, islemAciklamasi: this.islemAciklamasi, islemTarihi: this.islemTarihi)));
+            // Navigator.push(context, MaterialPageRoute(builder: (context)=>  IslemTanim(islemTuru: this.islemTuru, islemAdi: this.islemAdi, islemAciklamasi: this.islemAciklamasi, islemTarihi: this.islemTarihi)));
 
           },
         ),
@@ -192,7 +192,7 @@ class WidgetDepartmanIciHareket extends StatelessWidget {
           title: Text("Transfer",style: TextStyle(color: Color(0XFF976775))),
           trailing: Icon(Icons.arrow_forward_ios),
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>  IslemTanim(islemTuru: this.islemTuru, islemAdi: this.islemAdi, islemAciklamasi: this.islemAciklamasi, islemTarihi: this.islemTarihi)));
+            // Navigator.push(context, MaterialPageRoute(builder: (context)=>  IslemTanim(islemTuru: this.islemTuru, islemAdi: this.islemAdi, islemAciklamasi: this.islemAciklamasi, islemTarihi: this.islemTarihi)));
           },
         ),
         Divider(),
@@ -200,7 +200,7 @@ class WidgetDepartmanIciHareket extends StatelessWidget {
           title: Text("Zimmet",style: TextStyle(color: Color(0XFF976775))),
           trailing: Icon(Icons.arrow_forward_ios),
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>  IslemTanim(islemTuru: this.islemTuru, islemAdi: this.islemAdi, islemAciklamasi: this.islemAciklamasi, islemTarihi: this.islemTarihi)));
+            // Navigator.push(context, MaterialPageRoute(builder: (context)=>  IslemTanim(islemTuru: this.islemTuru, islemAdi: this.islemAdi, islemAciklamasi: this.islemAciklamasi, islemTarihi: this.islemTarihi)));
 
           },
         ),
@@ -227,7 +227,7 @@ class WidgetCikis extends StatelessWidget {
           title: Text("Devir",style: TextStyle(color: Color(0XFF976775))),
           trailing: Icon(Icons.arrow_forward_ios),
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>  IslemTanim(islemTuru: this.islemTuru, islemAdi: this.islemAdi, islemAciklamasi: this.islemAciklamasi, islemTarihi: this.islemTarihi)));
+            // Navigator.push(context, MaterialPageRoute(builder: (context)=>  IslemTanim(islemTuru: this.islemTuru, islemAdi: this.islemAdi, islemAciklamasi: this.islemAciklamasi, islemTarihi: this.islemTarihi)));
 
           },
         ),
@@ -236,7 +236,7 @@ class WidgetCikis extends StatelessWidget {
           title: Text("Hibe",style: TextStyle(color: Color(0XFF976775))),
           trailing: Icon(Icons.arrow_forward_ios),
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>  IslemTanim(islemTuru: this.islemTuru, islemAdi: this.islemAdi, islemAciklamasi: this.islemAciklamasi, islemTarihi: this.islemTarihi)));
+            // Navigator.push(context, MaterialPageRoute(builder: (context)=>  IslemTanim(islemTuru: this.islemTuru, islemAdi: this.islemAdi, islemAciklamasi: this.islemAciklamasi, islemTarihi: this.islemTarihi)));
 
           },
         ),
@@ -245,7 +245,7 @@ class WidgetCikis extends StatelessWidget {
           title: Text("Hurda",style: TextStyle(color: Color(0XFF976775))),
           trailing: Icon(Icons.arrow_forward_ios),
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>  IslemTanim(islemTuru: this.islemTuru, islemAdi: this.islemAdi, islemAciklamasi: this.islemAciklamasi, islemTarihi: this.islemTarihi)));
+            // Navigator.push(context, MaterialPageRoute(builder: (context)=>  IslemTanim(islemTuru: this.islemTuru, islemAdi: this.islemAdi, islemAciklamasi: this.islemAciklamasi, islemTarihi: this.islemTarihi)));
 
           },
         ),
@@ -254,7 +254,7 @@ class WidgetCikis extends StatelessWidget {
           title: Text("Tüketim",style: TextStyle(color: Color(0XFF976775))),
           trailing: Icon(Icons.arrow_forward_ios),
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>  IslemTanim(islemTuru: this.islemTuru, islemAdi: this.islemAdi, islemAciklamasi: this.islemAciklamasi, islemTarihi: this.islemTarihi)));
+            // Navigator.push(context, MaterialPageRoute(builder: (context)=>  IslemTanim(islemTuru: this.islemTuru, islemAdi: this.islemAdi, islemAciklamasi: this.islemAciklamasi, islemTarihi: this.islemTarihi)));
 
           },
         ),

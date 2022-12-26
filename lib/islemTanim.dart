@@ -1,23 +1,29 @@
+import 'dart:convert';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:searchfield/searchfield.dart';
 import 'package:stok_takip_uygulamasi/DrawerMenu.dart';
-import 'package:stok_takip_uygulamasi/isTaslak.dart';
-import 'package:stok_takip_uygulamasi/tanimlamalar.dart';
+import 'model/BaseCategory.dart';
+import 'package:http/http.dart' as http;
 
 class IslemTanim extends StatefulWidget {
   final String islemTuru;
   final String islemAdi;
   final String islemAciklamasi;
   final String islemTarihi;
+  final int anaDepo;
+  final int hedefDepo;
 
   const IslemTanim(
       {Key? key,
       required this.islemTuru,
       required this.islemAdi,
       required this.islemAciklamasi,
+      required this.anaDepo,
+      required this.hedefDepo,
       required this.islemTarihi})
       : super(key: key);
 
@@ -26,34 +32,16 @@ class IslemTanim extends StatefulWidget {
 }
 
 class _IslemTanimState extends State<IslemTanim> {
+  @override
+  initState() {
+    super.initState();
+    baseCategoryListele();
+
+    setState(() {});
+  }
+
   var urun;
-  List<String> list = <String>[
-    'Ürün 1',
-    'Ürün 2',
-    'Ürün 3',
-    'Ürün 4',
-    'Ürün 5',
-    'Ürün 6',
-    'Ürün 7',
-    'Ürün 8',
-    'Ürün 9',
-    'Ürün 10',
-    'Ürün 11',
-    'Ürün 12',
-    'Ürün 1',
-    'Ürün 2',
-    'Ürün 3',
-    'Ürün 4',
-    'Ürün 5',
-    'Ürün 6',
-    'Ürün 7',
-    'Ürün 8',
-    'Ürün 9',
-    'Ürün 10',
-    'Ürün 11',
-    'Ürün 12',
-    'Ürün 13'
-  ];
+
 
   void showIslemBilgileri() {
     AwesomeDialog(
@@ -112,6 +100,30 @@ class _IslemTanimState extends State<IslemTanim> {
           SizedBox(
             height: 15,
           ),
+          Row(
+            children: [
+              Text(
+                "Ana Depo:  ",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text(" ${this.widget.anaDepo}"),
+            ],
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Row(
+            children: [
+              Text(
+                "Hedef Depo:  ",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text(" ${this.widget.hedefDepo}"),
+            ],
+          ),
+          SizedBox(
+            height: 15,
+          ),
         ],
       ),
       dialogType: DialogType.noHeader,
@@ -150,6 +162,11 @@ class _IslemTanimState extends State<IslemTanim> {
             SizedBox(
               height: 40,
             ),
+            ElevatedButton(
+                onPressed: () {
+                  showTifListesi();
+                },
+                child: Text('Tif Listesi')),
             SearchField<String>(
               hint: 'Ürün Seçiniz',
 
@@ -165,7 +182,7 @@ class _IslemTanimState extends State<IslemTanim> {
               searchStyle: TextStyle(color: Color(0XFF976775)),
               suggestionStyle: TextStyle(color: Color(0XFF976775)),
               // suggestionsDecoration: BoxDecoration(color: Colors.red),
-              suggestions: list
+              suggestions: baseCategory
                   .map(
                     (e) => SearchFieldListItem<String>(e.toString(),
                         child: Row(
@@ -173,7 +190,7 @@ class _IslemTanimState extends State<IslemTanim> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Text(e.toString(),
+                              child: Text(e.hesapKodu.toString(),
                                   style: TextStyle(color: Color(0XFF6E3F52))),
                             ),
                           ],
@@ -209,9 +226,7 @@ class _IslemTanimState extends State<IslemTanim> {
                 color: Color(0XFF463848),
                 text: 'Seç',
                 pressEvent: () {
-                  setState(() {
-
-                  });
+                  setState(() {});
                   // print(tfIslemAdi.text);
                   // if (tfIslemAdi.text == "") {
                   //   ScaffoldMessenger.of(context)
@@ -290,13 +305,293 @@ class _IslemTanimState extends State<IslemTanim> {
     ).show();
   }
 
-  final ScrollController _controllerOne = ScrollController();
+  void showTifListesi() {
+    AwesomeDialog(
+      context: context,
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(children: [
+          SizedBox(
+            height: 40,
+          ),
+          SearchField<String>(
+            hint: 'Hesap Kodu Seçiniz',
+
+            onSuggestionTap: (e) {
+              urun = e.searchKey;
+              setState(() {
+                print("urun: ${urun}");
+                urun = e.key.toString();
+              });
+              print(urun);
+              print( ((((urun.replaceAll('[', '')).replaceAll(']', ''))
+                  .replaceAll('<', ''))
+                  .replaceAll('>', ''))
+                  .replaceAll("'", ''));
+              duzey1Listele(int.parse(((((urun.replaceAll('[', '')).replaceAll(']', ''))
+                  .replaceAll('<', ''))
+                  .replaceAll('>', ''))
+                  .replaceAll("'", '')));
+              setState(() {
+
+              });
+
+            },
+            suggestionAction: SuggestionAction.unfocus,
+            itemHeight: 50,
+            searchStyle: TextStyle(color: Color(0XFF976775)),
+            suggestionStyle: TextStyle(color: Color(0XFF976775)),
+            // suggestionsDecoration: BoxDecoration(color: Colors.red),
+            suggestions: baseCategory
+                .map(
+                  (e) => SearchFieldListItem<String>(e.hesapKodu.toString(),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(e.hesapKodu.toString(),
+                                style: TextStyle(color: Color(0XFF6E3F52))),
+                          ),
+                        ],
+                      ),
+                      key: Key(e.hesapKodu.toString())),
+                )
+                .toList(),
+          ),
+          SizedBox(
+            height: 40,
+          ),
+          SearchField<String>(
+            hint: 'Düzey 1 Seçiniz',
+
+            onSuggestionTap: (e) {
+              urun = e.searchKey;
+
+              setState(() {
+                urun = e.key.toString();
+              });
+            },
+            suggestionAction: SuggestionAction.unfocus,
+            itemHeight: 50,
+            searchStyle: TextStyle(color: Color(0XFF976775)),
+            suggestionStyle: TextStyle(color: Color(0XFF976775)),
+            // suggestionsDecoration: BoxDecoration(color: Colors.red),
+            suggestions: duzey1
+                .map(
+                  (e) => SearchFieldListItem<String>(e.toString(),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(e.duzey1.toString(),
+                                style: TextStyle(color: Color(0XFF6E3F52))),
+                          ),
+                        ],
+                      ),
+                      key: Key(e.toString())),
+                )
+                .toList(),
+          ),
+          SizedBox(
+            height: 40,
+          ),
+          SearchField<String>(
+            hint: 'Düzey 2 Seçiniz',
+
+            onSuggestionTap: (e) {
+              urun = e.searchKey;
+
+              setState(() {
+                urun = e.key.toString();
+              });
+            },
+            suggestionAction: SuggestionAction.unfocus,
+            itemHeight: 50,
+            searchStyle: TextStyle(color: Color(0XFF976775)),
+            suggestionStyle: TextStyle(color: Color(0XFF976775)),
+            // suggestionsDecoration: BoxDecoration(color: Colors.red),
+            suggestions: baseCategory
+                .map(
+                  (e) => SearchFieldListItem<String>(e.toString(),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(e.hesapKodu.toString(),
+                                style: TextStyle(color: Color(0XFF6E3F52))),
+                          ),
+                        ],
+                      ),
+                      key: Key(e.toString())),
+                )
+                .toList(),
+          ),
+          SizedBox(
+            height: 40,
+          ),
+          SearchField<String>(
+            hint: 'Düzey 3 Seçiniz',
+
+            onSuggestionTap: (e) {
+              urun = e.searchKey;
+
+              setState(() {
+                urun = e.key.toString();
+              });
+            },
+            suggestionAction: SuggestionAction.unfocus,
+            itemHeight: 50,
+            searchStyle: TextStyle(color: Color(0XFF976775)),
+            suggestionStyle: TextStyle(color: Color(0XFF976775)),
+            // suggestionsDecoration: BoxDecoration(color: Colors.red),
+            suggestions: baseCategory
+                .map(
+                  (e) => SearchFieldListItem<String>(e.toString(),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(e.hesapKodu.toString(),
+                                style: TextStyle(color: Color(0XFF6E3F52))),
+                          ),
+                        ],
+                      ),
+                      key: Key(e.toString())),
+                )
+                .toList(),
+          ),
+          SizedBox(
+            height: 40,
+          ),
+          SearchField<String>(
+            hint: 'Düzey 4 Seçiniz',
+
+            onSuggestionTap: (e) {
+              urun = e.searchKey;
+
+              setState(() {
+                urun = e.key.toString();
+              });
+            },
+            suggestionAction: SuggestionAction.unfocus,
+            itemHeight: 50,
+            searchStyle: TextStyle(color: Color(0XFF976775)),
+            suggestionStyle: TextStyle(color: Color(0XFF976775)),
+            // suggestionsDecoration: BoxDecoration(color: Colors.red),
+            suggestions: baseCategory
+                .map(
+                  (e) => SearchFieldListItem<String>(e.toString(),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(e.hesapKodu.toString(),
+                                style: TextStyle(color: Color(0XFF6E3F52))),
+                          ),
+                        ],
+                      ),
+                      key: Key(e.toString())),
+                )
+                .toList(),
+          ),
+          SizedBox(
+            height: 40,
+          ),
+          SearchField<String>(
+            hint: 'Düzey 5 Seçiniz',
+
+            onSuggestionTap: (e) {
+              urun = e.searchKey;
+
+              setState(() {
+                urun = e.key.toString();
+              });
+            },
+            suggestionAction: SuggestionAction.unfocus,
+            itemHeight: 50,
+            searchStyle: TextStyle(color: Color(0XFF976775)),
+            suggestionStyle: TextStyle(color: Color(0XFF976775)),
+            // suggestionsDecoration: BoxDecoration(color: Colors.red),
+            suggestions: baseCategory
+                .map(
+                  (e) => SearchFieldListItem<String>(e.toString(),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(e.hesapKodu.toString(),
+                                style: TextStyle(color: Color(0XFF6E3F52))),
+                          ),
+                        ],
+                      ),
+                      key: Key(e.toString())),
+                )
+                .toList(),
+          ),
+          OutlinedButton(
+            style: OutlinedButton.styleFrom(
+              backgroundColor: Color(0XFF463848),
+              side: BorderSide(width: 1.0, color: Color(0XFF463848)),
+            ),
+            onPressed: () {
+              setState(() {});
+            },
+            child: Text("SEÇ",
+                style: TextStyle(
+                    color: Color(0XFFDBDCE8),
+                    fontSize: 15,
+                    letterSpacing: 2.0)),
+          )
+        ]),
+      ),
+      dialogType: DialogType.noHeader,
+      borderSide: const BorderSide(
+        color: Color(0XFF6E3F52),
+        width: 2,
+      ),
+      width: MediaQuery.of(context).size.width,
+      buttonsBorderRadius: const BorderRadius.all(
+        Radius.circular(2),
+      ),
+      dismissOnTouchOutside: true,
+      dismissOnBackKeyPress: false,
+      headerAnimationLoop: false,
+      animType: AnimType.bottomSlide,
+      showCloseIcon: true,
+    ).show();
+  }
+
+  List<Data> baseCategory = <Data>[];
+
+  Future<List<Data>> baseCategoryListele() async {
+    http.Response res = await http.get(Uri.parse(
+        'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetAll?Page=1&PageSize=4&Orderby=Id&Desc=false&isDeleted=false'));
+    baseCategory = BaseCategory.fromJson(json.decode(res.body)).data.toList();
+    print(baseCategory[0].hesapKodu);
+    return baseCategory;
+  }
+  List<Data> duzey1 = <Data>[];
+
+  Future<List<Data>> duzey1Listele(int ParentIdFilter) async {
+    print("parent id:${ParentIdFilter}");
+    http.Response res = await http.get(Uri.parse(
+        'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetAll?ParentIdFilter=${ParentIdFilter}&Orderby=Id&Desc=false&isDeleted=false'));
+    duzey1 = BaseCategory.fromJson(json.decode(res.body)).data.toList();
+    print(duzey1[0].duzey1);
+    return duzey1;
+  }
+
   var tfRenk = TextEditingController();
   List<String> myList = [
     'Widget 1',
     'Widget 2',
     'Widget 3',
-
   ];
 
   @override
@@ -503,13 +798,16 @@ class _IslemTanimState extends State<IslemTanim> {
           ))),
         ));
   }
-  Widget getTextWidgets(List<String> strings) {
 
+  Widget getTextWidgets(List<String> strings) {
     List<Widget> list = <Widget>[];
-    List<String> liste = ['e','3'];
+    List<String> liste = ['e', '3'];
     var varyant;
     for (var i = 0; i < strings.length; i++) {
-      Text(urun.toString().toString().isEmpty ? '' : urun.toString().replaceAll(RegExp('[^a-zA-Z0-9ğüşöçiİĞÜŞÖÇ]', unicode: true), ''));
+      Text(urun.toString().toString().isEmpty
+          ? ''
+          : urun.toString().replaceAll(
+              RegExp('[^a-zA-Z0-9ğüşöçiİĞÜŞÖÇ]', unicode: true), ''));
 
       list.add(SingleChildScrollView(
         child: Padding(
@@ -535,30 +833,31 @@ class _IslemTanimState extends State<IslemTanim> {
                   suggestions: liste
                       .map(
                         (e) => SearchFieldListItem<String>(e.toString(),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(e.toString(),
-                                  style: TextStyle(color: Color(0XFF6E3F52))),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(e.toString(),
+                                      style:
+                                          TextStyle(color: Color(0XFF6E3F52))),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                        key: Key(e.toString())),
-                  )
+                            key: Key(e.toString())),
+                      )
                       .toList(),
                 ),
               ),
               Expanded(
                 child: TextField(
                     decoration: InputDecoration(
-                      hintText: strings[i],
-                      hintStyle: const TextStyle(color: Color(0XFF976775)),
-                      enabledBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(width: 1, color: Color(0XFF463848)),
-                      ),
-                    )),
+                  hintText: strings[i],
+                  hintStyle: const TextStyle(color: Color(0XFF976775)),
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(width: 1, color: Color(0XFF463848)),
+                  ),
+                )),
               ),
             ],
           ),
@@ -568,6 +867,3 @@ class _IslemTanimState extends State<IslemTanim> {
     return Column(children: [Column(children: list)]);
   }
 }
-
- 
-
