@@ -1,30 +1,31 @@
 import 'dart:convert';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:searchfield/searchfield.dart';
 import 'package:stok_takip_uygulamasi/DrawerMenu.dart';
+import 'package:stok_takip_uygulamasi/Test.dart';
+import 'package:stok_takip_uygulamasi/model/BaseCategoryParentChild.dart';
+import 'package:stok_takip_uygulamasi/urunTanim.dart';
 import 'model/BaseCategory.dart';
 import 'package:http/http.dart' as http;
 
 class IslemTanim extends StatefulWidget {
-  final String islemTuru;
-  final String islemAdi;
-  final String islemAciklamasi;
-  final String islemTarihi;
-  final int anaDepo;
-  final int hedefDepo;
+    final String? islemTuru;
+    final String? islemAdi;
+    final String? islemAciklamasi;
+    final String? islemTarihi;
+    final int? anaDepo;
+    final int? hedefDepo;
 
   const IslemTanim(
-      {Key? key,
-      required this.islemTuru,
-      required this.islemAdi,
-      required this.islemAciklamasi,
-      required this.anaDepo,
-      required this.hedefDepo,
-      required this.islemTarihi})
+      {Key? key,   this.islemTuru,
+     this.islemAdi,
+           this.islemAciklamasi,
+          this.anaDepo,
+          this.hedefDepo,
+         this.islemTarihi})
       : super(key: key);
 
   @override
@@ -32,17 +33,18 @@ class IslemTanim extends StatefulWidget {
 }
 
 class _IslemTanimState extends State<IslemTanim> {
+  bool _isButtonDisabled = true;
+  var urun;
+
   @override
   initState() {
     super.initState();
     baseCategoryListele();
-
+    _isButtonDisabled = true;
     setState(() {});
   }
 
-  var urun;
-
-
+  //region islemBilgileri
   void showIslemBilgileri() {
     AwesomeDialog(
       context: context,
@@ -143,6 +145,11 @@ class _IslemTanimState extends State<IslemTanim> {
     ).show();
   }
 
+  //endregion
+  var tfTifList = TextEditingController();
+
+
+  //region urunAra
   void showUrunAra() {
     AwesomeDialog(
       context: context,
@@ -151,22 +158,78 @@ class _IslemTanimState extends State<IslemTanim> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              height: 40,
-            ),
-            Text('Lütfen ürün seçimi yapınız.',
+            Text('Lütfen ürün seçimi veya barkod ile tarama yapınız.',
                 style: GoogleFonts.notoSansTaiLe(
                   fontSize: 15,
                   color: Color(0XFF976775),
                 )),
+
+            Align(
+              alignment: Alignment.topRight,
+
+                child: Container(decoration: BoxDecoration(
+                  border: Border.all(width: 2, color:Color(0XFF6E3F52) ),
+                  color: Color(0XFF976775),
+                  shape: BoxShape.rectangle,
+                ),child: IconButton(icon: Icon(Icons.barcode_reader), color: Color(0XFF463848), onPressed: () {  })),
+
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            TextField(
+              controller: tfTifList,
+              onTap: () {
+                showTifListesi();
+              },
+              decoration: InputDecoration(
+                labelStyle: TextStyle(color: Color(0XFF976775)),
+                label: Text('TİF Listesi'),
+                prefixIcon: GestureDetector(
+                    child: Icon(
+                  Icons.search_sharp,
+                  color: Color(0XFF976775),
+                )),
+              ),
+            ),
             SizedBox(
               height: 40,
             ),
-            ElevatedButton(
-                onPressed: () {
-                  showTifListesi();
-                },
-                child: Text('Tif Listesi')),
+            SearchField<String>(
+              hint: 'Kategori Seçiniz',
+
+              onSuggestionTap: (e) {
+                urun = e.searchKey;
+
+                setState(() {
+                  urun = e.key.toString();
+                });
+              },
+              suggestionAction: SuggestionAction.unfocus,
+              itemHeight: 50,
+              searchStyle: TextStyle(color: Color(0XFF976775)),
+              suggestionStyle: TextStyle(color: Color(0XFF976775)),
+              // suggestionsDecoration: BoxDecoration(color: Colors.red),
+              suggestions: baseCategory
+                  .map(
+                    (e) => SearchFieldListItem<String>(e.toString(),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(e.hesapKodu.toString(),
+                                  style: TextStyle(color: Color(0XFF6E3F52))),
+                            ),
+                          ],
+                        ),
+                        key: Key(e.toString())),
+                  )
+                  .toList(),
+            ),
+            SizedBox(
+              height: 40,
+            ),
             SearchField<String>(
               hint: 'Ürün Seçiniz',
 
@@ -199,91 +262,16 @@ class _IslemTanimState extends State<IslemTanim> {
                   )
                   .toList(),
             ),
-            // DropdownButtonFormField(
-            //   decoration: InputDecoration(
-            //       hintStyle: TextStyle(color: Color(0XFF976775)),
-            //       hintText: "Ürün Seçiniz..",
-            //       border: OutlineInputBorder(
-            //           borderSide:
-            //               BorderSide(color: Color(0XFF6E3F52), width: 3))),
-            //   items: list.map<DropdownMenuItem<String>>((String value) {
-            //     return DropdownMenuItem<String>(
-            //       value: value,
-            //       child:
-            //           Text(value, style: TextStyle(color: Color(0XFF976775))),
-            //     );
-            //   }).toList(),
-            //   onChanged: (newVal) {
-            //     setState(() {
-            //       urun = newVal;
-            //     });
-            //   },
-            // ),
             SizedBox(
               height: 40,
             ),
+
             AnimatedButton(
                 color: Color(0XFF463848),
                 text: 'Seç',
                 pressEvent: () {
+
                   setState(() {});
-                  // print(tfIslemAdi.text);
-                  // if (tfIslemAdi.text == "") {
-                  //   ScaffoldMessenger.of(context)
-                  //       .showSnackBar(SnackBar(
-                  //     backgroundColor: Colors.red,
-                  //     content: const Text(
-                  //         'İşlem adını boş bırakamazsınız.'),
-                  //     duration:
-                  //     const Duration(seconds: 2),
-                  //   ));
-                  // } else if (tfIslemAciklamasi.text ==
-                  //     "") {
-                  //   ScaffoldMessenger.of(context)
-                  //       .showSnackBar(SnackBar(
-                  //     backgroundColor: Colors.red,
-                  //     content: const Text(
-                  //         'İşlem açıklamasını boş bırakamazsınız.'),
-                  //     duration:
-                  //     const Duration(seconds: 2),
-                  //   ));
-                  // } else if (tfIslemAciklamasi.text ==
-                  //     "") {
-                  //   ScaffoldMessenger.of(context)
-                  //       .showSnackBar(SnackBar(
-                  //     backgroundColor: Colors.red,
-                  //     content: const Text(
-                  //         'İşlem tarihini boş bırakamazsınız.'),
-                  //     duration:
-                  //     const Duration(seconds: 2),
-                  //   ));
-                  // } else {
-                  //
-                  //   String islemAdi = tfIslemAdi.text;
-                  //   String islemTarihi = tfIslemTarihi.text;
-                  //   String islemAciklamasi = tfIslemAciklamasi.text;
-                  //   print("*");
-                  //   print(islemAdi);
-                  //   print(islemTarihi);
-                  //   print("*");
-                  //
-                  //   tfIslemAdi.clear();
-                  //   tfIslemAciklamasi.clear();
-                  //   tfIslemTarihi.clear();
-                  //   Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(
-                  //           builder: (context) =>
-                  //               IslemTurDetay(
-                  //                   islemTuru:
-                  //                   islemTuru,
-                  //                   islemAdi:
-                  //                   islemAdi,
-                  //                   islemAciklamasi:
-                  //                   islemAciklamasi,
-                  //                   islemTarihi:
-                  //                   islemTarihi)));
-                  // }
                 })
           ],
         ),
@@ -305,251 +293,325 @@ class _IslemTanimState extends State<IslemTanim> {
     ).show();
   }
 
+  //endregion
+
+  //region showTifListesi
   void showTifListesi() {
     AwesomeDialog(
       context: context,
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(children: [
-          SizedBox(
-            height: 40,
-          ),
-          SearchField<String>(
-            hint: 'Hesap Kodu Seçiniz',
-
-            onSuggestionTap: (e) {
-              urun = e.searchKey;
-              setState(() {
-                print("urun: ${urun}");
-                urun = e.key.toString();
-              });
-              print(urun);
-              print( ((((urun.replaceAll('[', '')).replaceAll(']', ''))
-                  .replaceAll('<', ''))
-                  .replaceAll('>', ''))
-                  .replaceAll("'", ''));
-              duzey1Listele(int.parse(((((urun.replaceAll('[', '')).replaceAll(']', ''))
-                  .replaceAll('<', ''))
-                  .replaceAll('>', ''))
-                  .replaceAll("'", '')));
-              setState(() {
-
-              });
-
-            },
-            suggestionAction: SuggestionAction.unfocus,
-            itemHeight: 50,
-            searchStyle: TextStyle(color: Color(0XFF976775)),
-            suggestionStyle: TextStyle(color: Color(0XFF976775)),
-            // suggestionsDecoration: BoxDecoration(color: Colors.red),
-            suggestions: baseCategory
-                .map(
-                  (e) => SearchFieldListItem<String>(e.hesapKodu.toString(),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(e.hesapKodu.toString(),
-                                style: TextStyle(color: Color(0XFF6E3F52))),
-                          ),
-                        ],
-                      ),
-                      key: Key(e.hesapKodu.toString())),
-                )
-                .toList(),
-          ),
-          SizedBox(
-            height: 40,
-          ),
-          SearchField<String>(
-            hint: 'Düzey 1 Seçiniz',
-
-            onSuggestionTap: (e) {
-              urun = e.searchKey;
-
-              setState(() {
-                urun = e.key.toString();
-              });
-            },
-            suggestionAction: SuggestionAction.unfocus,
-            itemHeight: 50,
-            searchStyle: TextStyle(color: Color(0XFF976775)),
-            suggestionStyle: TextStyle(color: Color(0XFF976775)),
-            // suggestionsDecoration: BoxDecoration(color: Colors.red),
-            suggestions: duzey1
-                .map(
-                  (e) => SearchFieldListItem<String>(e.toString(),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(e.duzey1.toString(),
-                                style: TextStyle(color: Color(0XFF6E3F52))),
-                          ),
-                        ],
-                      ),
-                      key: Key(e.toString())),
-                )
-                .toList(),
-          ),
-          SizedBox(
-            height: 40,
-          ),
-          SearchField<String>(
-            hint: 'Düzey 2 Seçiniz',
-
-            onSuggestionTap: (e) {
-              urun = e.searchKey;
-
-              setState(() {
-                urun = e.key.toString();
-              });
-            },
-            suggestionAction: SuggestionAction.unfocus,
-            itemHeight: 50,
-            searchStyle: TextStyle(color: Color(0XFF976775)),
-            suggestionStyle: TextStyle(color: Color(0XFF976775)),
-            // suggestionsDecoration: BoxDecoration(color: Colors.red),
-            suggestions: baseCategory
-                .map(
-                  (e) => SearchFieldListItem<String>(e.toString(),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(e.hesapKodu.toString(),
-                                style: TextStyle(color: Color(0XFF6E3F52))),
-                          ),
-                        ],
-                      ),
-                      key: Key(e.toString())),
-                )
-                .toList(),
-          ),
-          SizedBox(
-            height: 40,
-          ),
-          SearchField<String>(
-            hint: 'Düzey 3 Seçiniz',
-
-            onSuggestionTap: (e) {
-              urun = e.searchKey;
-
-              setState(() {
-                urun = e.key.toString();
-              });
-            },
-            suggestionAction: SuggestionAction.unfocus,
-            itemHeight: 50,
-            searchStyle: TextStyle(color: Color(0XFF976775)),
-            suggestionStyle: TextStyle(color: Color(0XFF976775)),
-            // suggestionsDecoration: BoxDecoration(color: Colors.red),
-            suggestions: baseCategory
-                .map(
-                  (e) => SearchFieldListItem<String>(e.toString(),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(e.hesapKodu.toString(),
-                                style: TextStyle(color: Color(0XFF6E3F52))),
-                          ),
-                        ],
-                      ),
-                      key: Key(e.toString())),
-                )
-                .toList(),
-          ),
-          SizedBox(
-            height: 40,
-          ),
-          SearchField<String>(
-            hint: 'Düzey 4 Seçiniz',
-
-            onSuggestionTap: (e) {
-              urun = e.searchKey;
-
-              setState(() {
-                urun = e.key.toString();
-              });
-            },
-            suggestionAction: SuggestionAction.unfocus,
-            itemHeight: 50,
-            searchStyle: TextStyle(color: Color(0XFF976775)),
-            suggestionStyle: TextStyle(color: Color(0XFF976775)),
-            // suggestionsDecoration: BoxDecoration(color: Colors.red),
-            suggestions: baseCategory
-                .map(
-                  (e) => SearchFieldListItem<String>(e.toString(),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(e.hesapKodu.toString(),
-                                style: TextStyle(color: Color(0XFF6E3F52))),
-                          ),
-                        ],
-                      ),
-                      key: Key(e.toString())),
-                )
-                .toList(),
-          ),
-          SizedBox(
-            height: 40,
-          ),
-          SearchField<String>(
-            hint: 'Düzey 5 Seçiniz',
-
-            onSuggestionTap: (e) {
-              urun = e.searchKey;
-
-              setState(() {
-                urun = e.key.toString();
-              });
-            },
-            suggestionAction: SuggestionAction.unfocus,
-            itemHeight: 50,
-            searchStyle: TextStyle(color: Color(0XFF976775)),
-            suggestionStyle: TextStyle(color: Color(0XFF976775)),
-            // suggestionsDecoration: BoxDecoration(color: Colors.red),
-            suggestions: baseCategory
-                .map(
-                  (e) => SearchFieldListItem<String>(e.toString(),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(e.hesapKodu.toString(),
-                                style: TextStyle(color: Color(0XFF6E3F52))),
-                          ),
-                        ],
-                      ),
-                      key: Key(e.toString())),
-                )
-                .toList(),
-          ),
-          OutlinedButton(
-            style: OutlinedButton.styleFrom(
-              backgroundColor: Color(0XFF463848),
-              side: BorderSide(width: 1.0, color: Color(0XFF463848)),
+      body: StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(children: [
+            SizedBox(
+              height: 40,
             ),
-            onPressed: () {
-              setState(() {});
-            },
-            child: Text("SEÇ",
-                style: TextStyle(
-                    color: Color(0XFFDBDCE8),
-                    fontSize: 15,
-                    letterSpacing: 2.0)),
-          )
-        ]),
-      ),
+            SearchField<String>(
+              hint: 'Hesap Kodu Seçiniz',
+              suggestions: baseCategory
+                  .map(
+                    (e) => SearchFieldListItem<String>(e.hesapKodu.toString(),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(e.malzemeAdi.toString(),
+                                  style: TextStyle(color: Color(0XFF6E3F52))),
+                            ),
+                          ],
+                        ),
+                        key: Key(e.id.toString())),
+                  )
+                  .toList(),
+              onSuggestionTap: (e) {
+                urun = e.searchKey;
+                setState(() {
+                  // print(e.key);
+                  // print("urun: ${urun}");
+                  urun = e.key.toString();
+                });
+                // print( ((((urun.replaceAll('[', '')).replaceAll(']', ''))
+                //     .replaceAll('<', ''))
+                //     .replaceAll('>', ''))
+                //     .replaceAll("'", ''));
+                duzey1Listele(int.parse(
+                    ((((urun.replaceAll('[', '')).replaceAll(']', ''))
+                                .replaceAll('<', ''))
+                            .replaceAll('>', ''))
+                        .replaceAll("'", '')));
+                hasChild(6);
+                setState(() {});
+              },
+              suggestionAction: SuggestionAction.unfocus,
+              itemHeight: 50,
+              searchStyle: TextStyle(color: Color(0XFF976775)),
+              suggestionStyle: TextStyle(color: Color(0XFF976775)),
+              // suggestionsDecoration: BoxDecoration(color: Colors.red),
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            SearchField<String>(
+              hint: 'Düzey 1 Seçiniz',
+              suggestions: duzey1
+                  .map(
+                    (e) => SearchFieldListItem<String>(e.duzey1.toString(),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width / 1.5,
+                              child: Text(e.malzemeAdi.toString(),
+                                  softWrap: true,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      color: Color(0XFF6E3F52), fontSize: 12)),
+                            ),
+                          ],
+                        ),
+                        key: Key(e.id.toString())),
+                  )
+                  .toList(),
+              onSuggestionTap: (e) {
+                urun = e.searchKey;
+                setState(() {
+                  // print(e.key);
+                  // print("urun: ${urun}");
+                  urun = e.key.toString();
+                });
+                // print(urun);
+                print(((((urun.replaceAll('[', '')).replaceAll(']', ''))
+                            .replaceAll('<', ''))
+                        .replaceAll('>', ''))
+                    .replaceAll("'", ''));
+                duzey2Listele(int.parse(
+                    ((((urun.replaceAll('[', '')).replaceAll(']', ''))
+                                .replaceAll('<', ''))
+                            .replaceAll('>', ''))
+                        .replaceAll("'", '')));
+                setState(() {});
+              },
+              suggestionAction: SuggestionAction.unfocus,
+              itemHeight: 50,
+              searchStyle: TextStyle(color: Color(0XFF976775)),
+              suggestionStyle: TextStyle(color: Color(0XFF976775)),
+              // suggestionsDecoration: BoxDecoration(color: Colors.red),
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            SearchField<String>(
+              hint: 'Düzey 2 Seçiniz',
+              suggestions: duzey2
+                  .map(
+                    (e) => SearchFieldListItem<String>(e.duzey2.toString(),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width / 1.5,
+                              child: Text(e.malzemeAdi.toString(),
+                                  softWrap: true,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.fade,
+                                  style: TextStyle(
+                                      color: Color(0XFF6E3F52), fontSize: 12)),
+                            ),
+                          ],
+                        ),
+                        key: Key(e.id.toString())),
+                  )
+                  .toList(),
+              onSuggestionTap: (e) {
+                urun = e.searchKey;
+                setState(() {
+                  // print(e.key);
+                  // print("urun: ${urun}");
+                  urun = e.key.toString();
+                });
+                // print(urun);
+                // print( ((((urun.replaceAll('[', '')).replaceAll(']', ''))
+                //     .replaceAll('<', ''))
+                //     .replaceAll('>', ''))
+                //     .replaceAll("'", ''));
+                duzey3Listele(int.parse(
+                    ((((urun.replaceAll('[', '')).replaceAll(']', ''))
+                                .replaceAll('<', ''))
+                            .replaceAll('>', ''))
+                        .replaceAll("'", '')));
+                setState(() {});
+              },
+              suggestionAction: SuggestionAction.unfocus,
+              itemHeight: 50,
+              searchStyle: TextStyle(color: Color(0XFF976775)),
+              suggestionStyle: TextStyle(color: Color(0XFF976775)),
+              // suggestionsDecoration: BoxDecoration(color: Colors.red),
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            SearchField<String>(
+              hint: 'Düzey 3 Seçiniz',
+              suggestions: duzey3
+                  .map(
+                    (e) => SearchFieldListItem<String>(e.duzey3.toString(),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width / 1.5,
+                              child: Text(e.malzemeAdi.toString(),
+                                  softWrap: true,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.fade,
+                                  style: TextStyle(
+                                      color: Color(0XFF6E3F52), fontSize: 12)),
+                            ),
+                          ],
+                        ),
+                        key: Key(e.id.toString())),
+                  )
+                  .toList(),
+              onSuggestionTap: (e) {
+                urun = e.searchKey;
+                setState(() {
+                  // print(e.key);
+                  // print("urun: ${urun}");
+                  urun = e.key.toString();
+                });
+                // print(urun);
+                // print( ((((urun.replaceAll('[', '')).replaceAll(']', ''))
+                //     .replaceAll('<', ''))
+                //     .replaceAll('>', ''))
+                //     .replaceAll("'", ''));
+                duzey4Listele(int.parse(
+                    ((((urun.replaceAll('[', '')).replaceAll(']', ''))
+                                .replaceAll('<', ''))
+                            .replaceAll('>', ''))
+                        .replaceAll("'", '')));
+                setState(() {});
+              },
+              suggestionAction: SuggestionAction.unfocus,
+              itemHeight: 50,
+              searchStyle: TextStyle(color: Color(0XFF976775)),
+              suggestionStyle: TextStyle(color: Color(0XFF976775)),
+              // suggestionsDecoration: BoxDecoration(color: Colors.red),
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            SearchField<String>(
+              hint: 'Düzey 4 Seçiniz',
+              suggestions: duzey4
+                  .map(
+                    (e) => SearchFieldListItem<String>(e.duzey4.toString(),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width / 1.5,
+                              child: Text(e.malzemeAdi.toString(),
+                                  softWrap: true,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.fade,
+                                  style: TextStyle(
+                                      color: Color(0XFF6E3F52), fontSize: 12)),
+                            ),
+                          ],
+                        ),
+                        key: Key(e.id.toString())),
+                  )
+                  .toList(),
+              onSuggestionTap: (e) {
+                urun = e.searchKey;
+                setState(() {
+                  // print(e.key);
+                  // print("urun: ${urun}");
+                  urun = e.key.toString();
+                });
+                duzey5Listele(int.parse(
+                    ((((urun.replaceAll('[', '')).replaceAll(']', ''))
+                                .replaceAll('<', ''))
+                            .replaceAll('>', ''))
+                        .replaceAll("'", '')));
+                setState(() {});
+              },
+              suggestionAction: SuggestionAction.unfocus,
+              itemHeight: 50,
+              searchStyle: TextStyle(color: Color(0XFF976775)),
+              suggestionStyle: TextStyle(color: Color(0XFF976775)),
+              // suggestionsDecoration: BoxDecoration(color: Colors.red),
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            SearchField<String>(
+              hint: 'Düzey 5 Seçiniz',
+              suggestions: duzey5
+                  .map(
+                    (e) => SearchFieldListItem<String>(e.duzey5.toString(),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width / 1.5,
+                              child: Text(e.malzemeAdi.toString(),
+                                  softWrap: true,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.fade,
+                                  style: TextStyle(
+                                      color: Color(0XFF6E3F52), fontSize: 12)),
+                            ),
+                          ],
+                        ),
+                        key: Key(e.id.toString())),
+                  )
+                  .toList(),
+              onSuggestionTap: (e) {
+                urun = e.searchKey;
+                setState(() {
+                  // print(e.key);
+                  // print("urun: ${urun}");
+                  urun = e.key.toString();
+                });
+                // print(urun);
+                // print( ((((urun.replaceAll('[', '')).replaceAll(']', ''))
+                //     .replaceAll('<', ''))
+                //     .replaceAll('>', ''))
+                //     .replaceAll("'", ''));
+                // duzey5Listele(int.parse(((((urun.replaceAll('[', '')).replaceAll(']', ''))
+                //     .replaceAll('<', ''))
+                //     .replaceAll('>', ''))
+                //     .replaceAll("'", '')));
+                print('Bitti');
+                setState(() {});
+              },
+              suggestionAction: SuggestionAction.unfocus,
+              itemHeight: 50,
+              searchStyle: TextStyle(color: Color(0XFF976775)),
+              suggestionStyle: TextStyle(color: Color(0XFF976775)),
+              // suggestionsDecoration: BoxDecoration(color: Colors.red),
+            ),
+            OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                backgroundColor: Color(0XFF463848),
+                side: BorderSide(width: 1.0, color: Color(0XFF463848)),
+              ),
+              onPressed: () {
+                setState(() {});
+              },
+              child: Text(_isButtonDisabled ? "Hold on..." : "SEÇ",
+                  style: TextStyle(
+                      color: Color(0XFFDBDCE8),
+                      fontSize: 15,
+                      letterSpacing: 2.0)),
+            )
+          ]),
+        );
+      }),
       dialogType: DialogType.noHeader,
       borderSide: const BorderSide(
         color: Color(0XFF6E3F52),
@@ -567,27 +629,218 @@ class _IslemTanimState extends State<IslemTanim> {
     ).show();
   }
 
+  //endregion
+
+  //region hasChild
+  List<BaseCategoryParentChildData> _hasChild = <BaseCategoryParentChildData>[];
+
+  Future<List<BaseCategoryParentChildData>> hasChild(int ParentIdFilter) async {
+    print("parent id:${ParentIdFilter}");
+    http.Response res = await http.get(Uri.parse(
+        'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetSingleBaseCategoryByIdWithParentAndChildren/${ParentIdFilter}'));
+    print(res.body);
+    _hasChild =
+        BaseCategoryParentChild.fromJson(json.decode(res.body)).data.toList();
+    print(_hasChild[0].malzemeAdi);
+
+    print(_hasChild);
+    if (_hasChild.isEmpty) {
+      setState(() {
+        _isButtonDisabled = false;
+      });
+    } else {
+      setState(() {
+        _isButtonDisabled = true;
+      });
+    }
+
+    // print('duzey 0: ${duzey1[0].id}');
+
+    setState(() {});
+    return _hasChild;
+  }
+
+  //endregion
+
+  //region baseCategory
   List<Data> baseCategory = <Data>[];
 
   Future<List<Data>> baseCategoryListele() async {
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetAll?Page=1&PageSize=4&Orderby=Id&Desc=false&isDeleted=false'));
     baseCategory = BaseCategory.fromJson(json.decode(res.body)).data.toList();
-    print(baseCategory[0].hesapKodu);
+    // print(baseCategory[0].hesapKodu);
+    print("base malzeme: ${baseCategory[baseCategory.length-1].malzemeAdi}");
+    tfTifList.text =baseCategory[baseCategory.length-1].malzemeAdi!;
+    if (baseCategory.isEmpty) {
+      setState(() {
+        _isButtonDisabled = false;
+      });
+    } else {
+      setState(() {
+
+
+            _isButtonDisabled = true;
+      });
+    }
+
     return baseCategory;
   }
+
+  //endregion
+
+  //region duzey1
   List<Data> duzey1 = <Data>[];
 
   Future<List<Data>> duzey1Listele(int ParentIdFilter) async {
     print("parent id:${ParentIdFilter}");
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetAll?ParentIdFilter=${ParentIdFilter}&Orderby=Id&Desc=false&isDeleted=false'));
+    print(res.body);
     duzey1 = BaseCategory.fromJson(json.decode(res.body)).data.toList();
-    print(duzey1[0].duzey1);
+    print("1 Malzeme: ${duzey1[duzey1.length-1].malzemeAdi}");
+    tfTifList.text =duzey1[duzey1.length-1].malzemeAdi!;
+
+    if (duzey1.isEmpty) {
+      setState(() {
+        _isButtonDisabled = false;
+      });
+    } else {
+      setState(() {
+        _isButtonDisabled = true;
+      });
+    }
+
+    setState(() {});
     return duzey1;
   }
 
-  var tfRenk = TextEditingController();
+  //endregion
+
+  //region duzey2
+  List<Data> duzey2 = <Data>[];
+
+  Future<List<Data>> duzey2Listele(int ParentIdFilter) async {
+    setState(() {});
+    print("parent id:${ParentIdFilter}");
+    http.Response res = await http.get(Uri.parse(
+        'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetAll?ParentIdFilter=${ParentIdFilter}&Orderby=Id&Desc=false&isDeleted=false'));
+    print(res.body);
+    duzey2 = BaseCategory.fromJson(json.decode(res.body)).data.toList();
+    // print('duzey 0: ${duzey2[0].id}');
+    print("2 Malzeme: ${duzey2[duzey2.length-1].malzemeAdi}");
+    tfTifList.text =duzey2[duzey2.length-1].malzemeAdi!;
+    if (duzey2.isEmpty) {
+      print('2boş');
+      setState(() {
+        _isButtonDisabled = false;
+      });
+    } else {
+      print('2boş değil');
+      setState(() {
+        _isButtonDisabled = true;
+      });
+    }
+
+    setState(() {});
+    return duzey2;
+  }
+
+  //endregion
+
+  //region duzey3
+  List<Data> duzey3 = <Data>[];
+
+  Future<List<Data>> duzey3Listele(int ParentIdFilter) async {
+    setState(() {});
+    print("parent id:${ParentIdFilter}");
+    http.Response res = await http.get(Uri.parse(
+        'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetAll?ParentIdFilter=${ParentIdFilter}&Orderby=Id&Desc=false&isDeleted=false'));
+    print(res.body);
+    duzey3 = BaseCategory.fromJson(json.decode(res.body)).data.toList();
+    // print('duzey 0: ${duzey3[0].id}');
+    print("3 Malzeme: ${duzey3[duzey3.length-1].malzemeAdi}");
+    tfTifList.text =duzey3[duzey3.length-1].malzemeAdi!;
+    if (duzey3.isEmpty) {
+      print('3boş');
+      setState(() {
+        _isButtonDisabled = false;
+      });
+    } else {
+      print('3boş değil');
+      setState(() {
+        _isButtonDisabled = true;
+      });
+    }
+
+    setState(() {});
+    return duzey3;
+  }
+
+  //endregion
+
+  //region duzey4
+  List<Data> duzey4 = <Data>[];
+
+  Future<List<Data>> duzey4Listele(int ParentIdFilter) async {
+    setState(() {});
+    print("parent id:${ParentIdFilter}");
+    http.Response res = await http.get(Uri.parse(
+        'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetAll?ParentIdFilter=${ParentIdFilter}&Orderby=Id&Desc=false&isDeleted=false'));
+    print(res.body);
+    duzey4 = BaseCategory.fromJson(json.decode(res.body)).data.toList();
+    // print('duzey 0: ${duzey4[0].id}');
+    print("4 Malzeme: ${duzey4[duzey4.length-1].malzemeAdi}");
+    tfTifList.text =duzey4[duzey4.length-1].malzemeAdi!;
+    if (duzey4.isEmpty) {
+      print('4boş');
+      setState(() {
+        _isButtonDisabled = false;
+      });
+    } else {
+      print('4boş değil');
+      setState(() {
+        _isButtonDisabled = true;
+      });
+    }
+
+    setState(() {});
+    return duzey4;
+  }
+
+  //endregion
+
+  //region duzey5
+  List<Data> duzey5 = <Data>[];
+
+  Future<List<Data>> duzey5Listele(int ParentIdFilter) async {
+    setState(() {});
+    print("parent id:${ParentIdFilter}");
+    http.Response res = await http.get(Uri.parse(
+        'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetAll?ParentIdFilter=${ParentIdFilter}&Orderby=Id&Desc=false&isDeleted=false'));
+    print(res.body);
+    duzey5 = BaseCategory.fromJson(json.decode(res.body)).data.toList();
+    // print('duzey 0: ${duzey5[0].id}');
+    print("5 Malzeme: ${duzey5[duzey5.length-1].malzemeAdi}");
+    tfTifList.text =duzey5[duzey5.length-1].malzemeAdi!;
+    if (duzey5.isEmpty) {
+      print('5boş');
+      setState(() {
+        _isButtonDisabled = false;
+      });
+    } else {
+      print('5boş değil');
+       setState(() {
+        _isButtonDisabled = true;
+      });
+    }
+
+    setState(() {});
+    return duzey5;
+  }
+
+  //endregion
+
   List<String> myList = [
     'Widget 1',
     'Widget 2',
@@ -647,7 +900,15 @@ class _IslemTanimState extends State<IslemTanim> {
                   ),
                   IconButton(
                     onPressed: () {
-                      showUrunAra();
+                      print("işlem türü: ${this.widget.islemTuru.toString()}");
+                      print("işlem türü: ${this.widget.islemAdi.toString()}");
+                      print("işlem türü: ${this.widget.islemAciklamasi.toString()}");
+                      print("işlem türü: ${this.widget.anaDepo.toString()}");
+                      print("işlem türü: ${this.widget.hedefDepo.toString()}");
+                      print("işlem türü: ${this.widget.islemTarihi.toString()}");
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> urunTanim(islemTuru: this.widget.islemTuru.toString(), islemAdi: this.widget.islemAdi.toString(), islemAciklamasi: this.widget.islemAciklamasi.toString(), anaDepo: int.parse(this.widget.anaDepo.toString()), hedefDepo: int.parse(this.widget.hedefDepo.toString()), islemTarihi: this.widget.islemTarihi.toString())));
+                     // Navigator.push(context, MaterialPageRoute(builder: (context)=> Test(islemTuru: this.widget.islemTuru.toString(), islemAdi: this.widget.islemAdi.toString(), islemAciklamasi: this.widget.islemAciklamasi.toString(), anaDepo: int.parse(this.widget.anaDepo.toString()), hedefDepo: int.parse(this.widget.hedefDepo.toString()), islemTarihi: this.widget.islemTarihi.toString())));
+                      //   showUrunAra();
                     },
                     icon: Icon(Icons.search_sharp),
                     color: Color(0XFF976775),
