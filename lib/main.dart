@@ -2,7 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:stok_takip_uygulamasi/isBaslat.dart';
+import 'package:stok_takip_uygulamasi/is_baslat.dart';
 
 
 
@@ -151,7 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       text: 'GİRİŞ',
                       pressEvent: () {
                         //kullanıcı kontrolü
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>isBaslat()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>IsBaslat()));
                       })
                 ),
               ],

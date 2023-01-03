@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:stok_takip_uygulamasi/IslemlerDetay.dart';
 import 'package:stok_takip_uygulamasi/isTaslak.dart';
 import 'package:stok_takip_uygulamasi/tanimlamalar.dart';
@@ -24,7 +22,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
         padding: EdgeInsets.zero,
         children: [
            DrawerHeader(
-            decoration: BoxDecoration(color: Color(0XFF6E3F52)),
+            decoration: const BoxDecoration(color: Color(0XFF6E3F52)),
             child: Column(
               children: [
                 // Image.asset('assets/logo.jpeg'),
@@ -43,11 +41,11 @@ class _DrawerMenuState extends State<DrawerMenu> {
 
           ),
           ListTile(
-            leading: Icon(
+            leading: const Icon(
               Icons.account_tree,
               color: Color(0XFF976775),
             ),
-            subtitle: Text('Yeni tanımlamalar yapın', style: TextStyle(color: Color(0XFFAAA3B4))),
+            subtitle: const Text('Yeni tanımlamalar yapın', style: TextStyle(color: Color(0XFFAAA3B4))),
             title: const Text(
               'TANIMLAMALAR',
               style: TextStyle(
@@ -55,20 +53,20 @@ class _DrawerMenuState extends State<DrawerMenu> {
             ),
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Tanimlamalar()));
+                  MaterialPageRoute(builder: (context) => const Tanimlamalar()));
             },
           ),
           ExpansionTile(
-            title: Text("İŞLEMLER", style: TextStyle(
+            title: const Text("İŞLEMLER", style: TextStyle(
                 fontWeight: FontWeight.bold, color: Color(0XFF976775)),
             ),
-            subtitle: Text('İşlemlerinizi takip edin', style: TextStyle(color: Color(0XFFAAA3B4)),),
-            leading: Icon(Icons.edit_calendar,  color: Color(0XFF976775),), //add icon
-            childrenPadding: EdgeInsets.only(left:60), //children padding
+            subtitle: const Text('İşlemlerinizi takip edin', style: TextStyle(color: Color(0XFFAAA3B4)),),
+            leading: const Icon(Icons.edit_calendar,  color: Color(0XFF976775),), //add icon
+            childrenPadding: const EdgeInsets.only(left:60), //children padding
             children: [
 
               ListTile(
-                leading: Icon(
+                leading: const Icon(
                   Icons.incomplete_circle_sharp,
                   color: Color(0XFF976775),
                 ),
@@ -84,7 +82,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                 },
               ),
               ListTile(
-                leading: Icon(
+                leading: const Icon(
                   Icons.lock_clock,
                   color: Color(0XFF976775),
                 ),
@@ -100,7 +98,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                 },
               ),
               ListTile(
-                leading: Icon(
+                leading: const Icon(
                   Icons.send_outlined,
                   color: Color(0XFF976775),
                 ),
@@ -116,7 +114,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                 },
               ),
               ListTile(
-                leading: Icon(
+                leading: const Icon(
                   Icons.do_not_disturb_on,
                   color: Color(0XFF976775),
                 ),
@@ -132,7 +130,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                 },
               ),
               ListTile(
-                leading: Icon(
+                leading: const Icon(
                   Icons.check,
                   color: Color(0XFF976775),
                 ),
@@ -148,7 +146,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                 },
               ),
               ListTile(
-                leading: Icon(
+                leading: const Icon(
                   Icons.close_sharp,
                   color: Color(0XFF976775),
                 ),
@@ -166,9 +164,9 @@ class _DrawerMenuState extends State<DrawerMenu> {
             ],
           ),
 
-          Divider(thickness: 2.0,),
+          const Divider(thickness: 2.0,),
           ListTile(
-            leading: Icon(
+            leading: const Icon(
               Icons.edit_calendar,
               color: Color(0XFF976775),
             ),
@@ -179,12 +177,12 @@ class _DrawerMenuState extends State<DrawerMenu> {
             ),
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => IsTaslak()));
+                  MaterialPageRoute(builder: (context) => const IsTaslak()));
             },
           ),
-          Divider(thickness: 2.0,),
+          const Divider(thickness: 2.0,),
           ListTile(
-            leading: Icon(
+            leading: const Icon(
               Icons.fact_check,
               color: Color(0XFF976775),
             ),
@@ -195,10 +193,10 @@ class _DrawerMenuState extends State<DrawerMenu> {
             ),
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => IsTaslak()));
+                  MaterialPageRoute(builder: (context) => const IsTaslak()));
             },
           ),
-          Divider(thickness: 2.0,),
+          const Divider(thickness: 2.0,),
         ],
       ),
     );

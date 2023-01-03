@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stok_takip_uygulamasi/DrawerMenu.dart';
+import 'package:stok_takip_uygulamasi/drawer_menu.dart';
 import 'package:stok_takip_uygulamasi/islemTurDetay.dart';
 import 'package:stok_takip_uygulamasi/tanimlamalar.dart';
 
@@ -22,7 +22,7 @@ class _IsTaslakState extends State<IsTaslak> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-          backgroundColor: Color(0xFF976775), title: Text('İşlem Taslakları')),
+          backgroundColor: const Color(0xFF976775), title: const Text('İşlem Taslakları')),
       endDrawer: DrawerMenu(),
       // body: GestureDetector(onTap: (){
       //   Navigator.push(context, MaterialPageRoute(builder: (context)=>IslemTurDetay(islemTuru: this.widget.islemTuru.toString())));
@@ -40,7 +40,7 @@ class _IsTaslakState extends State<IsTaslak> {
             onTap: () {},
             child: ListTile(
               title:
-                  Text('İŞLEM ADI', style: TextStyle(color: Color(0XFF976775))),
+                  const Text('İŞLEM ADI', style: TextStyle(color: Color(0XFF976775))),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: const [
@@ -51,7 +51,7 @@ class _IsTaslakState extends State<IsTaslak> {
               ),
             ),
           ),
-          Divider(),
+          const Divider(),
           GestureDetector(
             onTap: () {
               // Navigator.push(context, MaterialPageRoute(builder: (context)=>IslemTurDetay(islemTuru: this.widget.islemTuru.toString(), islemAdi: this.widget.islemAdi, islemAciklamasi: this.widget.islemAciklamasi, islemTarihi: this.widget.islemTarihi,)));

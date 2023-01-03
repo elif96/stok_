@@ -185,7 +185,7 @@ class Parent {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['hesapKodu'] = this.hesapKodu;
     data['duzey1'] = this.duzey1;
     data['duzey2'] = this.duzey2;

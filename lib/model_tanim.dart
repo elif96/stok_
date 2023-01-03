@@ -1,15 +1,11 @@
 import 'dart:convert';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:custom_searchable_dropdown/custom_searchable_dropdown.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
-import 'package:stok_takip_uygulamasi/DrawerMenu.dart';
-import 'package:stok_takip_uygulamasi/isTaslak.dart';
+import 'package:stok_takip_uygulamasi/drawer_menu.dart';
 import 'package:stok_takip_uygulamasi/model/Marka.dart';
-import 'package:stok_takip_uygulamasi/tanimlamalar.dart';
 import 'package:http/http.dart' as http;
 
 class ModelTanim extends StatefulWidget {
@@ -110,7 +106,7 @@ class _ModelTanimState extends State<ModelTanim> {
     // print("ddd: ${trimmedValue}");
     if (dropdownvalue == null || dropdownvalue =="") {
       print('object');
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Lütfen listeden bir varyant seçin."),
         backgroundColor: Colors.red,
       ));
@@ -133,23 +129,23 @@ class _ModelTanimState extends State<ModelTanim> {
     // print(response.body);
     // print(response.statusCode);
     if (response.statusCode == 201) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Marka kayıt işlemi başarılı."),
         backgroundColor: Colors.green,
       ));
       setState(() {});
     } else if (tfModelAdi.text == "" || tfModelAdi.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Model kayıt işlemi gerçekleştirilemedi."),
         backgroundColor: Colors.red,
       ));
     } else if (trimmedValue == null || dropdownvalue == null) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Lütfen listeden bir marka seçin."),
         backgroundColor: Colors.red,
       ));
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Model kaydı oluşturulamadı."),
         backgroundColor: Colors.red,
       ));
@@ -205,23 +201,23 @@ class _ModelTanimState extends State<ModelTanim> {
 
     // print(response.statusCode);
     if (response.statusCode <= 299 || response.statusCode >= 200) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Marka güncelleme işlemi başarılı."),
         backgroundColor: Colors.green,
       ));
       setState(() {});
     } else if (tfMarkaAdi.text == "" || tfMarkaAdi.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Marka adı boş olamaz."),
         backgroundColor: Colors.red,
       ));
     } else if (markaId == null) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Lütfen listeden bir marka seçin."),
         backgroundColor: Colors.red,
       ));
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Marka güncellenemedi."),
         backgroundColor: Colors.red,
       ));
@@ -235,20 +231,20 @@ class _ModelTanimState extends State<ModelTanim> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             Text('Lütfen güncellemek istediğiniz yeni marka adını girin.',
                 style: GoogleFonts.notoSansTaiLe(
                   fontSize: 15,
-                  color: Color(0XFF976775),
+                  color: const Color(0XFF976775),
                 )),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             TextField(
               controller: tfMarkaAdi,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Marka Adı',
                 hintStyle: TextStyle(color: Color(0XFF976775)),
                 enabledBorder: OutlineInputBorder(
@@ -256,19 +252,19 @@ class _ModelTanimState extends State<ModelTanim> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             AnimatedButton(
-                color: Color(0XFF463848),
+                color: const Color(0XFF463848),
                 text: 'Güncelle',
                 pressEvent: () {
                   // print(tfMarkaAdi.text);
                   if (tfMarkaAdi.text == "") {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       backgroundColor: Colors.red,
-                      content: const Text('Marka adını boş bırakamazsınız.'),
-                      duration: const Duration(seconds: 2),
+                      content: Text('Marka adını boş bırakamazsınız.'),
+                      duration: Duration(seconds: 2),
                     ));
                   } else {
                     // print('TTT');
@@ -329,7 +325,7 @@ class _ModelTanimState extends State<ModelTanim> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-            backgroundColor: Color(0xFF976775), title: Text('Model Tanım')),
+            backgroundColor: const Color(0xFF976775), title: const Text('Model Tanım')),
         endDrawer: DrawerMenu(),
         body: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -446,8 +442,7 @@ class _ModelTanimState extends State<ModelTanim> {
 
                         // print(item.markaAdi);
                             return item.markaAdi;
-                          }).toList() ??
-                          [],
+                          }).toList(),
                     ),
                   ),
                   // LazyLoadScrollView(
@@ -529,13 +524,13 @@ class _ModelTanimState extends State<ModelTanim> {
                   //         .toList(),
                   //   ),
                   // ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   TextFormField(
                     controller: tfModelAdi,
-                    style: TextStyle(color: Color(0XFF976775)),
-                    decoration: InputDecoration(
+                    style: const TextStyle(color: Color(0XFF976775)),
+                    decoration: const InputDecoration(
                         prefixIcon: Icon(
                           Icons.model_training,
                           color: Color(0XFF6E3F52),
@@ -545,21 +540,21 @@ class _ModelTanimState extends State<ModelTanim> {
                         border: OutlineInputBorder(
                             borderSide: BorderSide(color: Color(0XFF6E3F52)))),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Container(
                     height: 50,
                     child: OutlinedButton(
                         style: OutlinedButton.styleFrom(
-                          backgroundColor: Color(0XFF463848),
+                          backgroundColor: const Color(0XFF463848),
                           side:
-                              BorderSide(width: 1.0, color: Color(0XFF463848)),
+                              const BorderSide(width: 1.0, color: Color(0XFF463848)),
                         ),
                         onPressed: () {
                           modelEkle();
                         },
-                        child: (Text(
+                        child: (const Text(
                           'MODEL EKLE',
                           style: TextStyle(
                               color: Color(0XFFDBDCE8),
@@ -568,14 +563,14 @@ class _ModelTanimState extends State<ModelTanim> {
                         ))),
                   ),
                   DropdownButtonFormField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         prefixIcon: Icon(Icons.model_training,
                             color: Color(0XFF6E3F52)),
                         hintStyle: TextStyle(color: Color(0XFF976775)),
                         hintText: "Model",
                         border: OutlineInputBorder(
                             borderSide: BorderSide(color: Color(0XFF6E3F52)))),
-                    hint: Text('Model Seçiniz'),
+                    hint: const Text('Model Seçiniz'),
                     items: cvpSon.map((item) {
                       return DropdownMenuItem(
                         value: item.id.toString(),

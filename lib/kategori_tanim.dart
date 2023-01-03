@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stok_takip_uygulamasi/DrawerMenu.dart';
+import 'package:stok_takip_uygulamasi/drawer_menu.dart';
 import 'package:stok_takip_uygulamasi/isTaslak.dart';
 import 'package:stok_takip_uygulamasi/tanimlamalar.dart';
 
@@ -26,7 +26,7 @@ class _KategoriTanimState extends State<KategoriTanim> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-          backgroundColor: Color(0xFF976775), title: Text('Kategori Tanım')),
+          backgroundColor: const Color(0xFF976775), title: const Text('Kategori Tanım')),
       endDrawer: DrawerMenu(),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -37,7 +37,7 @@ class _KategoriTanimState extends State<KategoriTanim> {
               children: [
                 TextFormField(
                   controller: tfKategoriAdi,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       prefixIcon: Icon(
                         Icons.category,
                         color: Color(0XFF6E3F52),
@@ -47,20 +47,20 @@ class _KategoriTanimState extends State<KategoriTanim> {
                       border: OutlineInputBorder(
                           borderSide: BorderSide(color: Color(0XFF6E3F52)))),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 DropdownButtonFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.branding_watermark_outlined,
                           color: Color(0XFF6E3F52)),
                       hintStyle: TextStyle(color: Color(0XFF976775)),
                       hintText: "Marka",
                       border: OutlineInputBorder(
                           borderSide: BorderSide(color: Color(0XFF6E3F52)))),
-                  hint: Text('Marka Seçiniz'),
+                  hint: const Text('Marka Seçiniz'),
                   items: [
-                    DropdownMenuItem(
+                    const DropdownMenuItem(
                         child: Text(
                       'Marka Seçiniz',
                       style: TextStyle(color: Color(0XFF976775)),
@@ -72,20 +72,20 @@ class _KategoriTanimState extends State<KategoriTanim> {
                     });
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 DropdownButtonFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       prefixIcon:
                           Icon(Icons.model_training, color: Color(0XFF6E3F52)),
                       hintStyle: TextStyle(color: Color(0XFF976775)),
                       hintText: "Model",
                       border: OutlineInputBorder(
                           borderSide: BorderSide(color: Color(0XFF6E3F52)))),
-                  hint: Text('Model Seçiniz'),
+                  hint: const Text('Model Seçiniz'),
                   items: [
-                    DropdownMenuItem(
+                    const DropdownMenuItem(
                         child: Text(
                       'Model Seçiniz',
                       style: TextStyle(color: Color(0XFF976775)),
@@ -97,12 +97,12 @@ class _KategoriTanimState extends State<KategoriTanim> {
                     });
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 TextFormField(
                   controller: tfBaseCategoryId,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.confirmation_number_sharp,
                           color: Color(0XFF6E3F52)),
                       hintText: "BaseCategoryId",
@@ -110,20 +110,20 @@ class _KategoriTanimState extends State<KategoriTanim> {
                       border: OutlineInputBorder(
                           borderSide: BorderSide(color: Color(0XFF6E3F52)))),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 DropdownButtonFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.scatter_plot_outlined,
                           color: Color(0XFF6E3F52)),
                       hintStyle: TextStyle(color: Color(0XFF976775)),
                       hintText: "Birim",
                       border: OutlineInputBorder(
                           borderSide: BorderSide(color: Color(0XFF6E3F52)))),
-                  hint: Text('Birim Seçiniz'),
+                  hint: const Text('Birim Seçiniz'),
                   items: [
-                    DropdownMenuItem(
+                    const DropdownMenuItem(
                         child: Text(
                       'Birim Seçiniz',
                       style: TextStyle(color: Color(0XFF976775)),
@@ -135,20 +135,20 @@ class _KategoriTanimState extends State<KategoriTanim> {
                     });
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 DropdownButtonFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.inventory_outlined,
                           color: Color(0XFF6E3F52)),
                       hintStyle: TextStyle(color: Color(0XFF976775)),
                       hintText: "Envanter Türü",
                       border: OutlineInputBorder(
                           borderSide: BorderSide(color: Color(0XFF6E3F52)))),
-                  hint: Text('Envanter Seçiniz'),
+                  hint: const Text('Envanter Seçiniz'),
                   items: [
-                    DropdownMenuItem(
+                    const DropdownMenuItem(
                         child: Text(
                       'Envanter Türü Seçiniz',
                       style: TextStyle(color: Color(0XFF976775)),
@@ -160,12 +160,12 @@ class _KategoriTanimState extends State<KategoriTanim> {
                     });
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 TextFormField(
                   controller: tfBarkod,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       prefixIcon: Icon(
                         Icons.barcode_reader,
                         color: Color(0XFF6E3F52),
@@ -175,20 +175,20 @@ class _KategoriTanimState extends State<KategoriTanim> {
                       border: OutlineInputBorder(
                           borderSide: BorderSide(color: Color(0XFF6E3F52)))),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 DropdownButtonFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.account_tree_outlined,
                           color: Color(0XFF6E3F52)),
                       hintStyle: TextStyle(color: Color(0XFF976775)),
                       hintText: "Varyant",
                       border: OutlineInputBorder(
                           borderSide: BorderSide(color: Color(0XFF6E3F52)))),
-                  hint: Text('Varyant Seçiniz'),
+                  hint: const Text('Varyant Seçiniz'),
                   items: [
-                    DropdownMenuItem(
+                    const DropdownMenuItem(
                         child: Text(
                       'Varyant Seçiniz',
                       style: TextStyle(color: Color(0XFF976775)),
@@ -200,15 +200,15 @@ class _KategoriTanimState extends State<KategoriTanim> {
                     });
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Container(
                   height: 50,
                   child: OutlinedButton(
                       style: OutlinedButton.styleFrom(
-                        backgroundColor: Color(0XFF463848),
-                        side: BorderSide(width: 1.0, color: Color(0XFF463848)),
+                        backgroundColor: const Color(0XFF463848),
+                        side: const BorderSide(width: 1.0, color: Color(0XFF463848)),
                       ),
                       onPressed: () {
                         // kategori ekleme api
@@ -223,7 +223,7 @@ class _KategoriTanimState extends State<KategoriTanim> {
                           ));
                         }
                       },
-                      child: (Text(
+                      child: (const Text(
                         'KATEGORİ EKLE',
                         style: TextStyle(color: Color(0XFFDBDCE8), fontSize: 15, letterSpacing: 2.0),
                       ))),

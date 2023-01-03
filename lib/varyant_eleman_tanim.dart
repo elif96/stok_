@@ -1,13 +1,10 @@
 import 'dart:convert';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:searchfield/searchfield.dart';
-import 'package:stok_takip_uygulamasi/DrawerMenu.dart';
-import 'package:stok_takip_uygulamasi/isTaslak.dart';
+import 'package:stok_takip_uygulamasi/drawer_menu.dart';
 import 'package:stok_takip_uygulamasi/model/Varyant.dart';
-import 'package:stok_takip_uygulamasi/tanimlamalar.dart';
 import 'package:http/http.dart' as http;
 
 class VaryantElemanTanim extends StatefulWidget {
@@ -56,7 +53,7 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
     var url = Uri.parse('https://stok.bahcelievler.bel.tr/api/VariantElements');
     print(dropdownvalue);
     if(dropdownvalue == null){
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Lütfen listeden bir varyant seçin."),
         backgroundColor: Colors.red,
       ));
@@ -81,21 +78,21 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
     if (response.reasonPhrase == 'Bad Request' &&
         response.body.contains('VariantElement already has')) {
       //model olduğu için marka silinemedi
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Bu varyant elemanı zaten var."),
         backgroundColor: Colors.red,
       ));
       setState(() {});
     } else if (response.reasonPhrase == 'Bad Request') {
       //silinecek marka bulunamadı
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Varyant eleman adı boş bırakılamaz."),
         backgroundColor: Colors.red,
       ));
       setState(() {});
     } else if (response.reasonPhrase == 'Created') {
       // başarılı
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content:
             Text("Varyant eleman ekleme işlemi başarıyla gerçekleştirildi."),
         backgroundColor: Colors.green,
@@ -118,14 +115,14 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
 
     if (response.reasonPhrase == 'Not Found') {
       //silinecek marka bulunamadı
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Silinecek varyant bulunamadı."),
         backgroundColor: Colors.red,
       ));
       setState(() {});
     } else if (response.reasonPhrase == 'Internal Server Error') {
       //model olduğu için marka silinemedi
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text(
             "Silinmek istenen varyanta ait varyant elemanları tanımlı olduğu için silme işlemi gerçekleştirilemedi."),
         backgroundColor: Colors.red,
@@ -133,7 +130,7 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
       setState(() {});
     } else if (response.reasonPhrase == 'No Content') {
       // başarılı
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Varyant silme işlemi başarıyla gerçekleştirildi."),
         backgroundColor: Colors.green,
       ));
@@ -154,18 +151,18 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
 
     print(response.statusCode);
     if (response.statusCode <= 299 || response.statusCode >= 200) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Varyant güncelleme işlemi başarılı."),
         backgroundColor: Colors.green,
       ));
       setState(() {});
     } else if (tfVaryantAdi.text == "" || tfVaryantAdi.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Varyant adı boş olamaz."),
         backgroundColor: Colors.red,
       ));
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Güncelleme gerçekleştirilemedi."),
         backgroundColor: Colors.red,
       ));
@@ -179,20 +176,20 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             Text('Lütfen güncellemek istediğiniz yeni marka adını girin.',
                 style: GoogleFonts.notoSansTaiLe(
                   fontSize: 15,
-                  color: Color(0XFF976775),
+                  color: const Color(0XFF976775),
                 )),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             TextField(
               controller: tfVaryantAdi,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Varyant Adı',
                 hintStyle: TextStyle(color: Color(0XFF976775)),
                 enabledBorder: OutlineInputBorder(
@@ -200,19 +197,19 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             AnimatedButton(
-                color: Color(0XFF463848),
+                color: const Color(0XFF463848),
                 text: 'Güncelle',
                 pressEvent: () {
                   print(tfVaryantAdi.text);
                   if (tfVaryantAdi.text == "") {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       backgroundColor: Colors.red,
-                      content: const Text('Varyant adını boş bırakamazsınız.'),
-                      duration: const Duration(seconds: 2),
+                      content: Text('Varyant adını boş bırakamazsınız.'),
+                      duration: Duration(seconds: 2),
                     ));
                   } else {
                     print('TTT');
@@ -251,8 +248,8 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-          backgroundColor: Color(0xFF976775),
-          title: Text('Varyant Eleman Tanım')),
+          backgroundColor: const Color(0xFF976775),
+          title: const Text('Varyant Eleman Tanım')),
       endDrawer: DrawerMenu(),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -283,9 +280,9 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
                             },
                             suggestionAction: SuggestionAction.unfocus,
                             itemHeight: 50,
-                            searchStyle: TextStyle(color: Color(0XFF976775)),
+                            searchStyle: const TextStyle(color: Color(0XFF976775)),
                             suggestionStyle:
-                            TextStyle(color: Color(0XFF976775)),
+                            const TextStyle(color: Color(0XFF976775)),
                             // suggestionsDecoration: BoxDecoration(color: Colors.red),
                             suggestions: snapshot.data!.data
                                 .map(
@@ -300,13 +297,13 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(e.varyantAdi.toString(),
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 color: Color(0XFF6E3F52))),
                                       ),
                                       Row(
                                         children: [
                                           GestureDetector(
-                                            child: Text('Load More'),
+                                            child: const Text('Load More'),
 
                                             onTap: () {
                                               // pageNum +=1;
@@ -320,7 +317,7 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
                                             },
                                           ),
                                           GestureDetector(
-                                            child: Icon(
+                                            child: const Icon(
                                               Icons.delete_outline,
                                               color: Color(0XFF6E3F52),
                                             ),
@@ -328,11 +325,11 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
                                               varyantElemanSil(e.id!);
                                             },
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 10,
                                           ),
                                           GestureDetector(
-                                            child: Icon(
+                                            child: const Icon(
                                               Icons.border_color_outlined,
                                               color: Color(0XFF6E3F52),
                                             ),
@@ -430,13 +427,13 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
                     );
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 TextFormField(
                   controller: tfVaryantAdi,
-                  style: TextStyle(color: Color(0XFF976775)),
-                  decoration: InputDecoration(
+                  style: const TextStyle(color: Color(0XFF976775)),
+                  decoration: const InputDecoration(
                       prefixIcon: Icon(
                         Icons.model_training,
                         color: Color(0XFF6E3F52),
@@ -446,20 +443,20 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
                       border: OutlineInputBorder(
                           borderSide: BorderSide(color: Color(0XFF6E3F52)))),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Container(
                   height: 50,
                   child: OutlinedButton(
                       style: OutlinedButton.styleFrom(
-                        backgroundColor: Color(0XFF463848),
-                        side: BorderSide(width: 1.0, color: Color(0XFF463848)),
+                        backgroundColor: const Color(0XFF463848),
+                        side: const BorderSide(width: 1.0, color: Color(0XFF463848)),
                       ),
                       onPressed: () {
                         varyantElemanEkle();
                       },
-                      child: (Text(
+                      child: (const Text(
                         'VARYANT ELEMAN EKLE',
                         style: TextStyle(
                             color: Color(0XFFDBDCE8),

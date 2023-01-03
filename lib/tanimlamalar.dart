@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:stok_takip_uygulamasi/DrawerMenu.dart';
+import 'package:stok_takip_uygulamasi/drawer_menu.dart';
 import 'package:stok_takip_uygulamasi/isTaslak.dart';
-import 'package:stok_takip_uygulamasi/kategoriTanim.dart';
-import 'package:stok_takip_uygulamasi/markaTanim.dart';
-import 'package:stok_takip_uygulamasi/modelTanim.dart';
-import 'package:stok_takip_uygulamasi/varyantElemanTanim.dart';
-import 'package:stok_takip_uygulamasi/varyantTanim.dart';
+import 'package:stok_takip_uygulamasi/kategori_tanim.dart';
+import 'package:stok_takip_uygulamasi/marka_tanim.dart';
+import 'package:stok_takip_uygulamasi/model_tanim.dart';
+import 'package:stok_takip_uygulamasi/varyant_eleman_tanim.dart';
+import 'package:stok_takip_uygulamasi/varyant_tanim.dart';
 
 class Tanimlamalar extends StatefulWidget {
   const Tanimlamalar({Key? key}) : super(key: key);
@@ -20,104 +20,104 @@ class _TanimlamalarState extends State<Tanimlamalar> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-          backgroundColor: Color(0xFF976775), title: Text('Tanımlamalar')),
+          backgroundColor: const Color(0xFF976775), title: const Text('Tanımlamalar')),
       endDrawer: DrawerMenu(),
       body: ListView(
         children: [
           ListTile(
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => KategoriTanim()));
+                  MaterialPageRoute(builder: (context) => const KategoriTanim()));
             },
-            leading: Icon(
+            leading: const Icon(
               Icons.category,
               color: Color(0XFF6E3F52),
             ),
-            title: Text(
+            title: const Text(
               'Kategori Tanım',
               style: TextStyle(color: Color(0XFF976775), fontWeight: FontWeight.bold),
             ),
-            subtitle: Text(
+            subtitle: const Text(
               'Yeni kategori tanımlayın',
               style: TextStyle(color: Color(0XFFAAA3B4)),
             ),
-            trailing: Icon(Icons.arrow_right, color: Color(0XFFAAA3B4)),
+            trailing: const Icon(Icons.arrow_right, color: Color(0XFFAAA3B4)),
           ),
           ListTile(
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MarkaTanim()));
+                  MaterialPageRoute(builder: (context) => const MarkaTanim()));
             },
-            leading: Icon(
+            leading: const Icon(
               Icons.branding_watermark_outlined,
               color: Color(0XFF6E3F52),
             ),
-            title: Text(
+            title: const Text(
               'Marka Tanım',
               style: TextStyle(color: Color(0XFF976775), fontWeight: FontWeight.bold),
             ),
-            subtitle: Text(
+            subtitle: const Text(
               'Yeni marka tanımlayın',
               style: TextStyle(color: Color(0XFFAAA3B4)),
             ),
-            trailing: Icon(Icons.arrow_right, color: Color(0XFFAAA3B4)),
+            trailing: const Icon(Icons.arrow_right, color: Color(0XFFAAA3B4)),
           ),
           ListTile(
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ModelTanim()));
+                  MaterialPageRoute(builder: (context) => const ModelTanim()));
             },
-            leading: Icon(
+            leading: const Icon(
               Icons.model_training,
               color: Color(0XFF6E3F52),
             ),
-            title: Text(
+            title: const Text(
               'Model Tanım',
               style: TextStyle(color: Color(0XFF976775), fontWeight: FontWeight.bold),
             ),
-            subtitle: Text(
+            subtitle: const Text(
               'Yeni model tanımlayın',
               style: TextStyle(color: Color(0XFFAAA3B4)),
             ),
-            trailing: Icon(Icons.arrow_right, color: Color(0XFFAAA3B4)),
+            trailing: const Icon(Icons.arrow_right, color: Color(0XFFAAA3B4)),
           ),
           ListTile(
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => VaryantTanim()));
+                  MaterialPageRoute(builder: (context) => const VaryantTanim()));
             },
-            leading: Icon(
+            leading: const Icon(
               Icons.view_in_ar,
               color: Color(0XFF6E3F52),
             ),
-            title: Text(
+            title: const Text(
               'Varyant Tanım',
               style: TextStyle(color: Color(0XFF976775), fontWeight: FontWeight.bold),
             ),
-            subtitle: Text(
+            subtitle: const Text(
               'Yeni varyant tanımlayın',
               style: TextStyle(color: Color(0XFFAAA3B4)),
             ),
-            trailing: Icon(Icons.arrow_right, color: Color(0XFFAAA3B4)),
+            trailing: const Icon(Icons.arrow_right, color: Color(0XFFAAA3B4)),
           ),
           ListTile(
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => VaryantElemanTanim()));
+                  MaterialPageRoute(builder: (context) => const VaryantElemanTanim()));
             },
-            leading: Icon(
+            leading: const Icon(
               Icons.fitbit,
               color: Color(0XFF6E3F52),
             ),
-            title: Text(
+            title: const Text(
               'Varyant Eleman Tanım',
               style: TextStyle(color: Color(0XFF976775), fontWeight: FontWeight.bold),
             ),
-            subtitle: Text(
+            subtitle: const Text(
               'Yeni varyant eleman tanımlayın',
               style: TextStyle(color: Color(0XFFAAA3B4)),
             ),
-            trailing: Icon(Icons.arrow_right, color: Color(0XFFAAA3B4)),
+            trailing: const Icon(Icons.arrow_right, color: Color(0XFFAAA3B4)),
           ),
 
         ],

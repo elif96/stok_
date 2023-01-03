@@ -1,39 +1,38 @@
 import 'dart:convert';
-
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:searchfield/searchfield.dart';
 import 'package:http/http.dart' as http;
-import 'package:stok_takip_uygulamasi/islemTanim.dart';
-import 'package:stok_takip_uygulamasi/urunGrid.dart';
-import 'package:stok_takip_uygulamasi/urunTanim.dart';
-
-import 'DrawerMenu.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stok_takip_uygulamasi/Islem_bilgileri.dart';
+import 'package:stok_takip_uygulamasi/onaya_gonder_grid.dart';
+import 'package:stok_takip_uygulamasi/tif_kategori_urun_secimi.dart';
+import 'drawer_menu.dart';
 import 'model/BaseCategory.dart';
 
-class Test extends StatefulWidget {
-  final String islemTuru;
-  final String islemAdi;
-  final String islemAciklamasi;
-  final String islemTarihi;
-  final int anaDepo;
-  final int hedefDepo;
+class TifListesi extends StatefulWidget {
+  final String? islemTuru;
+  final String? islemAdi;
+  final String? islemAciklamasi;
+  final String? islemTarihi;
+  final int? anaDepo;
+  final int? hedefDepo;
+  final String? sonuc;
 
-  const Test({Key? key,
+  TifListesi({Key? key,
     required this.islemTuru,
     required this.islemAdi,
     required this.islemAciklamasi,
     required this.anaDepo,
     required this.hedefDepo,
-    required this.islemTarihi})
+    required this.islemTarihi, this.sonuc})
       : super(key: key);
 
   @override
-  State<Test> createState() => _TestState();
+  State<TifListesi> createState() => _TifListesiState();
 }
 
-class _TestState extends State<Test> {
+class _TifListesiState extends State<TifListesi> {
   bool _isButtonDisabled = true;
   var urunhk;
   var urun1;
@@ -54,6 +53,7 @@ class _TestState extends State<Test> {
     baseCategoryListele();
     _isButtonDisabled = true;
     setState(() {});
+
   }
 
   //region baseCategory
@@ -84,7 +84,7 @@ class _TestState extends State<Test> {
   List<Data> duzey1 = <Data>[];
 
   Future<List<Data>> duzey1Listele(int ParentIdFilter) async {
-    print("parent id:${ParentIdFilter}");
+    // print("parent id:${ParentIdFilter}");
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetAll?ParentIdFilter=${ParentIdFilter}&Orderby=Id&Desc=false&isDeleted=false'));
 
@@ -96,16 +96,16 @@ class _TestState extends State<Test> {
 
     if (duzey1.isEmpty) {
       _isButtonDisabled = false;
-      print('11');
-      getSelected(urunhks,"","","","","");
+
+      getSelected(urunhks, "", "", "", "", "");
       setState(() {});
     } else {
-      print('DUZEY 1');
-      print(duzey1);
-      print((int.parse(((((urunhk.replaceAll('[', '')).replaceAll(']', ''))
-          .replaceAll('<', ''))
-          .replaceAll('>', ''))
-          .replaceAll("'", ''))).runtimeType);
+      // print('DUZEY 1');
+      // print(duzey1);
+      // print((int.parse(((((urunhk.replaceAll('[', '')).replaceAll(']', ''))
+      //     .replaceAll('<', ''))
+      //     .replaceAll('>', ''))
+      //     .replaceAll("'", ''))).runtimeType);
 
       _isButtonDisabled = true;
       setState(() {});
@@ -120,7 +120,7 @@ class _TestState extends State<Test> {
 
   Future<List<Data>> duzey2Listele(int ParentIdFilter) async {
     setState(() {});
-    print("parent id:${ParentIdFilter}");
+    // print("parent id:${ParentIdFilter}");
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetAll?ParentIdFilter=${ParentIdFilter}&Orderby=Id&Desc=false&isDeleted=false'));
 
@@ -131,14 +131,20 @@ class _TestState extends State<Test> {
 
     // print("duzey son: ${duzey2[].malzemeAdi}");
     if (duzey2.isEmpty) {
-      print('22');
-      getSelected(urunhks,urun1s,"","","","","");
+      getSelected(
+          urunhks,
+          urun1s,
+          "",
+          "",
+          "",
+          "",
+          "");
 
       _isButtonDisabled = false;
       setState(() {});
     } else {
-      print('DUZEY 2');
-      print(duzey2);
+      // print('DUZEY 2');
+      // print(duzey2);
       _isButtonDisabled = true;
       setState(() {});
     }
@@ -148,17 +154,17 @@ class _TestState extends State<Test> {
   List<Data> selected = <Data>[];
 
   var sonuc;
-  Future<List<Data>> getSelected(String HesapKoduFilter,[String? Duzey1Filter,
-    String? Duzey2Filter, String? Duzey3Filter, String? Duzey4Filter, String? Duzey5Filter, String? ParentIdFilter]
-     ) async {
+
+  Future<List<Data>> getSelected(String HesapKoduFilter, [String? Duzey1Filter,
+    String? Duzey2Filter, String? Duzey3Filter, String? Duzey4Filter, String? Duzey5Filter, String? ParentIdFilter]) async {
     setState(() {});
-    print("parent id:${ParentIdFilter}");
+    // print("parent id:${ParentIdFilter}");
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetAll?HesapKoduFilter=${HesapKoduFilter}&Duzey1Filter=${Duzey1Filter}&Duzey2Filter=${Duzey2Filter}&Duzey3Filter=${Duzey3Filter}&Duzey4Filter=${Duzey4Filter}&Duzey5Filter=${Duzey5Filter}&ParentIdFilter=0&Page=1&PageSize=12&Orderby=Id&Desc=false&isDeleted=false'));
 
-    print(
-        'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetAll?HesapKoduFilter=${HesapKoduFilter}&Duzey1Filter=${Duzey1Filter}&Duzey2Filter=${Duzey2Filter}&Duzey3Filter=${Duzey3Filter}&Duzey4Filter=${Duzey4Filter}&Duzey5Filter=${Duzey5Filter}&ParentIdFilter=0&Page=1&PageSize=12&Orderby=Id&Desc=false&isDeleted=false');
-    print(res.body);
+    // print(
+    //     'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetAll?HesapKoduFilter=${HesapKoduFilter}&Duzey1Filter=${Duzey1Filter}&Duzey2Filter=${Duzey2Filter}&Duzey3Filter=${Duzey3Filter}&Duzey4Filter=${Duzey4Filter}&Duzey5Filter=${Duzey5Filter}&ParentIdFilter=0&Page=1&PageSize=12&Orderby=Id&Desc=false&isDeleted=false');
+    // print(res.body);
     selected = BaseCategory
         .fromJson(json.decode(res.body))
         .data
@@ -186,14 +192,20 @@ class _TestState extends State<Test> {
 
 
     if (duzey3.isEmpty) {
-      print('33');
-      getSelected(urunhks,urun1s,urun2s,"","","","");
+      getSelected(
+          urunhks,
+          urun1s,
+          urun2s,
+          "",
+          "",
+          "",
+          "");
 
       _isButtonDisabled = false;
       setState(() {});
     } else {
-      print('DUZEY 3');
-      print(duzey3);
+      // print('DUZEY 3');
+      // print(duzey3);
       _isButtonDisabled = true;
       setState(() {});
     }
@@ -215,13 +227,19 @@ class _TestState extends State<Test> {
         .toList();
 
     if (duzey4.isEmpty) {
-      print('44');
-      getSelected(urunhks,urun1s,urun2s,urun3s,"","","");
+      getSelected(
+          urunhks,
+          urun1s,
+          urun2s,
+          urun3s,
+          "",
+          "",
+          "");
       _isButtonDisabled = false;
       setState(() {});
     } else {
-      print('DUZEY 4');
-      print(duzey4);
+      // print('DUZEY 4');
+      // print(duzey4);
       _isButtonDisabled = true;
       setState(() {});
     }
@@ -243,13 +261,19 @@ class _TestState extends State<Test> {
         .toList();
 
     if (duzey5.isEmpty) {
-      print('55');
-      getSelected(urunhks,urun1s,urun2s,urun3s,urun4s,"","");
-       _isButtonDisabled = false;
+      getSelected(
+          urunhks,
+          urun1s,
+          urun2s,
+          urun3s,
+          urun4s,
+          "",
+          "");
+      _isButtonDisabled = false;
       setState(() {});
     } else {
-      print('DUZEY 5');
-      print(duzey5);
+      // print('DUZEY 5');
+      // print(duzey5);
       _isButtonDisabled = true;
       setState(() {});
     }
@@ -262,8 +286,8 @@ class _TestState extends State<Test> {
     return Scaffold(
         appBar: AppBar(
           primary: true,
-          backgroundColor: Color(0xFF976775),
-          title: Text('İŞLEM TANIM',
+          backgroundColor: const Color(0xFF976775),
+          title: Text('TİF LİSTESİ',
               style: GoogleFonts.notoSansTaiLe(
                 fontSize: 18,
                 color: Colors.white,
@@ -280,10 +304,10 @@ class _TestState extends State<Test> {
                   Text('Lütfen ürün seçimi veya barkod ile tarama yapınız.',
                       style: GoogleFonts.notoSansTaiLe(
                         fontSize: 15,
-                        color: Color(0XFF976775),
+                        color: const Color(0XFF976775),
                       )),
 
-                  SizedBox(
+                  const SizedBox(
                     height: 40,
                   ),
                   SearchField<String>(
@@ -299,7 +323,7 @@ class _TestState extends State<Test> {
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(e.malzemeAdi.toString(),
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             color: Color(0XFF6E3F52))),
                                   ),
                                 ],
@@ -309,7 +333,7 @@ class _TestState extends State<Test> {
                         .toList(),
                     onSuggestionTap: (e) {
                       urunhks = e.searchKey;
-                      print("hk: ${urunhk}");
+                      // print("hk: ${urunhk}");
                       setState(() {
                         // print(e.key);
                         // print("urun: ${urun}");
@@ -330,11 +354,11 @@ class _TestState extends State<Test> {
                     },
                     suggestionAction: SuggestionAction.unfocus,
                     itemHeight: 50,
-                    searchStyle: TextStyle(color: Color(0XFF976775)),
-                    suggestionStyle: TextStyle(color: Color(0XFF976775)),
+                    searchStyle: const TextStyle(color: Color(0XFF976775)),
+                    suggestionStyle: const TextStyle(color: Color(0XFF976775)),
                     // suggestionsDecoration: BoxDecoration(color: Colors.red),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 40,
                   ),
                   SearchField<String>(
@@ -356,7 +380,7 @@ class _TestState extends State<Test> {
                                         softWrap: true,
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             color: Color(0XFF6E3F52),
                                             fontSize: 12)),
                                   ),
@@ -373,10 +397,10 @@ class _TestState extends State<Test> {
                         urun1 = e.key.toString();
                       });
                       // print(urun1);
-                      print(((((urun1.replaceAll('[', '')).replaceAll(']', ''))
-                          .replaceAll('<', ''))
-                          .replaceAll('>', ''))
-                          .replaceAll("'", ''));
+                      // print(((((urun1.replaceAll('[', '')).replaceAll(']', ''))
+                      //     .replaceAll('<', ''))
+                      //     .replaceAll('>', ''))
+                      //     .replaceAll("'", ''));
                       duzey2Listele(int.parse(
                           ((((urun1.replaceAll('[', '')).replaceAll(']', ''))
                               .replaceAll('<', ''))
@@ -386,11 +410,11 @@ class _TestState extends State<Test> {
                     },
                     suggestionAction: SuggestionAction.unfocus,
                     itemHeight: 50,
-                    searchStyle: TextStyle(color: Color(0XFF976775)),
-                    suggestionStyle: TextStyle(color: Color(0XFF976775)),
+                    searchStyle: const TextStyle(color: Color(0XFF976775)),
+                    suggestionStyle: const TextStyle(color: Color(0XFF976775)),
                     // suggestionsDecoration: BoxDecoration(color: Colors.red),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 40,
                   ),
                   SearchField<String>(
@@ -412,7 +436,7 @@ class _TestState extends State<Test> {
                                         softWrap: true,
                                         maxLines: 2,
                                         overflow: TextOverflow.fade,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             color: Color(0XFF6E3F52),
                                             fontSize: 12)),
                                   ),
@@ -443,11 +467,11 @@ class _TestState extends State<Test> {
                     },
                     suggestionAction: SuggestionAction.unfocus,
                     itemHeight: 50,
-                    searchStyle: TextStyle(color: Color(0XFF976775)),
-                    suggestionStyle: TextStyle(color: Color(0XFF976775)),
+                    searchStyle: const TextStyle(color: Color(0XFF976775)),
+                    suggestionStyle: const TextStyle(color: Color(0XFF976775)),
                     // suggestionsDecoration: BoxDecoration(color: Colors.red),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 40,
                   ),
                   SearchField<String>(
@@ -469,7 +493,7 @@ class _TestState extends State<Test> {
                                         softWrap: true,
                                         maxLines: 2,
                                         overflow: TextOverflow.fade,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             color: Color(0XFF6E3F52),
                                             fontSize: 12)),
                                   ),
@@ -499,11 +523,11 @@ class _TestState extends State<Test> {
                     },
                     suggestionAction: SuggestionAction.unfocus,
                     itemHeight: 50,
-                    searchStyle: TextStyle(color: Color(0XFF976775)),
-                    suggestionStyle: TextStyle(color: Color(0XFF976775)),
+                    searchStyle: const TextStyle(color: Color(0XFF976775)),
+                    suggestionStyle: const TextStyle(color: Color(0XFF976775)),
                     // suggestionsDecoration: BoxDecoration(color: Colors.red),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 40,
                   ),
                   SearchField<String>(
@@ -525,7 +549,7 @@ class _TestState extends State<Test> {
                                         softWrap: true,
                                         maxLines: 2,
                                         overflow: TextOverflow.fade,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             color: Color(0XFF6E3F52),
                                             fontSize: 12)),
                                   ),
@@ -550,11 +574,11 @@ class _TestState extends State<Test> {
                     },
                     suggestionAction: SuggestionAction.unfocus,
                     itemHeight: 50,
-                    searchStyle: TextStyle(color: Color(0XFF976775)),
-                    suggestionStyle: TextStyle(color: Color(0XFF976775)),
+                    searchStyle: const TextStyle(color: Color(0XFF976775)),
+                    suggestionStyle: const TextStyle(color: Color(0XFF976775)),
                     // suggestionsDecoration: BoxDecoration(color: Colors.red),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 40,
                   ),
                   SearchField<String>(
@@ -576,7 +600,7 @@ class _TestState extends State<Test> {
                                         softWrap: true,
                                         maxLines: 2,
                                         overflow: TextOverflow.fade,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             color: Color(0XFF6E3F52),
                                             fontSize: 12)),
                                   ),
@@ -606,25 +630,56 @@ class _TestState extends State<Test> {
                     },
                     suggestionAction: SuggestionAction.unfocus,
                     itemHeight: 50,
-                    searchStyle: TextStyle(color: Color(0XFF976775)),
-                    suggestionStyle: TextStyle(color: Color(0XFF976775)),
+                    searchStyle: const TextStyle(color: Color(0XFF976775)),
+                    suggestionStyle: const TextStyle(color: Color(0XFF976775)),
                     // suggestionsDecoration: BoxDecoration(color: Colors.red),
                   ),
                   OutlinedButton(
                     style: OutlinedButton.styleFrom(
-                      backgroundColor: Color(0XFF463848),
-                      side: BorderSide(width: 1.0, color: Color(0XFF463848)),
+                      backgroundColor: const Color(0XFF463848),
+                      side: const BorderSide(
+                          width: 1.0, color: Color(0XFF463848)),
                     ),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> urunGrid()));
+                    onPressed: () async {
+                      // final Future<SharedPreferences> _prefs =
+                      // SharedPreferences.getInstance();
+                      //
+                      // final SharedPreferences prefs = await _prefs;
+                      // prefs.getString('islemAdi');
+                      // prefs.getString('islemAciklamasi');
+                      // prefs.getString('islemTarihi');
+                      // prefs.getInt('islemTuru');
+                      // prefs.getInt('anaDepo');
+                      // prefs.getInt('hedefDepo');
+                      // print('test');
+                      // print(prefs.getString('islemAdi'));
+                      // print(prefs.getString('islemAciklamasi'));
+                      // print(prefs.getString('islemTarihi'));
+                      // print(prefs.getInt('islemTuru'));
+                      // print(prefs.getInt('anaDepo'));
+                      // print(prefs.getInt('hedefDepo'));
+                      // print('test');
+
                       setState(() {});
                     },
                     child: GestureDetector(
-                      onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>IslemTanim()));
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (
+                            context) => TifKategoriUrunSecimi(islemTuru: this.widget.islemTuru
+                            .toString(),
+                            islemAdi: this.widget.islemAdi.toString(),
+                            islemAciklamasi: this.widget.islemAciklamasi
+                                .toString(),
+                            anaDepo: int.parse(
+                                this.widget.anaDepo.toString()),
+                            hedefDepo: int.parse(
+                                this.widget.hedefDepo.toString()),
+                            islemTarihi: this.widget.islemTarihi.toString(),
+                          sonuc: selected,
+                        )));
                       },
                       child: Text(_isButtonDisabled ? "Hold on..." : "SEÇ",
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: Color(0XFFDBDCE8),
                               fontSize: 15,
                               letterSpacing: 2.0)),

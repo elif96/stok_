@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:stok_takip_uygulamasi/DrawerMenu.dart';
+import 'package:stok_takip_uygulamasi/drawer_menu.dart';
 import 'package:stok_takip_uygulamasi/isTaslak.dart';
-import 'package:stok_takip_uygulamasi/islemTanim.dart';
+import 'package:stok_takip_uygulamasi/Islem_bilgileri.dart';
 import 'package:stok_takip_uygulamasi/tanimlamalar.dart';
 
 class IslemTurDetay extends StatefulWidget {
@@ -23,7 +23,7 @@ class _IslemTurDetayState extends State<IslemTurDetay> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-          backgroundColor: Color(0xFF976775), title: Text('İşlem Türü Detay')),
+          backgroundColor: const Color(0xFF976775), title: const Text('İşlem Türü Detay')),
       endDrawer: DrawerMenu(),
       body: ListView.builder(
           itemCount: 1,
@@ -57,41 +57,41 @@ class WidgetGiris extends StatelessWidget {
       children: [
 
         ListTile(
-          title: Text("Avans Yoluyla",style: TextStyle(color: Color(0XFF976775))),
-          trailing: Icon(Icons.arrow_forward_ios),
+          title: const Text("Avans Yoluyla",style: TextStyle(color: Color(0XFF976775))),
+          trailing: const Icon(Icons.arrow_forward_ios),
           onTap: (){
             // Navigator.push(context, MaterialPageRoute(builder: (context)=>  IslemTanim(islemTuru: this.islemTuru, islemAdi: this.islemAdi, islemAciklamasi: this.islemAciklamasi, islemTarihi: this.islemTarihi)));
 
           },
         ),
-        Divider(),
+        const Divider(),
         ListTile(
-          title: Text("İhale Yoluyla",style: TextStyle(color: Color(0XFF976775))),
-          trailing: Icon(Icons.arrow_forward_ios),
+          title: const Text("İhale Yoluyla",style: TextStyle(color: Color(0XFF976775))),
+          trailing: const Icon(Icons.arrow_forward_ios),
           onTap: (){
             // Navigator.push(context, MaterialPageRoute(builder: (context)=>  IslemTanim(islemTuru: this.islemTuru, islemAdi: this.islemAdi, islemAciklamasi: this.islemAciklamasi, islemTarihi: this.islemTarihi)));
 
           },
         ),
-        Divider(),
+        const Divider(),
         ListTile(
-          title: Text("Satın Alma",style: TextStyle(color: Color(0XFF976775))),
-          trailing: Icon(Icons.arrow_forward_ios),
+          title: const Text("Satın Alma",style: TextStyle(color: Color(0XFF976775))),
+          trailing: const Icon(Icons.arrow_forward_ios),
           onTap: (){
             // Navigator.push(context, MaterialPageRoute(builder: (context)=>  IslemTanim(islemTuru: this.islemTuru, islemAdi: this.islemAdi, islemAciklamasi: this.islemAciklamasi, islemTarihi: this.islemTarihi)));
 
           },
         ),
-        Divider(),
+        const Divider(),
         ListTile(
-          title: Text("Üretim",style: TextStyle(color: Color(0XFF976775))),
-          trailing: Icon(Icons.arrow_forward_ios),
+          title: const Text("Üretim",style: TextStyle(color: Color(0XFF976775))),
+          trailing: const Icon(Icons.arrow_forward_ios),
           onTap: (){
             // Navigator.push(context, MaterialPageRoute(builder: (context)=>  IslemTanim(islemTuru: this.islemTuru, islemAdi: this.islemAdi, islemAciklamasi: this.islemAciklamasi, islemTarihi: this.islemTarihi)));
 
           },
         ),
-        Divider(),
+        const Divider(),
       ],
     );
     // return ExpansionTile(
@@ -189,22 +189,22 @@ class WidgetDepartmanIciHareket extends StatelessWidget {
       children: [
 
         ListTile(
-          title: Text("Transfer",style: TextStyle(color: Color(0XFF976775))),
-          trailing: Icon(Icons.arrow_forward_ios),
+          title: const Text("Transfer",style: TextStyle(color: Color(0XFF976775))),
+          trailing: const Icon(Icons.arrow_forward_ios),
           onTap: (){
             // Navigator.push(context, MaterialPageRoute(builder: (context)=>  IslemTanim(islemTuru: this.islemTuru, islemAdi: this.islemAdi, islemAciklamasi: this.islemAciklamasi, islemTarihi: this.islemTarihi)));
           },
         ),
-        Divider(),
+        const Divider(),
         ListTile(
-          title: Text("Zimmet",style: TextStyle(color: Color(0XFF976775))),
-          trailing: Icon(Icons.arrow_forward_ios),
+          title: const Text("Zimmet",style: TextStyle(color: Color(0XFF976775))),
+          trailing: const Icon(Icons.arrow_forward_ios),
           onTap: (){
             // Navigator.push(context, MaterialPageRoute(builder: (context)=>  IslemTanim(islemTuru: this.islemTuru, islemAdi: this.islemAdi, islemAciklamasi: this.islemAciklamasi, islemTarihi: this.islemTarihi)));
 
           },
         ),
-        Divider(),
+        const Divider(),
       ],
     );
   }
@@ -224,41 +224,41 @@ class WidgetCikis extends StatelessWidget {
       children: [
 
         ListTile(
-          title: Text("Devir",style: TextStyle(color: Color(0XFF976775))),
-          trailing: Icon(Icons.arrow_forward_ios),
+          title: const Text("Devir",style: TextStyle(color: Color(0XFF976775))),
+          trailing: const Icon(Icons.arrow_forward_ios),
           onTap: (){
             // Navigator.push(context, MaterialPageRoute(builder: (context)=>  IslemTanim(islemTuru: this.islemTuru, islemAdi: this.islemAdi, islemAciklamasi: this.islemAciklamasi, islemTarihi: this.islemTarihi)));
 
           },
         ),
-        Divider(),
+        const Divider(),
         ListTile(
-          title: Text("Hibe",style: TextStyle(color: Color(0XFF976775))),
-          trailing: Icon(Icons.arrow_forward_ios),
+          title: const Text("Hibe",style: TextStyle(color: Color(0XFF976775))),
+          trailing: const Icon(Icons.arrow_forward_ios),
           onTap: (){
             // Navigator.push(context, MaterialPageRoute(builder: (context)=>  IslemTanim(islemTuru: this.islemTuru, islemAdi: this.islemAdi, islemAciklamasi: this.islemAciklamasi, islemTarihi: this.islemTarihi)));
 
           },
         ),
-        Divider(),
+        const Divider(),
         ListTile(
-          title: Text("Hurda",style: TextStyle(color: Color(0XFF976775))),
-          trailing: Icon(Icons.arrow_forward_ios),
+          title: const Text("Hurda",style: TextStyle(color: Color(0XFF976775))),
+          trailing: const Icon(Icons.arrow_forward_ios),
           onTap: (){
             // Navigator.push(context, MaterialPageRoute(builder: (context)=>  IslemTanim(islemTuru: this.islemTuru, islemAdi: this.islemAdi, islemAciklamasi: this.islemAciklamasi, islemTarihi: this.islemTarihi)));
 
           },
         ),
-        Divider(),
+        const Divider(),
         ListTile(
-          title: Text("Tüketim",style: TextStyle(color: Color(0XFF976775))),
-          trailing: Icon(Icons.arrow_forward_ios),
+          title: const Text("Tüketim",style: TextStyle(color: Color(0XFF976775))),
+          trailing: const Icon(Icons.arrow_forward_ios),
           onTap: (){
             // Navigator.push(context, MaterialPageRoute(builder: (context)=>  IslemTanim(islemTuru: this.islemTuru, islemAdi: this.islemAdi, islemAciklamasi: this.islemAciklamasi, islemTarihi: this.islemTarihi)));
 
           },
         ),
-        Divider(),
+        const Divider(),
       ],
     );
 

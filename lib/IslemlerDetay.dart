@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loadmore/loadmore.dart';
-import 'package:stok_takip_uygulamasi/DrawerMenu.dart';
+import 'package:stok_takip_uygulamasi/drawer_menu.dart';
 import 'package:stok_takip_uygulamasi/model/ProductProcess.dart';
 import 'package:http/http.dart' as http;
 
@@ -29,7 +29,7 @@ class _IslemlerDetayState extends State<IslemlerDetay> {
     return Scaffold(
       appBar: AppBar(
         primary: true,
-        backgroundColor: Color(0xFF976775),
+        backgroundColor: const Color(0xFF976775),
         title: Text(title),
       ),
       endDrawer: DrawerMenu(),
@@ -37,7 +37,7 @@ class _IslemlerDetayState extends State<IslemlerDetay> {
           itemCount: 1,
           itemBuilder: (context, index) {
             if (this.widget.islemAdi == 'İşlem Taslakları') {
-              return Drafts(islemAdi: 'İşlem Taslakları');
+              return const Drafts(islemAdi: 'İşlem Taslakları');
             }
             if (this.widget.islemAdi == 'Onayımı Bekleyen İşlemler') {
               title = 'Onayımı Bekleyen İşlemler';
@@ -70,7 +70,7 @@ class _IslemlerDetayState extends State<IslemlerDetay> {
               );
             }
             if (this.widget.islemAdi == '') {
-              return Text('data');
+              return const Text('data');
             }
           }),
     );
@@ -143,11 +143,11 @@ class _DraftsState extends State<Drafts> {
   }
 
   Future<void> _refresh() async {
-    await Future.delayed(Duration(seconds: 0, milliseconds: 2000));
+    await Future.delayed(const Duration(seconds: 0, milliseconds: 2000));
   }
 
   Future<bool> _loadMore() async {
-    await Future.delayed(Duration(seconds: 0, milliseconds: 2000));
+    await Future.delayed(const Duration(seconds: 0, milliseconds: 2000));
 
 
     pageNum = pageNum+1;
@@ -261,11 +261,11 @@ class _WaitingForMyConfirmationsState extends State<WaitingForMyConfirmations> {
   }
 
   Future<void> _refresh() async {
-    await Future.delayed(Duration(seconds: 0, milliseconds: 2000));
+    await Future.delayed(const Duration(seconds: 0, milliseconds: 2000));
   }
 
   Future<bool> _loadMore() async {
-    await Future.delayed(Duration(seconds: 0, milliseconds: 2000));
+    await Future.delayed(const Duration(seconds: 0, milliseconds: 2000));
 
 
     pageNumWaitingForMyConfirmations = pageNumWaitingForMyConfirmations+1;
@@ -381,11 +381,11 @@ class _WaitingForConfirmationsState extends State<WaitingForConfirmations> {
   }
 
   Future<void> _refresh() async {
-    await Future.delayed(Duration(seconds: 0, milliseconds: 2000));
+    await Future.delayed(const Duration(seconds: 0, milliseconds: 2000));
   }
 
   Future<bool> _loadMore() async {
-    await Future.delayed(Duration(seconds: 0, milliseconds: 2000));
+    await Future.delayed(const Duration(seconds: 0, milliseconds: 2000));
 
 
     pageNumWaitingForConfirmations = pageNumWaitingForConfirmations+1;
@@ -499,11 +499,11 @@ class _RejectedsState extends State<Rejecteds> {
   }
 
   Future<void> _refresh() async {
-    await Future.delayed(Duration(seconds: 0, milliseconds: 2000));
+    await Future.delayed(const Duration(seconds: 0, milliseconds: 2000));
   }
 
   Future<bool> _loadMore() async {
-    await Future.delayed(Duration(seconds: 0, milliseconds: 2000));
+    await Future.delayed(const Duration(seconds: 0, milliseconds: 2000));
 
 
     pageNumRejecteds = pageNumRejecteds+1;
@@ -617,11 +617,11 @@ class _MyConfirmationState extends State<MyConfirmation> {
   }
 
   Future<void> _refresh() async {
-    await Future.delayed(Duration(seconds: 0, milliseconds: 2000));
+    await Future.delayed(const Duration(seconds: 0, milliseconds: 2000));
   }
 
   Future<bool> _loadMore() async {
-    await Future.delayed(Duration(seconds: 0, milliseconds: 2000));
+    await Future.delayed(const Duration(seconds: 0, milliseconds: 2000));
 
 
     pageNumMyConfirmation = pageNumMyConfirmation+1;
@@ -735,11 +735,11 @@ class _RejectedsByMeState extends State<RejectedsByMe> {
   }
 
   Future<void> _refresh() async {
-    await Future.delayed(Duration(seconds: 0, milliseconds: 2000));
+    await Future.delayed(const Duration(seconds: 0, milliseconds: 2000));
   }
 
   Future<bool> _loadMore() async {
-    await Future.delayed(Duration(seconds: 0, milliseconds: 2000));
+    await Future.delayed(const Duration(seconds: 0, milliseconds: 2000));
 
 
     pageNumRejectedsByMe = pageNumRejectedsByMe+1;
