@@ -229,7 +229,7 @@ class _WaitingForMyConfirmationsState extends State<WaitingForMyConfirmations> {
 
   Future<List<ProductProcessData>> WaitingForMyConfirmationsListele() async {
     http.Response res = await http.get(Uri.parse(
-        'https://stok.bahcelievler.bel.tr/api/ProductProcesses/GetAllWaitingForMyConfirmations?AnaDepoIDFilter=0&HedefDepoIdFilter=0&Page=1&PageSize=12&Orderby=Id&Desc=false&isDeleted=false'));
+        'https://stok.bahcelievler.bel.tr/api/ProductProcesses/GetAllWaitingForMyConfirmations?AnaDepoIDFilter=0&HedefDepoIdFilter=0&Id=0&Page=1&PageSize=12&Orderby=Id&Desc=false&isDeleted=false&includeParents=true&includeChildren=true'));
     WaitingForMyConfirmations = ProductProcess.fromJson(json.decode(res.body)).data.toList();
 
     setState(() {});
@@ -245,9 +245,9 @@ class _WaitingForMyConfirmationsState extends State<WaitingForMyConfirmations> {
 
     WaitingForMyConfirmations.clear();
     http.Response res = await http.get(Uri.parse(
-        'https://stok.bahcelievler.bel.tr/api/ProductProcesses/GetAllWaitingForMyConfirmations?AnaDepoIDFilter=0&HedefDepoIdFilter=0&Page=${Page}&PageSize=${PageSize}&Orderby=${Orderby}&Desc=${Desc}&isDeleted=${isDeleted}'));
+        'https://stok.bahcelievler.bel.tr/api/ProductProcesses/GetAllWaitingForMyConfirmations?AnaDepoIDFilter=0&HedefDepoIdFilter=0&Id=0&Page=${Page}&PageSize=${PageSize}&Orderby=${Orderby}&Desc=${Desc}&isDeleted=${isDeleted}&includeParents=true&includeChildren=true'));
     WaitingForMyConfirmations = ProductProcess.fromJson(json.decode(res.body)).data.toList();
-
+  print(res.body);
 
     for (int i = 0; i < WaitingForMyConfirmations.length; i++) {
       WaitingForMyConfirmationsList.add(WaitingForMyConfirmations[i]);

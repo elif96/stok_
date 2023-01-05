@@ -1,12 +1,15 @@
 import 'dart:convert';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:custom_searchable_dropdown/custom_searchable_dropdown.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
+import 'package:searchfield/searchfield.dart';
 import 'package:stok_takip_uygulamasi/drawer_menu.dart';
 import 'package:stok_takip_uygulamasi/model/Marka.dart';
 import 'package:http/http.dart' as http;
+import 'package:stok_takip_uygulamasi/model/myData.dart';
 
 class ModelTanim extends StatefulWidget {
   const ModelTanim({Key? key}) : super(key: key);
@@ -37,28 +40,35 @@ class _ModelTanimState extends State<ModelTanim> {
   var cevap;
   var dropdownvalue;
 
+  late myData<Marka> cevaps = myData<Marka>();
+  late myData<Marka> cevapSon = myData<Marka>();
 
-  List<Data> cvp = <Data>[];
-  List<Data> cvpSon = <Data>[];
-
-  Future<List<Data>> markaListeleWithFilter(String MarkaAdiFilter, int Page,
+  Future<myData<Marka>> markaListeleWithFilter(String MarkaAdiFilter, int Page,
       int PageSize, String Orderby, bool Desc) async {
     //https://stok.bahcelievler.bel.tr/api/Brands/GetAll?MarkaAdiFilter=a&Page=1&PageSize=12&Orderby=Id&Desc=false
 
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/Brands/GetAll?MarkaAdiFilter=${MarkaAdiFilter}&Page=${Page}&PageSize=${PageSize}&Orderby=${Orderby}&Desc=${Desc}'));
-    cvp = Marka.fromJson(json.decode(res.body)).data.toList();
+    cevaps = myData<Marka>.fromJson(json.decode(res.body), Marka.fromJsonModel);
     // print(cvp[0].markaAdi);
     // setState(() {});
     // for (int i = 0; i < cvp.length; i++) {
     //   print(cvp[i].markaAdi);
     // }
-    for (int i = 0; i < cvp.length; i++) {
-      cvpSon.add(cvp[i]);
-    }
 
-     // for (int i = 0; i < cvpSon.length; i++) {
-    //   print(cvpSon[i].markaAdi);
+
+    // for (int i = 0; i < cevaps!.data!.length; i++) {
+    //   cevapSon.data?.add(cevaps.data![i]);
+    //   print(cevapSon.data?.length);
+    // }
+
+    // for (int i = 0; i < cevaps.data!.length; i++) {
+    //   cevapSon.data?.add(cevaps.data![i]);
+    // }
+
+
+    // for (int i = 0; i < cevapSon.data!.length; i++) {
+    //   print(cevapSon.data![i].markaAdi);
     // }
 
     // print(res.body);
@@ -66,7 +76,7 @@ class _ModelTanimState extends State<ModelTanim> {
     // print(cevap.data[0].markaAdi);
 
     setState(() {});
-    return cvpSon;
+    return cevaps;
   }
 
   // List<Marka> cvp = <Marka>[];
@@ -100,11 +110,10 @@ class _ModelTanimState extends State<ModelTanim> {
   var trimmedValue;
 
   Future<void> modelEkle() async {
-
     var url = Uri.parse('https://stok.bahcelievler.bel.tr/api/BrandModels');
     print("ddd: ${dropdownvalue}");
     // print("ddd: ${trimmedValue}");
-    if (dropdownvalue == null || dropdownvalue =="") {
+    if (dropdownvalue == null || dropdownvalue == "") {
       print('object');
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Lütfen listeden bir varyant seçin."),
@@ -120,8 +129,8 @@ class _ModelTanimState extends State<ModelTanim> {
     // print("model: ${tfModelAdi.text}");
     http.Response response = await http.post(url,
         headers: {'Accept': '*/*', 'Content-Type': 'application/json'},
-        body: json.encoder
-            .convert({"brandId": dropdownvalue.value, "modelAdi": tfModelAdi.text}));
+        body: json.encoder.convert(
+            {"brandId": dropdownvalue.value, "modelAdi": tfModelAdi.text}));
 
     // print(tfModelAdi.text);
     tfModelAdi.text = "";
@@ -297,7 +306,6 @@ class _ModelTanimState extends State<ModelTanim> {
   int pageNum = 1;
   int pageSize = 5;
 
-  List<Data> markalar = <Data>[];
 
   int pageNumber = 1;
 
@@ -312,12 +320,10 @@ class _ModelTanimState extends State<ModelTanim> {
     pageNumber += 1;
     markaListeleWithFilter('', pageNumber, 5, 'Id', true);
 
-
     print('UPDATED');
     setState(() {
       isLoadingVertical = false;
     });
-
   }
 
   @override
@@ -325,7 +331,8 @@ class _ModelTanimState extends State<ModelTanim> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-            backgroundColor: const Color(0xFF976775), title: const Text('Model Tanım')),
+            backgroundColor: const Color(0xFF976775),
+            title: const Text('Model Tanım')),
         endDrawer: DrawerMenu(),
         body: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -413,36 +420,240 @@ class _ModelTanimState extends State<ModelTanim> {
                   //     ),
                   //   ),
                   // ),
+                  SizedBox(
+                    height: 70,
+                    child: Row(
+                      children: [
+                        Expanded(
+                            flex: 2,
+                            child: Container(
+                              height: double.infinity,
+                              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                              margin: EdgeInsets.only(left: 18, top: 6, bottom: 6),
+                              child: TextButton(
+                                child: Icon(
+                                  Icons.filter_list,
+                                  size: 35,
+                                ),
+                                style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(cevaps.data!.isEmpty ? Colors.grey.withOpacity(.5) : Colors.white)
+                                ),
+                                onPressed: (){
+
+                                  showModalBottomSheet(
+                                      context: context,
+                                      builder: (context) {
+                                        return Padding(
+                                          padding: const EdgeInsets.all(0),
+                                          child: SingleChildScrollView(
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: cevaps.data!.where((e) => e.markaAdi == -1 ).map((e) => ListTile(
+                                                contentPadding: EdgeInsets.all(0),
+                                                onTap: (){
+                                                  // viewModel.activityFilter(e.activityId!);
+                                                  // Navigator.pop(context);
+                                                },
+                                                title: Container(
+                                                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 30),
+                                                  decoration: BoxDecoration(
+                                                    border: Border(
+                                                        bottom: BorderSide(color: Colors.grey.withOpacity(.1))
+                                                    ),
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                          color: Color(0xfff0f0f0),
+                                                          offset: Offset(0, 0),
+                                                          blurRadius: 6,
+                                                          spreadRadius: 0
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  child: Row(
+                                                    children: [
+                                                      Expanded(
+                                                        flex: 1,
+                                                        child: Text(
+                                                          "(${cevaps})",
+                                                          style: GoogleFonts.inter(
+                                                              fontSize: 14,
+                                                              color: Colors.black.withOpacity(.7)
+                                                          ),
+                                                        ),
+                                                      ),
+
+                                                    ],
+                                                  ),
+                                                ),
+                                              )).toList(),
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                  );
+                                },
+                              ),
+                            )
+                        ),
+                        Expanded(
+                          flex: 7,
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Color(0xfff0f0f0),
+                                    offset: Offset(0, 0),
+                                    blurRadius: 10,
+                                    spreadRadius: 0)
+                              ],
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                            margin: const EdgeInsets.only(left: 8, right: 18, top: 8, bottom: 8),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 8,
+                                  child: TextField(
+                                    controller: tfModelAdi,
+                                    textAlign: TextAlign.left,
+                                    style:
+                                    GoogleFonts.inter(fontSize: 13, fontWeight: FontWeight.w600),
+                                    decoration: InputDecoration(
+                                        contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                                        filled: true,
+                                        focusColor: Colors.green,
+                                        border: const OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.transparent,
+                                                width: 0,
+                                                style: BorderStyle.none)),
+                                        focusedBorder: const OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.transparent,
+                                                width: 0,
+                                                style: BorderStyle.none)),
+                                        enabledBorder: const OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.transparent,
+                                                width: 0,
+                                                style: BorderStyle.none)),
+                                        hintStyle: GoogleFonts.inter(
+                                            color: Colors.black45,
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w600),
+                                        hintText: "Ara...",
+                                        fillColor: Colors.white70),
+                                  ),
+                                ),
+                                const Expanded(
+                                  flex: 1,
+                                  child: Icon(
+                                    Icons.search,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  LazyLoadScrollView(child: SearchField<Marka>(
+                    autoCorrect: true,
+                    hint: 'Marka Seçiniz',
+                    onSuggestionTap: (e) {
+                      dropdownvalue = e.searchKey;
+                      setState(() {
+                        dropdownvalue = e.key.toString();
+                      });
+                    },
+                    suggestionAction: SuggestionAction.unfocus,
+                    itemHeight: 50,
+                    searchStyle: const TextStyle(color: Color(0XFF976775)),
+                    suggestionStyle:
+                    const TextStyle(color: Color(0XFF976775)),
+                    // suggestionsDecoration: BoxDecoration(color: Colors.red),
+                    suggestions: cevaps.data!
+                        .map(
+                          (e) => SearchFieldListItem<Marka>(
+
+                          e.markaAdi.toString(),
+                          child: Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween,
+                            children: [
+
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(e.markaAdi.toString(),
+                                    style: const TextStyle(
+                                        color: Color(0XFF6E3F52))),
+                              ),
+                              Row(
+                                children: [
+                                  GestureDetector(
+                                    child: const Text('Load More'),
+
+                                    onTap: () {
+                                      // pageNum +=1;
+                                      print("e: ${e.markaAdi}");
+
+
+                                      pageSize += 5;
+
+                                      setState(() {});
+                                    },
+                                  ),
+
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  GestureDetector(
+                                    child: const Icon(
+                                      Icons.border_color_outlined,
+                                      color: Color(0XFF6E3F52),
+                                    ),
+                                    onTap: () {
+                                      showGuncellemeDialog(e.id!);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          key: Key(e.id.toString())),
+                    )
+                        .toList(),
+                  ), onEndOfPage:  () => loadMore(),),
+
                   LazyLoadScrollView(
                     scrollDirection: Axis.vertical,
                     onEndOfPage: () => loadMore(),
                     child: CustomSearchableDropDown(
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Colors.blue
-                          )
-                      ),
+                      decoration:
+                          BoxDecoration(border: Border.all(color: Colors.blue)),
                       dropdownHintText: 'Marka Adı ',
-                      dropdownItemStyle: const TextStyle(color: Color(0XFF976775)),
+                      dropdownItemStyle:
+                          const TextStyle(color: Color(0XFF976775)),
                       menuMode: true,
                       labelStyle: const TextStyle(color: Color(0XFF976775)),
-                      items: cvpSon.map((item) {
+                      items: cevaps.data!.map((item) {
                         return DropdownMenuItem(
                           value: item.id.toString(),
                           child: Text(item.markaAdi.toString()),
-
                         );
                       }).toList(),
                       onChanged: (newVal) {
-                          dropdownvalue = newVal;
-
+                        dropdownvalue = newVal;
                       },
                       label: 'Model Seçin',
-                      dropDownMenuItems: cvpSon.map((item) {
-
+                      dropDownMenuItems: cevaps.data!.map((item) {
                         // print(item.markaAdi);
-                            return item.markaAdi;
-                          }).toList(),
+                        return item.markaAdi;
+                      }).toList(),
                     ),
                   ),
                   // LazyLoadScrollView(
@@ -548,8 +759,8 @@ class _ModelTanimState extends State<ModelTanim> {
                     child: OutlinedButton(
                         style: OutlinedButton.styleFrom(
                           backgroundColor: const Color(0XFF463848),
-                          side:
-                              const BorderSide(width: 1.0, color: Color(0XFF463848)),
+                          side: const BorderSide(
+                              width: 1.0, color: Color(0XFF463848)),
                         ),
                         onPressed: () {
                           modelEkle();
@@ -571,7 +782,7 @@ class _ModelTanimState extends State<ModelTanim> {
                         border: OutlineInputBorder(
                             borderSide: BorderSide(color: Color(0XFF6E3F52)))),
                     hint: const Text('Model Seçiniz'),
-                    items: cvpSon.map((item) {
+                    items: cevaps.data!.map((item) {
                       return DropdownMenuItem(
                         value: item.id.toString(),
                         child: Text(item.markaAdi.toString()),

@@ -5,6 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stok_takip_uygulamasi/drawer_menu.dart';
 import 'package:stok_takip_uygulamasi/Islem_bilgileri.dart';
 import 'package:stok_takip_uygulamasi/model/Warehouse.dart';
+import 'package:stok_takip_uygulamasi/model/myData.dart';
+import 'package:stok_takip_uygulamasi/model/myWareHouse.dart';
 import 'package:stok_takip_uygulamasi/stokBul.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
@@ -32,25 +34,32 @@ class _IsBaslatState extends State<IsBaslat> {
   var anaDepo;
   var hedefDepo;
 
+  List<String> list = <String>['1', '2', '3', '4'];
 
+  late myData<myWareHouse> cevaps;
 
-  List<String> list = <String>[
-    '1',
-    '2',
-    '3',
-    '4'
-  ];
+  Future<myData<myWareHouse>> warehouseListele() async {
+    http.Response res = await http
+        .get(Uri.parse('https://stok.bahcelievler.bel.tr/api/Warehouses'));
+    // print(res.body);
+
+    cevaps = myData<myWareHouse>.fromJson(json.decode(res.body), myWareHouse.fromJsonModel);
+
+    print(cevaps);
+    print(cevaps.data![0].ad);
+    return cevaps;
+  }
 
   List<Data> cevap = <Data>[];
 
-  Future<List<Data>> warehouseListele() async {
-    http.Response res = await http
-        .get(Uri.parse('https://stok.bahcelievler.bel.tr/api/Warehouses'));
-    cevap = Warehouse.fromJson(json.decode(res.body)).data.toList();
-    // print(cevap);
-    // print(cevap[0].ad);
-    return cevap;
-  }
+  // Future<List<Data>> warehouseListele() async {
+  //   http.Response res = await http
+  //       .get(Uri.parse('https://stok.bahcelievler.bel.tr/api/Warehouses'));
+  //   cevap = Warehouse.fromJson(json.decode(res.body)).data.toList();
+  //   print(cevap);
+  //   print(cevap[0].ad);
+  //   return cevap;
+  // }
 
   int _currentStep = 0;
 
@@ -60,14 +69,7 @@ class _IsBaslatState extends State<IsBaslat> {
 
   Future<void> isBaslat(String islemAdi, String islemAciklama, int islemTuru,
       int anaDepoId, int hedefDepoId, String islemTarihi) async {
-    // print('object');
-    // print(tfIslemAdi.text);
-    // print(tfIslemAciklamasi.text);
-    // print(islemTuru);
-    // print(anaDepo);
-    // print(hedefDepo);
-    // print(tfIslemTarihi.text);
-    // print('object');
+
     var url =
         Uri.parse('https://stok.bahcelievler.bel.tr/api/ProductProcesses');
     http.Response response = await http.post(url,
@@ -80,62 +82,8 @@ class _IsBaslatState extends State<IsBaslat> {
           "hedefDepoID": int.parse(hedefDepo),
           "islemTarihi": tfIslemTarihi.text
         }));
-    // tfIslemAdi.text = "";
-    // tfIslemAciklamasi.text = "";
-
-    // print(response.body);
-    // print(response.statusCode);
-    // print(response.reasonPhrase);
-
-    // if(tfIslemAdi.text ==""){
-    //   //silinecek marka bulunamadı
-    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    //     content: Text("Lütfen işlem adı girin."),
-    //     backgroundColor: Colors.red,
-    //   ));
-    //   tfIslemAdi.clear();
-    //   setState(() {});
-    // }
-    // else if(tfIslemAciklamasi == ""){
-    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    //     content: Text("Lütfen işlem açıklaması girin."),
-    //     backgroundColor: Colors.red,
-    //   ));
-    //   tfIslemAciklamasi.clear();
-    //   setState(() {});
-    // }
-    // else if(tfIslemTarihi == ""){
-    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    //     content: Text("Lütfen işlem tarihi girin."),
-    //     backgroundColor: Colors.red,
-    //   ));
-    //   tfIslemAciklamasi.clear();
-    //   setState(() {});
-    // }else if(islemTuru == ""){
-    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    //     content: Text("Lütfen işlem türü seçin."),
-    //     backgroundColor: Colors.red,
-    //   ));
-    //   tfIslemAciklamasi.clear();
-    //   setState(() {});
-    // }
-    // else if(anaDepo == ""){
-    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    //     content: Text("Lütfen ana depo seçin."),
-    //     backgroundColor: Colors.red,
-    //   ));
-    //   tfIslemAciklamasi.clear();
-    //   setState(() {});
-    // }
-    // else if(hedefDepo == ""){
-    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    //     content: Text("Lütfen hedef depo seçin."),
-    //     backgroundColor: Colors.red,
-    //   ));
-    //   tfIslemAciklamasi.clear();
-    //   setState(() {});
-    // }
-    if(response.reasonPhrase == 'Bad Request'){
+print(response.body);
+    if (response.reasonPhrase == 'Bad Request') {
       //model olduğu için marka silinemedi
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Bir sorun oluştu."),
@@ -143,28 +91,7 @@ class _IsBaslatState extends State<IsBaslat> {
       ));
       // tfIslemAdi.clear();
       setState(() {});
-    }
-    else if(response.reasonPhrase == 'Created'){
-     // başarılı
-      // final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-      //
-      //   final SharedPreferences prefs = await _prefs;
-      //   prefs.setString('islemAdi', tfIslemAdi.text);
-      //   prefs.setString('islemAciklamasi', tfIslemAciklamasi.text);
-      //   prefs.setString('islemTarihi', tfIslemTarihi.text);
-      //   prefs.setInt('islemTuru', islemTuru);
-      //   prefs.setInt('anaDepo', int.parse(anaDepo));
-      //   prefs.setInt('hedefDepo', int.parse(hedefDepo));
-      //
-      //   print('isbaslat');
-      //   print(prefs.getString('islemAdi'));
-      //   print(prefs.getString('islemAciklamasi'));
-      //   print(prefs.getString('islemTarihi'));
-      //   print(prefs.getInt('islemTuru'));
-      //   print(prefs.getInt('anaDepo'));
-      //   print(prefs.getInt('hedefDepo'));
-      //   print('isbaslat');
-
+    } else if (response.reasonPhrase == 'Created') {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("İş başlatma işlemi başarıyla gerçekleştirildi."),
         backgroundColor: Colors.green,
@@ -239,8 +166,8 @@ class _IsBaslatState extends State<IsBaslat> {
                                                 colorScheme: Theme.of(context)
                                                     .colorScheme
                                                     .copyWith(
-                                                      primary:
-                                                          const Color(0xFF976775),
+                                                      primary: const Color(
+                                                          0xFF976775),
                                                       background: Colors.red,
                                                       secondary: Colors.red,
                                                     ),
@@ -264,8 +191,8 @@ class _IsBaslatState extends State<IsBaslat> {
                                                         style: GoogleFonts
                                                             .notoSansTaiLe(
                                                           fontSize: 15,
-                                                          color:
-                                                              const Color(0XFF976775),
+                                                          color: const Color(
+                                                              0XFF976775),
                                                         )),
                                                     content: Column(
                                                       children: <Widget>[
@@ -499,8 +426,8 @@ class _IsBaslatState extends State<IsBaslat> {
                                                         style: GoogleFonts
                                                             .notoSansTaiLe(
                                                           fontSize: 15,
-                                                          color:
-                                                              const Color(0XFF976775),
+                                                          color: const Color(
+                                                              0XFF976775),
                                                         )),
                                                     content: Column(
                                                       children: <Widget>[
@@ -629,8 +556,8 @@ class _IsBaslatState extends State<IsBaslat> {
                                                         style: GoogleFonts
                                                             .notoSansTaiLe(
                                                           fontSize: 15,
-                                                          color:
-                                                              const Color(0XFF976775),
+                                                          color: const Color(
+                                                              0XFF976775),
                                                         )),
                                                     content: Column(
                                                       children: <Widget>[
@@ -647,8 +574,8 @@ class _IsBaslatState extends State<IsBaslat> {
                                                                           0XFF6E3F52),
                                                                       width:
                                                                           3))),
-                                                          items: cevap.map(
-                                                              (Data value) {
+                                                          items: cevaps.data?.map(
+                                                              (myWareHouse value) {
                                                             return DropdownMenuItem<
                                                                 String>(
                                                               value: value.id
@@ -683,8 +610,8 @@ class _IsBaslatState extends State<IsBaslat> {
                                                                           0XFF6E3F52),
                                                                       width:
                                                                           3))),
-                                                          items: cevap.map(
-                                                              (Data value) {
+                                                          items: cevaps.data?.map(
+                                                              (myWareHouse value) {
                                                             return DropdownMenuItem<
                                                                 String>(
                                                               value: value.id
@@ -770,9 +697,8 @@ class _IsBaslatState extends State<IsBaslat> {
                                                                       backgroundColor:
                                                                           Colors
                                                                               .red,
-                                                                      content:
-                                                                          Text(
-                                                                              'İşlem adını boş bırakamazsınız.'),
+                                                                      content: Text(
+                                                                          'İşlem adını boş bırakamazsınız.'),
                                                                       duration: Duration(
                                                                           seconds:
                                                                               2),
@@ -787,9 +713,8 @@ class _IsBaslatState extends State<IsBaslat> {
                                                                       backgroundColor:
                                                                           Colors
                                                                               .red,
-                                                                      content:
-                                                                          Text(
-                                                                              'İşlem açıklamasını boş bırakamazsınız.'),
+                                                                      content: Text(
+                                                                          'İşlem açıklamasını boş bırakamazsınız.'),
                                                                       duration: Duration(
                                                                           seconds:
                                                                               2),
@@ -804,9 +729,8 @@ class _IsBaslatState extends State<IsBaslat> {
                                                                       backgroundColor:
                                                                           Colors
                                                                               .red,
-                                                                      content:
-                                                                          Text(
-                                                                              'İşlem tarihini boş bırakamazsınız.'),
+                                                                      content: Text(
+                                                                          'İşlem tarihini boş bırakamazsınız.'),
                                                                       duration: Duration(
                                                                           seconds:
                                                                               2),
@@ -822,9 +746,8 @@ class _IsBaslatState extends State<IsBaslat> {
                                                                       backgroundColor:
                                                                           Colors
                                                                               .red,
-                                                                      content:
-                                                                          Text(
-                                                                              'İşlem türü seçmelisiniz.'),
+                                                                      content: Text(
+                                                                          'İşlem türü seçmelisiniz.'),
                                                                       duration: Duration(
                                                                           seconds:
                                                                               2),
@@ -840,9 +763,8 @@ class _IsBaslatState extends State<IsBaslat> {
                                                                       backgroundColor:
                                                                           Colors
                                                                               .red,
-                                                                      content:
-                                                                          Text(
-                                                                              'Ana nokta seçmelisiniz.'),
+                                                                      content: Text(
+                                                                          'Ana nokta seçmelisiniz.'),
                                                                       duration: Duration(
                                                                           seconds:
                                                                               2),
@@ -858,9 +780,8 @@ class _IsBaslatState extends State<IsBaslat> {
                                                                       backgroundColor:
                                                                           Colors
                                                                               .red,
-                                                                      content:
-                                                                          Text(
-                                                                              'Hedef nokta seçmelisiniz.'),
+                                                                      content: Text(
+                                                                          'Hedef nokta seçmelisiniz.'),
                                                                       duration: Duration(
                                                                           seconds:
                                                                               2),
@@ -890,20 +811,19 @@ class _IsBaslatState extends State<IsBaslat> {
                                                                     print(
                                                                         "Hedef Depo: ${hedefDepo}");
 
-
                                                                     isBaslat(
                                                                         tfIslemAdi
                                                                             .text,
                                                                         tfIslemAciklamasi
                                                                             .text,
-                                                                        int.parse(islemTuru),
+                                                                        int.parse(
+                                                                            islemTuru),
                                                                         int.parse(
                                                                             anaDepo),
                                                                         int.parse(
                                                                             hedefDepo),
                                                                         tfIslemTarihi
                                                                             .text);
-
                                                                   }
 
                                                                   // print(
@@ -1497,7 +1417,12 @@ class _IsBaslatState extends State<IsBaslat> {
                                   fontWeight: FontWeight.bold,
                                   letterSpacing: 2,
                                 ),
-                              )
+                              ),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    warehouseListele();
+                                  },
+                                  child: Text('Çağır'))
                             ],
                           ),
                         ),

@@ -6,6 +6,7 @@ import 'package:searchfield/searchfield.dart';
 import 'package:stok_takip_uygulamasi/drawer_menu.dart';
 import 'package:stok_takip_uygulamasi/model/Varyant.dart';
 import 'package:http/http.dart' as http;
+import 'package:stok_takip_uygulamasi/model/myData.dart';
 
 class VaryantElemanTanim extends StatefulWidget {
   const VaryantElemanTanim({Key? key}) : super(key: key);
@@ -20,32 +21,22 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
   var dropdownvalue;
   var trimmedValue;
 
-  // Future<Varyant> varyantListele() async {
-  //   http.Response res = await http
-  //       .get(Uri.parse('https://stok.bahcelievler.bel.tr/api/Variants'));
-  //   var cevap = Varyant.fromJson(json.decode(res.body));
-  //   // print(cevap);
-  //   // print(cevap.data[0].markaAdi);
-  //   return cevap;
-  // }
   var cevap;
-  Future<Varyant> varyanListeleWithFilter(String VaryantAdiFilter, int Page,
+  late myData<Varyant> cevaps;
+
+  Future<myData<Varyant>> varyanListeleWithFilter(String VaryantAdiFilter, int Page,
       int PageSize, String Orderby, bool Desc, bool isDeleted) async {
     //https://stok.bahcelievler.bel.tr/api/Brands/GetAll?MarkaAdiFilter=a&Page=1&PageSize=12&Orderby=Id&Desc=false
 
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/Variants/GetAll?VaryantAdiFilter=${VaryantAdiFilter}&Page=${Page}&PageSize=${PageSize}&Orderby=${Orderby}&Desc=${Desc}&isDeleted=${isDeleted}'));
-    cevap = Varyant.fromJson(json.decode(res.body));
-    print('----*');
-    print(res.body);
-    print(cevap.data);
-    print(cevap.data[0]);
-    print(cevap.data[0].varyantAdi);
-    print(cevap);
-    print(cevap.data[0].varyantAdi);
-    print('----');
+    cevaps = myData<Varyant>.fromJson(json.decode(res.body), Varyant.fromJsonModel);
+    // print('----*');
+    // print(res.body);
+    // print(cevaps.data);
+    // print('----');
 
-    return cevap;
+    return cevaps;
   }
 
   Future<void> varyantElemanEkle() async {
@@ -71,10 +62,10 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
           "variantId": trimmedValue,
           "varyantElemanAdi": tfVaryantElemanAdi.text
         }));
-    tfVaryantElemanAdi.text = "";
-    // print(response.body);
-    // print(response.statusCode);
-    // print(response.reasonPhrase);
+    print(trimmedValue);
+    print(tfVaryantElemanAdi.text);
+    // tfVaryantElemanAdi.text = "";
+    print(response.body);
     if (response.reasonPhrase == 'Bad Request' &&
         response.body.contains('VariantElement already has')) {
       //model olduğu için marka silinemedi
@@ -188,7 +179,7 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
               height: 15,
             ),
             TextField(
-              controller: tfVaryantAdi,
+              controller: tfVaryantElemanAdi,
               decoration: const InputDecoration(
                 hintText: 'Varyant Adı',
                 hintStyle: TextStyle(color: Color(0XFF976775)),
@@ -204,11 +195,11 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
                 color: const Color(0XFF463848),
                 text: 'Güncelle',
                 pressEvent: () {
-                  print(tfVaryantAdi.text);
-                  if (tfVaryantAdi.text == "") {
+                  print(tfVaryantElemanAdi.text);
+                  if (tfVaryantElemanAdi.text == "") {
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       backgroundColor: Colors.red,
-                      content: Text('Varyant adını boş bırakamazsınız.'),
+                      content: Text('Varyant eleman adını boş bırakamazsınız.'),
                       duration: Duration(seconds: 2),
                     ));
                   } else {
@@ -258,7 +249,7 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
             child: ListView(
               shrinkWrap: true,
               children: [
-                FutureBuilder<Varyant>(
+                FutureBuilder<myData<Varyant>>(
                   future:
                   varyanListeleWithFilter('', pageNum, pageSize, 'Id', true,false),
                   builder: (context, snapshot) {
@@ -269,7 +260,7 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
                         itemCount: 1,
                         itemBuilder: (context, index) {
                           // TfTest.addListener(() => markaListeleWithFilter(TfTest.text, 1, 2, 'Id', true));
-                          return SearchField<Varyant>(
+                          return SearchField<myData<Varyant>>(
                             autoCorrect: true,
                             hint: 'Varyant Seçiniz',
                             onSuggestionTap: (e) {
@@ -284,9 +275,9 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
                             suggestionStyle:
                             const TextStyle(color: Color(0XFF976775)),
                             // suggestionsDecoration: BoxDecoration(color: Colors.red),
-                            suggestions: snapshot.data!.data
+                            suggestions: snapshot.data!.data!
                                 .map(
-                                  (e) => SearchFieldListItem<Varyant>(
+                                  (e) => SearchFieldListItem<myData<Varyant>>(
 
                                   e.varyantAdi.toString(),
                                   child: Row(
@@ -309,7 +300,6 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
                                               // pageNum +=1;
                                               print("e: ${e.varyantAdi}");
 
-                                                List<Data> dtListesi = <Data>[];
 
                                               pageSize += 5;
 
@@ -346,75 +336,7 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
                                 .toList(),
                           );
 
-                          // SearchField<Marka>(
-                          //   hint: 'Marka Seçiniz',
-                          //   onSuggestionTap: (e) {
-                          //     markaListeleWithFilter(
-                          //         e.searchKey, 1, 50, e.key.toString(), true);
-                          //
-                          //     dropdownvalue = e.searchKey;
-                          //     // print('object');
-                          //     // print(e.key);
-                          //     // print(e.item);
-                          //     // print(e.child);
-                          //     // print(e.searchKey);
-                          //     // print(e.key.toString());
-                          //
-                          //     setState(() {
-                          //       dropdownvalue = e.key.toString();
-                          //     });
-                          //   },
-                          //   suggestionAction: SuggestionAction.unfocus,
-                          //   itemHeight: 50,
-                          //   searchStyle: TextStyle(color: Color(0XFF976775)),
-                          //   suggestionStyle:
-                          //       TextStyle(color: Color(0XFF976775)),
-                          //   // suggestionsDecoration: BoxDecoration(color: Colors.red),
-                          //   suggestions: snapshot.data!.data!
-                          //       .map(
-                          //         (e) => SearchFieldListItem<Marka>(
-                          //             e.markaAdi.toString(),
-                          //             child: Row(
-                          //               mainAxisAlignment:
-                          //                   MainAxisAlignment.spaceBetween,
-                          //               children: [
-                          //                 Padding(
-                          //                   padding: const EdgeInsets.all(8.0),
-                          //                   child: Text(e.markaAdi.toString(),
-                          //                       style: TextStyle(
-                          //                           color: Color(0XFF6E3F52))),
-                          //                 ),
-                          //                 Row(
-                          //                   children: [
-                          //                     GestureDetector(
-                          //                       child: Icon(
-                          //                         Icons.delete_outline,
-                          //                         color: Color(0XFF6E3F52),
-                          //                       ),
-                          //                       onTap: () {
-                          //                         markaSil(e.id!);
-                          //                       },
-                          //                     ),
-                          //                     SizedBox(
-                          //                       width: 10,
-                          //                     ),
-                          //                     GestureDetector(
-                          //                       child: Icon(
-                          //                         Icons.border_color_outlined,
-                          //                         color: Color(0XFF6E3F52),
-                          //                       ),
-                          //                       onTap: () {
-                          //                         showGuncellemeDialog(e.id!);
-                          //                       },
-                          //                     ),
-                          //                   ],
-                          //                 ),
-                          //               ],
-                          //             ),
-                          //             key: Key(e.id.toString())),
-                          //       )
-                          //       .toList(),
-                          // );
+
                         },
                       );
                     } else if (!(snapshot.hasError)) {
@@ -431,7 +353,7 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
                   height: 10,
                 ),
                 TextFormField(
-                  controller: tfVaryantAdi,
+                  controller: tfVaryantElemanAdi,
                   style: const TextStyle(color: Color(0XFF976775)),
                   decoration: const InputDecoration(
                       prefixIcon: Icon(

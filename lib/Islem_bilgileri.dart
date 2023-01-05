@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:searchfield/searchfield.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stok_takip_uygulamasi/drawer_menu.dart';
+import 'package:stok_takip_uygulamasi/model/myData.dart';
 import 'package:stok_takip_uygulamasi/tif_listesi.dart';
 import 'package:stok_takip_uygulamasi/model/BaseCategoryParentChild.dart';
 import 'package:stok_takip_uygulamasi/tif_kategori_urun_secimi.dart';
@@ -214,7 +215,7 @@ class _IslemBilgileriState extends State<IslemBilgileri> {
               searchStyle: const TextStyle(color: Color(0XFF976775)),
               suggestionStyle: const TextStyle(color: Color(0XFF976775)),
               // suggestionsDecoration: BoxDecoration(color: Colors.red),
-              suggestions: baseCategory
+              suggestions: baseCategory.data!
                   .map(
                     (e) => SearchFieldListItem<String>(e.toString(),
                         child: Row(
@@ -250,7 +251,7 @@ class _IslemBilgileriState extends State<IslemBilgileri> {
               searchStyle: const TextStyle(color: Color(0XFF976775)),
               suggestionStyle: const TextStyle(color: Color(0XFF976775)),
               // suggestionsDecoration: BoxDecoration(color: Colors.red),
-              suggestions: baseCategory
+              suggestions: baseCategory.data!
                   .map(
                     (e) => SearchFieldListItem<String>(e.toString(),
                         child: Row(
@@ -313,7 +314,7 @@ class _IslemBilgileriState extends State<IslemBilgileri> {
             ),
             SearchField<String>(
               hint: 'Hesap Kodu Seçiniz',
-              suggestions: baseCategory
+              suggestions: baseCategory.data!
                   .map(
                     (e) => SearchFieldListItem<String>(e.hesapKodu.toString(),
                         child: Row(
@@ -346,7 +347,7 @@ class _IslemBilgileriState extends State<IslemBilgileri> {
                                 .replaceAll('<', ''))
                             .replaceAll('>', ''))
                         .replaceAll("'", '')));
-                hasChild(6);
+                // hasChild(6);
                 setState(() {});
               },
               suggestionAction: SuggestionAction.unfocus,
@@ -360,7 +361,7 @@ class _IslemBilgileriState extends State<IslemBilgileri> {
             ),
             SearchField<String>(
               hint: 'Düzey 1 Seçiniz',
-              suggestions: duzey1
+              suggestions: duzey1.data!
                   .map(
                     (e) => SearchFieldListItem<String>(e.duzey1.toString(),
                         child: Row(
@@ -410,7 +411,7 @@ class _IslemBilgileriState extends State<IslemBilgileri> {
             ),
             SearchField<String>(
               hint: 'Düzey 2 Seçiniz',
-              suggestions: duzey2
+              suggestions: duzey2.data!
                   .map(
                     (e) => SearchFieldListItem<String>(e.duzey2.toString(),
                         child: Row(
@@ -460,7 +461,7 @@ class _IslemBilgileriState extends State<IslemBilgileri> {
             ),
             SearchField<String>(
               hint: 'Düzey 3 Seçiniz',
-              suggestions: duzey3
+              suggestions: duzey3.data!
                   .map(
                     (e) => SearchFieldListItem<String>(e.duzey3.toString(),
                         child: Row(
@@ -510,7 +511,7 @@ class _IslemBilgileriState extends State<IslemBilgileri> {
             ),
             SearchField<String>(
               hint: 'Düzey 4 Seçiniz',
-              suggestions: duzey4
+              suggestions: duzey4.data!
                   .map(
                     (e) => SearchFieldListItem<String>(e.duzey4.toString(),
                         child: Row(
@@ -555,7 +556,7 @@ class _IslemBilgileriState extends State<IslemBilgileri> {
             ),
             SearchField<String>(
               hint: 'Düzey 5 Seçiniz',
-              suggestions: duzey5
+              suggestions: duzey5.data!
                   .map(
                     (e) => SearchFieldListItem<String>(e.duzey5.toString(),
                         child: Row(
@@ -636,47 +637,46 @@ class _IslemBilgileriState extends State<IslemBilgileri> {
   //endregion
 
   //region hasChild
-  List<BaseCategoryParentChildData> _hasChild = <BaseCategoryParentChildData>[];
-
-  Future<List<BaseCategoryParentChildData>> hasChild(int ParentIdFilter) async {
-    // print("parent id:${ParentIdFilter}");
-    http.Response res = await http.get(Uri.parse(
-        'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetSingleBaseCategoryByIdWithParentAndChildren/${ParentIdFilter}'));
-    // print(res.body);
-    _hasChild =
-        BaseCategoryParentChild.fromJson(json.decode(res.body)).data.toList();
-    // print(_hasChild[0].malzemeAdi);
-
-    // print(_hasChild);
-    if (_hasChild.isEmpty) {
-      setState(() {
-        _isButtonDisabled = false;
-      });
-    } else {
-      setState(() {
-        _isButtonDisabled = true;
-      });
-    }
-
-    // print('duzey 0: ${duzey1[0].id}');
-
-    setState(() {});
-    return _hasChild;
-  }
+  // List<BaseCategoryParentChildData> _hasChild = <BaseCategoryParentChildData>[];
+  //
+  // Future<List<BaseCategoryParentChildData>> hasChild(int ParentIdFilter) async {
+  //   // print("parent id:${ParentIdFilter}");
+  //   http.Response res = await http.get(Uri.parse(
+  //       'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetSingleBaseCategoryByIdWithParentAndChildren/${ParentIdFilter}'));
+  //   // print(res.body);
+  //   _hasChild =
+  //       BaseCategoryParentChild.fromJson(json.decode(res.body)).data.toList();
+  //   // print(_hasChild[0].malzemeAdi);
+  //
+  //   // print(_hasChild);
+  //   if (_hasChild.isEmpty) {
+  //     setState(() {
+  //       _isButtonDisabled = false;
+  //     });
+  //   } else {
+  //     setState(() {
+  //       _isButtonDisabled = true;
+  //     });
+  //   }
+  //
+  //   // print('duzey 0: ${duzey1[0].id}');
+  //
+  //   setState(() {});
+  //   return _hasChild;
+  // }
 
   //endregion
 
   //region baseCategory
-  List<Data> baseCategory = <Data>[];
+  myData<BaseCategory> baseCategory = myData<BaseCategory>();
 
-  Future<List<Data>> baseCategoryListele() async {
+  Future<myData<BaseCategory>> baseCategoryListele() async {
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetAll?Page=1&PageSize=4&Orderby=Id&Desc=false&isDeleted=false'));
-    baseCategory = BaseCategory.fromJson(json.decode(res.body)).data.toList();
-    // print(baseCategory[0].hesapKodu);
-    // print("base malzeme: ${baseCategory[baseCategory.length - 1].malzemeAdi}");
-    tfTifList.text = baseCategory[baseCategory.length - 1].malzemeAdi!;
-    if (baseCategory.isEmpty) {
+    baseCategory = myData<BaseCategory>.fromJson(json.decode(res.body), BaseCategory.fromJsonModel);
+
+    tfTifList.text = baseCategory.data![baseCategory.data!.length- 1].malzemeAdi!;
+    if (baseCategory.data?.length == 0) {
       setState(() {
         _isButtonDisabled = false;
       });
@@ -692,18 +692,18 @@ class _IslemBilgileriState extends State<IslemBilgileri> {
   //endregion
 
   //region duzey1
-  List<Data> duzey1 = <Data>[];
+  late myData<BaseCategory> duzey1;
 
-  Future<List<Data>> duzey1Listele(int ParentIdFilter) async {
+  Future<myData<BaseCategory>> duzey1Listele(int ParentIdFilter) async {
     // print("parent id:${ParentIdFilter}");
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetAll?ParentIdFilter=${ParentIdFilter}&Orderby=Id&Desc=false&isDeleted=false'));
     // print(res.body);
-    duzey1 = BaseCategory.fromJson(json.decode(res.body)).data.toList();
+    duzey1 = myData<BaseCategory>.fromJson(json.decode(res.body), BaseCategory.fromJsonModel);
     // print("1 Malzeme: ${duzey1[duzey1.length - 1].malzemeAdi}");
-    tfTifList.text = duzey1[duzey1.length - 1].malzemeAdi!;
+    tfTifList.text = duzey1.data![duzey1.data!.length - 1].malzemeAdi!;
 
-    if (duzey1.isEmpty) {
+    if (duzey1.data?.length == 0) {
       setState(() {
         _isButtonDisabled = false;
       });
@@ -720,19 +720,19 @@ class _IslemBilgileriState extends State<IslemBilgileri> {
   //endregion
 
   //region duzey2
-  List<Data> duzey2 = <Data>[];
+  late myData<BaseCategory> duzey2;
 
-  Future<List<Data>> duzey2Listele(int ParentIdFilter) async {
+  Future<myData<BaseCategory>> duzey2Listele(int ParentIdFilter) async {
     setState(() {});
     // print("parent id:${ParentIdFilter}");
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetAll?ParentIdFilter=${ParentIdFilter}&Orderby=Id&Desc=false&isDeleted=false'));
     // print(res.body);
-    duzey2 = BaseCategory.fromJson(json.decode(res.body)).data.toList();
+    duzey2 = myData<BaseCategory>.fromJson(json.decode(res.body), BaseCategory.fromJsonModel);
     // print('duzey 0: ${duzey2[0].id}');
     // print("2 Malzeme: ${duzey2[duzey2.length - 1].malzemeAdi}");
-    tfTifList.text = duzey2[duzey2.length - 1].malzemeAdi!;
-    if (duzey2.isEmpty) {
+    tfTifList.text = duzey2.data![duzey2.data!.length - 1].malzemeAdi!;
+    if (duzey2.data?.length == 0) {
       // print('2boş');
       setState(() {
         _isButtonDisabled = false;
@@ -751,19 +751,19 @@ class _IslemBilgileriState extends State<IslemBilgileri> {
   //endregion
 
   //region duzey3
-  List<Data> duzey3 = <Data>[];
+  late myData<BaseCategory> duzey3;
 
-  Future<List<Data>> duzey3Listele(int ParentIdFilter) async {
+  Future<myData<BaseCategory>> duzey3Listele(int ParentIdFilter) async {
     setState(() {});
     // print("parent id:${ParentIdFilter}");
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetAll?ParentIdFilter=${ParentIdFilter}&Orderby=Id&Desc=false&isDeleted=false'));
     // print(res.body);
-    duzey3 = BaseCategory.fromJson(json.decode(res.body)).data.toList();
+    duzey3 = myData<BaseCategory>.fromJson(json.decode(res.body), BaseCategory.fromJsonModel);
     // print('duzey 0: ${duzey3[0].id}');
     // print("3 Malzeme: ${duzey3[duzey3.length - 1].malzemeAdi}");
-    tfTifList.text = duzey3[duzey3.length - 1].malzemeAdi!;
-    if (duzey3.isEmpty) {
+    tfTifList.text = duzey3.data![duzey3.data!.length - 1].malzemeAdi!;
+    if (duzey3.data?.length == 0) {
       // print('3boş');
       setState(() {
         _isButtonDisabled = false;
@@ -782,19 +782,19 @@ class _IslemBilgileriState extends State<IslemBilgileri> {
   //endregion
 
   //region duzey4
-  List<Data> duzey4 = <Data>[];
+  late myData<BaseCategory> duzey4;
 
-  Future<List<Data>> duzey4Listele(int ParentIdFilter) async {
+  Future<myData<BaseCategory>> duzey4Listele(int ParentIdFilter) async {
     setState(() {});
     // print("parent id:${ParentIdFilter}");
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetAll?ParentIdFilter=${ParentIdFilter}&Orderby=Id&Desc=false&isDeleted=false'));
     // print(res.body);
-    duzey4 = BaseCategory.fromJson(json.decode(res.body)).data.toList();
+    duzey4 = myData<BaseCategory>.fromJson(json.decode(res.body), BaseCategory.fromJsonModel);
     // print('duzey 0: ${duzey4[0].id}');
     // print("4 Malzeme: ${duzey4[duzey4.length - 1].malzemeAdi}");
-    tfTifList.text = duzey4[duzey4.length - 1].malzemeAdi!;
-    if (duzey4.isEmpty) {
+    tfTifList.text = duzey4.data![duzey4.data!.length - 1].malzemeAdi!;
+    if (duzey4.data?.length == 0) {
       // print('4boş');
       setState(() {
         _isButtonDisabled = false;
@@ -813,19 +813,19 @@ class _IslemBilgileriState extends State<IslemBilgileri> {
   //endregion
 
   //region duzey5
-  List<Data> duzey5 = <Data>[];
+  late myData<BaseCategory> duzey5;
 
-  Future<List<Data>> duzey5Listele(int ParentIdFilter) async {
+  Future<myData<BaseCategory>> duzey5Listele(int ParentIdFilter) async {
     setState(() {});
     // print("parent id:${ParentIdFilter}");
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetAll?ParentIdFilter=${ParentIdFilter}&Orderby=Id&Desc=false&isDeleted=false'));
     // print(res.body);
-    duzey5 = BaseCategory.fromJson(json.decode(res.body)).data.toList();
+    duzey5 = myData<BaseCategory>.fromJson(json.decode(res.body), BaseCategory.fromJsonModel);
     // print('duzey 0: ${duzey5[0].id}');
     // print("5 Malzeme: ${duzey5[duzey5.length - 1].malzemeAdi}");
-    tfTifList.text = duzey5[duzey5.length - 1].malzemeAdi!;
-    if (duzey5.isEmpty) {
+    tfTifList.text = duzey5.data![duzey5.data!.length - 1].malzemeAdi!;
+    if (duzey5.data?.length == 0) {
       // print('5boş');
       setState(() {
         _isButtonDisabled = false;
@@ -853,6 +853,7 @@ class _IslemBilgileriState extends State<IslemBilgileri> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+
           primary: true,
           backgroundColor: const Color(0xFF976775),
           title: Text('İŞLEM BİLGİLERİ',
@@ -933,7 +934,8 @@ class _IslemBilgileriState extends State<IslemBilgileri> {
                                   hedefDepo: int.parse(
                                       this.widget.hedefDepo.toString()),
                                   islemTarihi:
-                                      this.widget.islemTarihi.toString())));
+                                      this.widget.islemTarihi.toString(),
+                              )));
                       // Navigator.push(context, MaterialPageRoute(builder: (context)=> Test(islemTuru: this.widget.islemTuru.toString(), islemAdi: this.widget.islemAdi.toString(), islemAciklamasi: this.widget.islemAciklamasi.toString(), anaDepo: int.parse(this.widget.anaDepo.toString()), hedefDepo: int.parse(this.widget.hedefDepo.toString()), islemTarihi: this.widget.islemTarihi.toString())));
                       //   showUrunAra();
                     },

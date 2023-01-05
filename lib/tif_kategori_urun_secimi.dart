@@ -1,13 +1,12 @@
 import 'dart:convert';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:searchfield/searchfield.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stok_takip_uygulamasi/drawer_menu.dart';
-import 'package:stok_takip_uygulamasi/onaya_gonder_grid.dart';
+import 'package:stok_takip_uygulamasi/model/myData.dart';
 import 'package:stok_takip_uygulamasi/tif_listesi.dart';
+import 'package:stok_takip_uygulamasi/varyant_secimi.dart';
 
 import 'model/BaseCategory.dart';
 import 'package:http/http.dart' as http;
@@ -19,7 +18,7 @@ class TifKategoriUrunSecimi extends StatefulWidget {
   final String? islemTarihi;
   final int? anaDepo;
   final int? hedefDepo;
-  final List<Data>? sonuc;
+  final myData<BaseCategory>? sonuc;
   final String? kategori;
   final String? urunler;
 
@@ -41,9 +40,8 @@ class TifKategoriUrunSecimi extends StatefulWidget {
 }
 
 var urun;
-var kategori ='sdfsdf';
-var urunler ='asdasd';
-
+var kategori = 'sdfsdf';
+var urunler = 'asdasd';
 
 class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
   @override
@@ -57,15 +55,20 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
   }
 
   var tfTif = new TextEditingController();
-  List<Data> baseCategory = <Data>[];
 
-  Future<List<Data>> baseCategoryListele() async {
+  late myData<BaseCategory> baseCategory = myData<BaseCategory>();
+
+  Future<myData<BaseCategory>> baseCategoryListele() async {
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetAll?Page=1&PageSize=4&Orderby=Id&Desc=false&isDeleted=false'));
-    baseCategory = BaseCategory.fromJson(json.decode(res.body)).data.toList();
+    baseCategory = myData<BaseCategory>.fromJson(
+        json.decode(res.body), BaseCategory.fromJsonModel);
 
     return baseCategory;
   }
+
+  var dropdownvalue;
+  int pageSize = 5;
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +97,7 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
                 TextField(
                   controller: tfTif,
                   decoration: InputDecoration(
-                    hintText: tfTif.text =="" ? "TİF Listesi": tfTif.text,
+                    hintText: tfTif.text == "" ? "TİF Listesi" : tfTif.text,
                     suffixIcon: IconButton(
                       onPressed: () {
                         Navigator.push(
@@ -119,75 +122,263 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
                 const SizedBox(
                   height: 40,
                 ),
-                SearchField<String>(
-                  hint: 'Kategori Seçiniz',
+                FutureBuilder<myData<BaseCategory>>(
+                  future: baseCategoryListele(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: 1,
+                        itemBuilder: (context, index) {
+                          // TfTest.addListener(() => markaListeleWithFilter(TfTest.text, 1, 2, 'Id', true));
+                          return SearchField<myData<BaseCategory>>(
+                            autoCorrect: true,
+                            hint: 'Kategori Seçiniz',
+                            onSuggestionTap: (e) {
+                              dropdownvalue = e.searchKey;
+                              setState(() {
+                                dropdownvalue = e.key.toString();
+                              });
+                            },
+                            suggestionAction: SuggestionAction.unfocus,
+                            itemHeight: 50,
+                            searchStyle:
+                                const TextStyle(color: Color(0XFF976775)),
+                            suggestionStyle:
+                                const TextStyle(color: Color(0XFF976775)),
+                            // suggestionsDecoration: BoxDecoration(color: Colors.red),
+                            suggestions: snapshot.data!.data!
+                                .map(
+                                  (e) => SearchFieldListItem<
+                                          myData<BaseCategory>>(e.id.toString(),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(e.id.toString(),
+                                                style: const TextStyle(
+                                                    color: Color(0XFF6E3F52))),
+                                          ),
+                                          Row(
+                                            children: [
+                                              GestureDetector(
+                                                child: const Text('Load More'),
+                                                onTap: () {
+                                                  // pageNum +=1;
+                                                  print("e: ${e.id}");
 
-                  onSuggestionTap: (e) {
-                    urun = e.searchKey;
+                                                  pageSize += 5;
 
-                    setState(() {
-                      urun = e.key.toString();
-                    });
+                                                  setState(() {});
+                                                },
+                                              ),
+                                              GestureDetector(
+                                                child: const Icon(
+                                                  Icons.delete_outline,
+                                                  color: Color(0XFF6E3F52),
+                                                ),
+                                                onTap: () {
+                                                  // varyantElemanSil(e.id!);
+                                                },
+                                              ),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              GestureDetector(
+                                                child: const Icon(
+                                                  Icons.border_color_outlined,
+                                                  color: Color(0XFF6E3F52),
+                                                ),
+                                                onTap: () {
+                                                  // showGuncellemeDialog(e.id!);
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      key: Key(e.id.toString())),
+                                )
+                                .toList(),
+                          );
+                        },
+                      );
+                    } else if (!(snapshot.hasError)) {
+                      return SearchField(
+                        suggestions: [],
+                      ).emptyWidget;
+                    }
+                    return const CircularProgressIndicator(
+                      color: Color(0XFF976775),
+                    );
                   },
-                  suggestionAction: SuggestionAction.unfocus,
-                  itemHeight: 50,
-                  searchStyle: const TextStyle(color: Color(0XFF976775)),
-                  suggestionStyle: const TextStyle(color: Color(0XFF976775)),
-                  // suggestionsDecoration: BoxDecoration(color: Colors.red),
-                  suggestions: baseCategory
-                      .map(
-                        (e) => SearchFieldListItem<String>(e.toString(),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(e.hesapKodu.toString(),
-                                      style: const TextStyle(
-                                          color: Color(0XFF6E3F52))),
-                                ),
-                              ],
-                            ),
-                            key: Key(e.toString())),
-                      )
-                      .toList(),
+                ),
+                FutureBuilder<myData<BaseCategory>>(
+                  future: baseCategoryListele(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: 1,
+                        itemBuilder: (context, index) {
+                          // TfTest.addListener(() => markaListeleWithFilter(TfTest.text, 1, 2, 'Id', true));
+                          return SearchField<myData<BaseCategory>>(
+                            autoCorrect: true,
+                            hint: 'Ürün Seçiniz',
+                            onSuggestionTap: (e) {
+                              dropdownvalue = e.searchKey;
+                              setState(() {
+                                dropdownvalue = e.key.toString();
+                              });
+                            },
+                            suggestionAction: SuggestionAction.unfocus,
+                            itemHeight: 50,
+                            searchStyle:
+                            const TextStyle(color: Color(0XFF976775)),
+                            suggestionStyle:
+                            const TextStyle(color: Color(0XFF976775)),
+                            // suggestionsDecoration: BoxDecoration(color: Colors.red),
+                            suggestions: snapshot.data!.data!
+                                .map(
+                                  (e) => SearchFieldListItem<
+                                  myData<BaseCategory>>(e.id.toString(),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(e.id.toString(),
+                                            style: const TextStyle(
+                                                color: Color(0XFF6E3F52))),
+                                      ),
+                                      Row(
+                                        children: [
+                                          GestureDetector(
+                                            child: const Text('Load More'),
+                                            onTap: () {
+                                              // pageNum +=1;
+                                              print("e: ${e.id}");
+
+                                              pageSize += 5;
+
+                                              setState(() {});
+                                            },
+                                          ),
+                                          GestureDetector(
+                                            child: const Icon(
+                                              Icons.delete_outline,
+                                              color: Color(0XFF6E3F52),
+                                            ),
+                                            onTap: () {
+                                              // varyantElemanSil(e.id!);
+                                            },
+                                          ),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          GestureDetector(
+                                            child: const Icon(
+                                              Icons.border_color_outlined,
+                                              color: Color(0XFF6E3F52),
+                                            ),
+                                            onTap: () {
+                                              // showGuncellemeDialog(e.id!);
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  key: Key(e.id.toString())),
+                            )
+                                .toList(),
+                          );
+                        },
+                      );
+                    } else if (!(snapshot.hasError)) {
+                      return SearchField(
+                        suggestions: [],
+                      ).emptyWidget;
+                    }
+                    return const CircularProgressIndicator(
+                      color: Color(0XFF976775),
+                    );
+                  },
                 ),
                 const SizedBox(
                   height: 40,
                 ),
-                SearchField<String>(
-                  hint: 'Ürün Seçiniz',
-
-                  onSuggestionTap: (e) {
-                    urun = e.searchKey;
-
-                    setState(() {
-                      urun = e.key.toString();
-                    });
-                  },
-                  suggestionAction: SuggestionAction.unfocus,
-                  itemHeight: 50,
-                  searchStyle: const TextStyle(color: Color(0XFF976775)),
-                  suggestionStyle: const TextStyle(color: Color(0XFF976775)),
-                  // suggestionsDecoration: BoxDecoration(color: Colors.red),
-                  suggestions: baseCategory
-                      .map(
-                        (e) => SearchFieldListItem<String>(e.toString(),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(e.hesapKodu.toString(),
-                                      style: const TextStyle(
-                                          color: Color(0XFF6E3F52))),
-                                ),
-                              ],
-                            ),
-                            key: Key(e.toString())),
-                      )
-                      .toList(),
-                ),
+                // SearchField<myData<BaseCategory>>(
+                //   hint: 'Kategori Seçiniz',
+                //
+                //   onSuggestionTap: (e) {
+                //     urun = e.searchKey;
+                //
+                //     setState(() {
+                //       urun = e.key.toString();
+                //     });
+                //   },
+                //   suggestionAction: SuggestionAction.unfocus,
+                //   itemHeight: 50,
+                //   searchStyle: const TextStyle(color: Color(0XFF976775)),
+                //   suggestionStyle: const TextStyle(color: Color(0XFF976775)),
+                //   // suggestionsDecoration: BoxDecoration(color: Colors.red),
+                //   suggestions: baseCategory.data!
+                //       .map(
+                //         (e) => SearchFieldListItem<myData<BaseCategory>>(
+                //             e.toString(),
+                //             child: Row(
+                //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //               children: [
+                //                 Padding(
+                //                   padding: const EdgeInsets.all(8.0),
+                //                   child: Text(e.hesapKodu.toString(),
+                //                       style: const TextStyle(
+                //                           color: Color(0XFF6E3F52))),
+                //                 ),
+                //               ],
+                //             ),
+                //             key: Key(e.toString())),
+                //       )
+                //       .toList(),
+                // ),
+                // SearchField<myData<BaseCategory>>(
+                //   hint: 'Ürün Seçiniz',
+                //
+                //   onSuggestionTap: (e) {
+                //     urun = e.searchKey;
+                //
+                //     setState(() {
+                //       urun = e.key.toString();
+                //     });
+                //   },
+                //   suggestionAction: SuggestionAction.unfocus,
+                //   itemHeight: 50,
+                //   searchStyle: const TextStyle(color: Color(0XFF976775)),
+                //   suggestionStyle: const TextStyle(color: Color(0XFF976775)),
+                //   // suggestionsDecoration: BoxDecoration(color: Colors.red),
+                //   suggestions: baseCategory.data!
+                //       .map(
+                //         (e) => SearchFieldListItem<myData<BaseCategory>>(
+                //             e.toString(),
+                //             child: Row(
+                //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //               children: [
+                //                 Padding(
+                //                   padding: const EdgeInsets.all(8.0),
+                //                   child: Text(e.hesapKodu.toString(),
+                //                       style: const TextStyle(
+                //                           color: Color(0XFF6E3F52))),
+                //                 ),
+                //               ],
+                //             ),
+                //             key: Key(e.toString())),
+                //       )
+                //       .toList(),
+                // ),
                 const SizedBox(
                   height: 40,
                 ),
@@ -215,10 +406,14 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => OnayaGonderGrid(
-                                  sonuc: this.widget.sonuc,
-                                  kategori: kategori,
-                                  urunler: urunler)));
+                              builder: (context) => VaryantSecimi()));
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => OnayaGonderGrid(
+                      //             sonuc: this.widget.sonuc,
+                      //             kategori: kategori,
+                      //             urunler: urunler)));
                       setState(() {});
                     })
               ],

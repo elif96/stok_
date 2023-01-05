@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:stok_takip_uygulamasi/drawer_menu.dart';
-import 'package:stok_takip_uygulamasi/isTaslak.dart';
 import 'package:stok_takip_uygulamasi/kategori_tanim.dart';
 import 'package:stok_takip_uygulamasi/marka_tanim.dart';
 import 'package:stok_takip_uygulamasi/model_tanim.dart';
@@ -65,7 +64,7 @@ class _TanimlamalarState extends State<Tanimlamalar> {
           ListTile(
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const ModelTanim()));
+                  MaterialPageRoute(builder: (context) => ModelTanim()));
             },
             leading: const Icon(
               Icons.model_training,

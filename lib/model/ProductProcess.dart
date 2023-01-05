@@ -1,3 +1,5 @@
+import 'package:stok_takip_uygulamasi/model/Warehouse.dart';
+
 class ProductProcess {
   List<ProductProcessData> data = <ProductProcessData>[];
   Null errors;
@@ -10,7 +12,8 @@ class ProductProcess {
       json['data'].forEach((v) {
         data.add(new ProductProcessData.fromJson(v));
       });
-    }    errors = json['errors'];
+    }
+    errors = json['errors'];
   }
 
   Map<String, dynamic> toJson() {
@@ -34,16 +37,18 @@ class ProductProcessData {
   String? islemTarihi;
   int? id;
 
+
   ProductProcessData(
       {this.islemAdi,
-        this.islemAciklama,
-        this.islemTuru,
-        this.onayIsteyenUser,
-        this.onayiBeklenenUser,
-        this.anaDepoId,
-        this.hedefDepoID,
-        this.islemTarihi,
-        this.id});
+      this.islemAciklama,
+      this.islemTuru,
+      this.onayIsteyenUser,
+      this.onayiBeklenenUser,
+      this.anaDepoId,
+      this.hedefDepoID,
+      this.islemTarihi,
+      this.id,
+     });
 
   ProductProcessData.fromJson(Map<String, dynamic> json) {
     islemAdi = json['islemAdi'];

@@ -1,27 +1,44 @@
 class BaseCategory {
-  List<Data> data = <Data>[];
-  Null errors;
+  String? hesapKodu;
+  String? duzey1;
+  String? duzey2;
+  String? duzey3;
+  String? duzey4;
+  String? duzey5;
+  String? duzeyKodu;
+  String? malzemeAdi;
+  int? parentId;
+  int? id;
 
-  BaseCategory({required this.data, this.errors});
+  BaseCategory({this.hesapKodu,
+    this.duzey1,
+    this.duzey2,
+    this.duzey3,
+    this.duzey4,
+    this.duzey5,
+    this.duzeyKodu,
+    this.malzemeAdi,
+    this.parentId,
+    this.id});
 
-  BaseCategory.fromJson(Map<String, dynamic> json) {
-    if (json['data'] != null) {
-      data = <Data>[];
-      json['data'].forEach((v) {
-        data.add(new Data.fromJson(v));
-      });
-    }
-    errors = json['errors'];
+  factory BaseCategory.fromJson(Map<String, dynamic> json) {
+    return BaseCategory(
+        hesapKodu: json['hesapKodu'],
+        duzey1: json['duzey1'],
+        duzey2: json['duzey2'],
+        duzey3: json['duzey3'],
+        duzey4: json['duzey4'],
+        duzey5: json['duzey5'],
+        duzeyKodu: json['duzeyKodu'],
+        malzemeAdi: json['malzemeAdi'],
+        parentId: json['parentId'],
+        id: json['id'],
+    );
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.data != null) {
-      data['data'] = this.data.map((v) => v.toJson()).toList();
-    }
-    data['errors'] = this.errors;
-    return data;
-  }
+  static BaseCategory fromJsonModel(Map<String, dynamic> json) =>
+      BaseCategory.fromJson(json);
+
 }
 
 class Data {
@@ -36,17 +53,16 @@ class Data {
   int? parentId;
   int? id;
 
-  Data(
-      {this.hesapKodu,
-        this.duzey1,
-        this.duzey2,
-        this.duzey3,
-        this.duzey4,
-        this.duzey5,
-        this.duzeyKodu,
-        this.malzemeAdi,
-        this.parentId,
-        this.id});
+  Data({this.hesapKodu,
+    this.duzey1,
+    this.duzey2,
+    this.duzey3,
+    this.duzey4,
+    this.duzey5,
+    this.duzeyKodu,
+    this.malzemeAdi,
+    this.parentId,
+    this.id});
 
   Data.fromJson(Map<String, dynamic> json) {
     hesapKodu = json['hesapKodu'];

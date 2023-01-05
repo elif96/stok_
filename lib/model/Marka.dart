@@ -1,64 +1,36 @@
-// class Marka {
-//   int? id;
+class Marka {
+  String? markaAdi;
+  int? id;
+
+  Marka({this.markaAdi, this.id});
+
+  factory Marka.fromJson(Map<String, dynamic> json) {
+    return Marka(
+      markaAdi: json['markaAdi'],
+      id: json['id'],
+    );
+  }
+
+  static Marka fromJsonModel(Map<String, dynamic> json) => Marka.fromJson(json);
+
+}
+
+
+// class Data {
 //   String? markaAdi;
+//   int? id;
 //
-//   Marka({this.id, this.markaAdi});
+//   Data({this.markaAdi, this.id});
 //
-//   Marka.fromJson(Map<String, dynamic> json) {
-//     id = json['id'];
+//   Data.fromJson(Map<String, dynamic> json) {
 //     markaAdi = json['markaAdi'];
+//     id = json['id'];
 //   }
 //
 //   Map<String, dynamic> toJson() {
 //     final Map<String, dynamic> data = new Map<String, dynamic>();
-//     data['id'] = this.id;
 //     data['markaAdi'] = this.markaAdi;
+//     data['id'] = this.id;
 //     return data;
 //   }
 // }
-
-class Marka {
-  List<Data> data = <Data>[];
-  Null errors;
-
-  Marka({required this.data, this.errors});
- 
-
-  Marka.fromJson(Map<String, dynamic> json) {
-    if (json['data'] != null) {
-      data = <Data>[];
-      json['data'].forEach((v) {
-        data.add(new Data.fromJson(v));
-      });
-    }
-    errors = json['errors'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.data != null) {
-      data['data'] = this.data.map((v) => v.toJson()).toList();
-    }
-    data['errors'] = this.errors;
-    return data;
-  }
-}
-
-class Data {
-  String? markaAdi;
-  int? id;
-
-  Data({this.markaAdi, this.id});
-
-  Data.fromJson(Map<String, dynamic> json) {
-    markaAdi = json['markaAdi'];
-    id = json['id'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['markaAdi'] = this.markaAdi;
-    data['id'] = this.id;
-    return data;
-  }
-}

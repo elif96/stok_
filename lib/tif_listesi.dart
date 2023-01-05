@@ -5,6 +5,7 @@ import 'package:searchfield/searchfield.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stok_takip_uygulamasi/Islem_bilgileri.dart';
+import 'package:stok_takip_uygulamasi/model/myData.dart';
 import 'package:stok_takip_uygulamasi/onaya_gonder_grid.dart';
 import 'package:stok_takip_uygulamasi/tif_kategori_urun_secimi.dart';
 import 'drawer_menu.dart';
@@ -20,12 +21,12 @@ class TifListesi extends StatefulWidget {
   final String? sonuc;
 
   TifListesi({Key? key,
-    required this.islemTuru,
-    required this.islemAdi,
-    required this.islemAciklamasi,
-    required this.anaDepo,
-    required this.hedefDepo,
-    required this.islemTarihi, this.sonuc})
+     this.islemTuru,
+     this.islemAdi,
+     this.islemAciklamasi,
+     this.anaDepo,
+     this.hedefDepo,
+     this.islemTarihi, this.sonuc})
       : super(key: key);
 
   @override
@@ -57,18 +58,16 @@ class _TifListesiState extends State<TifListesi> {
   }
 
   //region baseCategory
-  List<Data> baseCategory = <Data>[];
+  late myData<BaseCategory> baseCategory = myData<BaseCategory>();
   var tfTifList = TextEditingController();
 
-  Future<List<Data>> baseCategoryListele() async {
+  Future<myData<BaseCategory>> baseCategoryListele() async {
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetAll?Page=1&PageSize=4&Orderby=Id&Desc=false&isDeleted=false'));
-    baseCategory = BaseCategory
-        .fromJson(json.decode(res.body))
-        .data
-        .toList();
+    baseCategory = myData<BaseCategory>.fromJson(json.decode(res.body), BaseCategory.fromJsonModel);
 
-    if (baseCategory.isEmpty) {
+
+    if (baseCategory.data!.length == 0) {
       _isButtonDisabled = false;
       setState(() {});
     } else {
@@ -81,20 +80,18 @@ class _TifListesiState extends State<TifListesi> {
   //endregion
 
   //region duzey1
-  List<Data> duzey1 = <Data>[];
+  late myData<BaseCategory> duzey1 = myData<BaseCategory>();
 
-  Future<List<Data>> duzey1Listele(int ParentIdFilter) async {
+  Future<myData<BaseCategory>> duzey1Listele(int ParentIdFilter) async {
     // print("parent id:${ParentIdFilter}");
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetAll?ParentIdFilter=${ParentIdFilter}&Orderby=Id&Desc=false&isDeleted=false'));
 
 
-    duzey1 = BaseCategory
-        .fromJson(json.decode(res.body))
-        .data
-        .toList();
+    duzey1 = myData<BaseCategory>.fromJson(json.decode(res.body), BaseCategory.fromJsonModel);
 
-    if (duzey1.isEmpty) {
+
+    if (duzey1.data!.length == 0) {
       _isButtonDisabled = false;
 
       getSelected(urunhks, "", "", "", "", "");
@@ -116,21 +113,19 @@ class _TifListesiState extends State<TifListesi> {
   //endregion
 
   //region duzey2
-  List<Data> duzey2 = <Data>[];
+  late myData<BaseCategory> duzey2 = myData<BaseCategory>();
 
-  Future<List<Data>> duzey2Listele(int ParentIdFilter) async {
+  Future<myData<BaseCategory>> duzey2Listele(int ParentIdFilter) async {
     setState(() {});
     // print("parent id:${ParentIdFilter}");
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetAll?ParentIdFilter=${ParentIdFilter}&Orderby=Id&Desc=false&isDeleted=false'));
 
-    duzey2 = BaseCategory
-        .fromJson(json.decode(res.body))
-        .data
-        .toList();
+    duzey2 = myData<BaseCategory>.fromJson(json.decode(res.body), BaseCategory.fromJsonModel);
+
 
     // print("duzey son: ${duzey2[].malzemeAdi}");
-    if (duzey2.isEmpty) {
+    if (duzey2.data!.length == 0) {
       getSelected(
           urunhks,
           urun1s,
@@ -151,11 +146,11 @@ class _TifListesiState extends State<TifListesi> {
     return duzey2;
   }
 
-  List<Data> selected = <Data>[];
+  late myData<BaseCategory> selected = myData<BaseCategory>();
 
   var sonuc;
 
-  Future<List<Data>> getSelected(String HesapKoduFilter, [String? Duzey1Filter,
+  Future<myData<BaseCategory>> getSelected(String HesapKoduFilter, [String? Duzey1Filter,
     String? Duzey2Filter, String? Duzey3Filter, String? Duzey4Filter, String? Duzey5Filter, String? ParentIdFilter]) async {
     setState(() {});
     // print("parent id:${ParentIdFilter}");
@@ -165,13 +160,11 @@ class _TifListesiState extends State<TifListesi> {
     // print(
     //     'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetAll?HesapKoduFilter=${HesapKoduFilter}&Duzey1Filter=${Duzey1Filter}&Duzey2Filter=${Duzey2Filter}&Duzey3Filter=${Duzey3Filter}&Duzey4Filter=${Duzey4Filter}&Duzey5Filter=${Duzey5Filter}&ParentIdFilter=0&Page=1&PageSize=12&Orderby=Id&Desc=false&isDeleted=false');
     // print(res.body);
-    selected = BaseCategory
-        .fromJson(json.decode(res.body))
-        .data
-        .toList();
+    selected = myData<BaseCategory>.fromJson(json.decode(res.body), BaseCategory.fromJsonModel);
 
-    sonuc = selected[0].malzemeAdi;
-    print("duzey son: ${selected[0].malzemeAdi}");
+
+    sonuc = selected.data![0].malzemeAdi;
+    print("duzey son: ${selected.data![0].malzemeAdi}");
 
     return selected;
   }
@@ -179,19 +172,17 @@ class _TifListesiState extends State<TifListesi> {
   //endregion
 
   //region duzey3
-  List<Data> duzey3 = <Data>[];
+  late myData<BaseCategory> duzey3 = myData<BaseCategory>();
 
-  Future<List<Data>> duzey3Listele(int ParentIdFilter) async {
+  Future<myData<BaseCategory>> duzey3Listele(int ParentIdFilter) async {
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetAll?ParentIdFilter=${ParentIdFilter}&Orderby=Id&Desc=false&isDeleted=false'));
 
-    duzey3 = BaseCategory
-        .fromJson(json.decode(res.body))
-        .data
-        .toList();
+    duzey3 = myData<BaseCategory>.fromJson(json.decode(res.body), BaseCategory.fromJsonModel);
 
 
-    if (duzey3.isEmpty) {
+
+    if (duzey3.data!.length == 0) {
       getSelected(
           urunhks,
           urun1s,
@@ -215,18 +206,16 @@ class _TifListesiState extends State<TifListesi> {
   //endregion
 
   //region duzey4
-  List<Data> duzey4 = <Data>[];
+  late myData<BaseCategory> duzey4 = myData<BaseCategory>();
 
-  Future<List<Data>> duzey4Listele(int ParentIdFilter) async {
+  Future<myData<BaseCategory>> duzey4Listele(int ParentIdFilter) async {
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetAll?ParentIdFilter=${ParentIdFilter}&Orderby=Id&Desc=false&isDeleted=false'));
 
-    duzey4 = BaseCategory
-        .fromJson(json.decode(res.body))
-        .data
-        .toList();
+    duzey4 = myData<BaseCategory>.fromJson(json.decode(res.body), BaseCategory.fromJsonModel);
 
-    if (duzey4.isEmpty) {
+
+    if (duzey4.data!.length == 0) {
       getSelected(
           urunhks,
           urun1s,
@@ -249,18 +238,16 @@ class _TifListesiState extends State<TifListesi> {
   //endregion
 
   //region duzey5
-  List<Data> duzey5 = <Data>[];
+  late myData<BaseCategory> duzey5 = myData<BaseCategory>();
 
-  Future<List<Data>> duzey5Listele(int ParentIdFilter) async {
+  Future<myData<BaseCategory>> duzey5Listele(int ParentIdFilter) async {
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetAll?ParentIdFilter=${ParentIdFilter}&Orderby=Id&Desc=false&isDeleted=false'));
 
-    duzey5 = BaseCategory
-        .fromJson(json.decode(res.body))
-        .data
-        .toList();
+    duzey5 = myData<BaseCategory>.fromJson(json.decode(res.body), BaseCategory.fromJsonModel);
 
-    if (duzey5.isEmpty) {
+
+    if (duzey5.data!.length == 0) {
       getSelected(
           urunhks,
           urun1s,
@@ -310,12 +297,12 @@ class _TifListesiState extends State<TifListesi> {
                   const SizedBox(
                     height: 40,
                   ),
-                  SearchField<String>(
+                  SearchField<myData<BaseCategory>>(
                     hint: 'Hesap Kodu Seçiniz',
-                    suggestions: baseCategory
+                    suggestions: baseCategory.data!
                         .map(
                           (e) =>
-                          SearchFieldListItem<String>(e.hesapKodu.toString(),
+                          SearchFieldListItem<myData<BaseCategory>>(e.hesapKodu.toString(),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment
                                     .spaceBetween,
@@ -361,12 +348,13 @@ class _TifListesiState extends State<TifListesi> {
                   const SizedBox(
                     height: 40,
                   ),
-                  SearchField<String>(
+
+                  SearchField<myData<BaseCategory>>(
                     hint: 'Düzey 1 Seçiniz',
-                    suggestions: duzey1
+                    suggestions: duzey1.data!
                         .map(
                           (e) =>
-                          SearchFieldListItem<String>(e.duzey1.toString(),
+                          SearchFieldListItem<myData<BaseCategory>>(e.duzey1.toString(),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment
                                     .spaceBetween,
@@ -417,12 +405,12 @@ class _TifListesiState extends State<TifListesi> {
                   const SizedBox(
                     height: 40,
                   ),
-                  SearchField<String>(
+                  SearchField<myData<BaseCategory>>(
                     hint: 'Düzey 2 Seçiniz',
-                    suggestions: duzey2
+                    suggestions: duzey2.data!
                         .map(
                           (e) =>
-                          SearchFieldListItem<String>(e.duzey2.toString(),
+                          SearchFieldListItem<myData<BaseCategory>>(e.duzey2.toString(),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment
                                     .spaceBetween,
@@ -474,12 +462,12 @@ class _TifListesiState extends State<TifListesi> {
                   const SizedBox(
                     height: 40,
                   ),
-                  SearchField<String>(
+                  SearchField<myData<BaseCategory>>(
                     hint: 'Düzey 3 Seçiniz',
-                    suggestions: duzey3
+                    suggestions: duzey3.data!
                         .map(
                           (e) =>
-                          SearchFieldListItem<String>(e.duzey3.toString(),
+                          SearchFieldListItem<myData<BaseCategory>>(e.duzey3.toString(),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment
                                     .spaceBetween,
@@ -530,12 +518,12 @@ class _TifListesiState extends State<TifListesi> {
                   const SizedBox(
                     height: 40,
                   ),
-                  SearchField<String>(
+                  SearchField<myData<BaseCategory>>(
                     hint: 'Düzey 4 Seçiniz',
-                    suggestions: duzey4
+                    suggestions: duzey4.data!
                         .map(
                           (e) =>
-                          SearchFieldListItem<String>(e.duzey4.toString(),
+                          SearchFieldListItem<myData<BaseCategory>>(e.duzey4.toString(),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment
                                     .spaceBetween,
@@ -581,12 +569,12 @@ class _TifListesiState extends State<TifListesi> {
                   const SizedBox(
                     height: 40,
                   ),
-                  SearchField<String>(
+                  SearchField<myData<BaseCategory>>(
                     hint: 'Düzey 5 Seçiniz',
-                    suggestions: duzey5
+                    suggestions: duzey5.data!
                         .map(
                           (e) =>
-                          SearchFieldListItem<String>(e.duzey5.toString(),
+                          SearchFieldListItem<myData<BaseCategory>>(e.duzey5.toString(),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment
                                     .spaceBetween,
