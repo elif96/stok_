@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stok_takip_uygulamasi/model/myData.dart';
 import 'package:stok_takip_uygulamasi/tif_listesi.dart';
 
 import 'drawer_menu.dart';
@@ -13,7 +15,7 @@ class OnayaGonderGrid extends StatefulWidget {
   final String? islemTarihi;
   final int? anaDepo;
   final int? hedefDepo;
-  final List<Data>? sonuc;
+  final myData<Category>? sonuc;
   final String? kategori;
   final String? urunler;
 
@@ -24,7 +26,8 @@ class OnayaGonderGrid extends StatefulWidget {
         this.anaDepo,
         this.hedefDepo,
         this.islemTarihi,
-        this.sonuc, this.kategori, this.urunler})
+        this.sonuc,
+        this.kategori, this.urunler})
       : super(key: key);
 
   @override
@@ -86,7 +89,7 @@ class _OnayaGonderGridState extends State<OnayaGonderGrid> {
               rows: <DataRow>[
                 DataRow(
                   cells: <DataCell>[
-                    DataCell(Text('${this.widget.sonuc![0].malzemeAdi}')),
+                    DataCell(Text('${this.widget.sonuc!.data!}')),
                     DataCell(Text('19')),
                     DataCell(Text('Student')),
                   ],

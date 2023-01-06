@@ -53,7 +53,7 @@ class _TifListesiState extends State<TifListesi> {
     super.initState();
     baseCategoryListele();
     _isButtonDisabled = true;
-    setState(() {});
+    // setState(() {});
 
   }
 
@@ -91,7 +91,7 @@ class _TifListesiState extends State<TifListesi> {
     duzey1 = myData<BaseCategory>.fromJson(json.decode(res.body), BaseCategory.fromJsonModel);
 
 
-    if (duzey1.data!.length == 0) {
+    if (duzey1.data!.isEmpty) {
       _isButtonDisabled = false;
 
       getSelected(urunhks, "", "", "", "", "");
@@ -164,7 +164,11 @@ class _TifListesiState extends State<TifListesi> {
 
 
     sonuc = selected.data![0].malzemeAdi;
+
     print("duzey son: ${selected.data![0].malzemeAdi}");
+    print("duzey son: ${selected.data![0].duzeyKodu}");
+    print("duzey son: ${selected.data![0].hesapKodu}");
+    print("duzey son: ${selected.data![0].id}");
 
     return selected;
   }
@@ -299,8 +303,8 @@ class _TifListesiState extends State<TifListesi> {
                   ),
                   SearchField<myData<BaseCategory>>(
                     hint: 'Hesap Kodu Seçiniz',
-                    suggestions: baseCategory.data!
-                        .map(
+                    suggestions: baseCategory.data
+                        ?.map(
                           (e) =>
                           SearchFieldListItem<myData<BaseCategory>>(e.hesapKodu.toString(),
                               child: Row(
@@ -317,7 +321,7 @@ class _TifListesiState extends State<TifListesi> {
                               ),
                               key: Key(e.id.toString())),
                     )
-                        .toList(),
+                        .toList() ?? [],
                     onSuggestionTap: (e) {
                       urunhks = e.searchKey;
                       // print("hk: ${urunhk}");
@@ -351,8 +355,8 @@ class _TifListesiState extends State<TifListesi> {
 
                   SearchField<myData<BaseCategory>>(
                     hint: 'Düzey 1 Seçiniz',
-                    suggestions: duzey1.data!
-                        .map(
+                    suggestions: duzey1.data
+                        ?.map(
                           (e) =>
                           SearchFieldListItem<myData<BaseCategory>>(e.duzey1.toString(),
                               child: Row(
@@ -376,7 +380,7 @@ class _TifListesiState extends State<TifListesi> {
                               ),
                               key: Key(e.id.toString())),
                     )
-                        .toList(),
+                        .toList() ?? [],
                     onSuggestionTap: (e) {
                       urun1s = e.searchKey;
                       setState(() {
@@ -407,8 +411,8 @@ class _TifListesiState extends State<TifListesi> {
                   ),
                   SearchField<myData<BaseCategory>>(
                     hint: 'Düzey 2 Seçiniz',
-                    suggestions: duzey2.data!
-                        .map(
+                    suggestions: duzey2.data
+                        ?.map(
                           (e) =>
                           SearchFieldListItem<myData<BaseCategory>>(e.duzey2.toString(),
                               child: Row(
@@ -432,7 +436,7 @@ class _TifListesiState extends State<TifListesi> {
                               ),
                               key: Key(e.id.toString())),
                     )
-                        .toList(),
+                        .toList() ?? [],
                     onSuggestionTap: (e) {
                       urun2s = e.searchKey;
                       setState(() {
@@ -464,8 +468,8 @@ class _TifListesiState extends State<TifListesi> {
                   ),
                   SearchField<myData<BaseCategory>>(
                     hint: 'Düzey 3 Seçiniz',
-                    suggestions: duzey3.data!
-                        .map(
+                    suggestions: duzey3.data
+                        ?.map(
                           (e) =>
                           SearchFieldListItem<myData<BaseCategory>>(e.duzey3.toString(),
                               child: Row(
@@ -489,7 +493,7 @@ class _TifListesiState extends State<TifListesi> {
                               ),
                               key: Key(e.id.toString())),
                     )
-                        .toList(),
+                        .toList() ?? [],
                     onSuggestionTap: (e) {
                       urun3s = e.searchKey;
                       setState(() {
@@ -520,8 +524,8 @@ class _TifListesiState extends State<TifListesi> {
                   ),
                   SearchField<myData<BaseCategory>>(
                     hint: 'Düzey 4 Seçiniz',
-                    suggestions: duzey4.data!
-                        .map(
+                    suggestions: duzey4.data
+                        ?.map(
                           (e) =>
                           SearchFieldListItem<myData<BaseCategory>>(e.duzey4.toString(),
                               child: Row(
@@ -545,7 +549,7 @@ class _TifListesiState extends State<TifListesi> {
                               ),
                               key: Key(e.id.toString())),
                     )
-                        .toList(),
+                        .toList() ?? [],
                     onSuggestionTap: (e) {
                       urun4s = e.searchKey;
                       setState(() {
@@ -571,8 +575,8 @@ class _TifListesiState extends State<TifListesi> {
                   ),
                   SearchField<myData<BaseCategory>>(
                     hint: 'Düzey 5 Seçiniz',
-                    suggestions: duzey5.data!
-                        .map(
+                    suggestions: duzey5.data
+                        ?.map(
                           (e) =>
                           SearchFieldListItem<myData<BaseCategory>>(e.duzey5.toString(),
                               child: Row(
@@ -596,7 +600,7 @@ class _TifListesiState extends State<TifListesi> {
                               ),
                               key: Key(e.id.toString())),
                     )
-                        .toList(),
+                        .toList() ?? [],
                     onSuggestionTap: (e) {
                       urun5s = e.searchKey;
                       setState(() {
