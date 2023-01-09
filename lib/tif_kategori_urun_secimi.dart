@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:searchfield/searchfield.dart';
 import 'package:stok_takip_uygulamasi/drawer_menu.dart';
 import 'package:stok_takip_uygulamasi/model/Category.dart';
+import 'package:stok_takip_uygulamasi/model/Product.dart';
 import 'package:stok_takip_uygulamasi/model/myData.dart';
 import 'package:stok_takip_uygulamasi/tif_listesi.dart';
 import 'package:stok_takip_uygulamasi/varyant_secimi.dart';
@@ -48,7 +49,7 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
   @override
   initState() {
     super.initState();
-    baseCategoryListele();
+    // baseCategoryListele();
     setState(() {});
     // print("Sonuç: ${this.widget.sonuc![0].malzemeAdi}");
 
@@ -59,41 +60,45 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
 
   late myData<BaseCategory> baseCategory = myData<BaseCategory>();
 
-  Future<myData<BaseCategory>> baseCategoryListele() async {
-    http.Response res = await http.get(Uri.parse(
-        'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetAll?Page=1&PageSize=4&Orderby=Id&Desc=false&isDeleted=false'));
-    baseCategory = myData<BaseCategory>.fromJson(
-        json.decode(res.body), BaseCategory.fromJsonModel);
-
-    return baseCategory;
-  }
+  // Future<myData<BaseCategory>> baseCategoryListele() async {
+  //   http.Response res = await http.get(Uri.parse(
+  //       'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetAll?Page=1&PageSize=4&Orderby=Id&Desc=false&isDeleted=false'));
+  //   baseCategory = myData<BaseCategory>.fromJson(
+  //       json.decode(res.body), BaseCategory.fromJsonModel);
+  //
+  //   return baseCategory;
+  // }
 
   late myData<Category> category = myData<Category>();
 
-  // Future<myData<Category>> categoryListele(
-  //     int BrandIdFilter,
-  //     int BrandModelIdFilter,
-  //     int BaseCategoryIdFilter,
-  //     int Id,
-  //     int Page,
-  //     int PageSize,
-  //     String Orderby,
-  //     bool Desc,
-  //     bool isDeleted,
-  //     bool includeParents,
-  //     bool includeChildren) async {
-  Future<myData<Category>> categoryListele(
- ) async {
+  Future<myData<Category>> categoryListele() async {
     http.Response res = await http.get(Uri.parse(
-        'https://stok.bahcelievler.bel.tr/api/Categories/GetAll?BrandIdFilter=0&BrandModelIdFilter=0&BaseCategoryIdFilter=19&Id=0&Page=1&PageSize=12&Orderby=Id&Desc=false&isDeleted=false&includeParents=true&includeChildren=false'));
-    print(res.body);
-    // print(
-    //     'https://stok.bahcelievler.bel.tr/api/Categories/GetAll?BrandIdFilter=$BrandIdFilter&BrandModelIdFilter=$BrandModelIdFilter&BaseCategoryIdFilter=$BaseCategoryIdFilter&Id=$Id&Page=$Page&PageSize=$PageSize&Orderby=$Orderby&Desc=$Desc&isDeleted=$isDeleted&includeParents=$includeParents&includeChildren=$includeChildren');
+        'https://stok.bahcelievler.bel.tr/api/Categories/GetAll?BrandIdFilter=0&BrandModelIdFilter=0&BaseCategoryIdFilter=${this.widget.sonuc?.data![0].id}&Id=0&Page=1&PageSize=12&Orderby=Id&Desc=false&isDeleted=false&includeParents=true&includeChildren=false'));
+    // print(res.body);
     category = myData<Category>.fromJson(
         json.decode(res.body), Category.fromJsonModel);
 
-    print(category.data);
+    // print("uzunluk:${category.data?.length}");
+    // print(this.widget.sonuc?.data![0].id);
     return category;
+  }
+
+  late myData<Product> product = myData<Product>();
+
+  Future<myData<Product>> productListele() async {
+    http.Response res = await http.get(Uri.parse(
+        'https://stok.bahcelievler.bel.tr/api/Products/GetAll?CategoryIdFilter=${category.data![0].id}&Id=0&Page=1&PageSize=12&Orderby=Id&Desc=false&isDeleted=false&includeParents=false&includeChildren=false'));
+    print(res.body);
+    print('https://stok.bahcelievler.bel.tr/api/Products/GetAll?CategoryIdFilter=${category.data![0].id}&Id=0&Page=1&PageSize=12&Orderby=Id&Desc=false&isDeleted=false&includeParents=false&includeChildren=false');
+
+    product =
+        myData<Product>.fromJson(json.decode(res.body), Product.fromJsonModel);
+    print('object');
+    print(category.data![0].id);
+    print("uzunluk:${category.data?.length}");
+    print('object');
+
+    return product;
   }
 
   var dropdownvalue;
@@ -149,18 +154,17 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
                   ),
                 ),
                 const SizedBox(
-                  height: 40,
+                  height: 10,
                 ),
-                FutureBuilder<myData<BaseCategory>>(
-                  future: baseCategoryListele(),
+                FutureBuilder<myData<Category>>(
+                  future: categoryListele(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return ListView.builder(
                         shrinkWrap: true,
                         itemCount: 1,
                         itemBuilder: (context, index) {
-                          // TfTest.addListener(() => markaListeleWithFilter(TfTest.text, 1, 2, 'Id', true));
-                          return SearchField<myData<BaseCategory>>(
+                          return SearchField<myData<Category>>(
                             autoCorrect: true,
                             hint: 'Kategori Seçiniz',
                             onSuggestionTap: (e) {
@@ -179,84 +183,67 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
                             suggestions: snapshot.data!.data!
                                 .map(
                                   (e) => SearchFieldListItem<
-                                          myData<BaseCategory>>(e.id.toString(),
+                                          myData<Category>>(e.ad.toString(),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
-                                            child: Text(e.id.toString(),
+                                            child: Text(e.ad.toString(),
                                                 style: const TextStyle(
                                                     color: Color(0XFF6E3F52))),
                                           ),
-                                          Row(
-                                            children: [
-                                              GestureDetector(
-                                                child: const Text('Load More'),
-                                                onTap: () {
-                                                  // pageNum +=1;
-                                                  print("e: ${e.id}");
 
-                                                  pageSize += 5;
-
-                                                  setState(() {});
-                                                },
-                                              ),
-                                              GestureDetector(
-                                                child: const Icon(
-                                                  Icons.delete_outline,
-                                                  color: Color(0XFF6E3F52),
-                                                ),
-                                                onTap: () {
-                                                  // varyantElemanSil(e.id!);
-                                                },
-                                              ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              GestureDetector(
-                                                child: const Icon(
-                                                  Icons.border_color_outlined,
-                                                  color: Color(0XFF6E3F52),
-                                                ),
-                                                onTap: () {
-                                                  // showGuncellemeDialog(e.id!);
-                                                },
-                                              ),
-                                            ],
-                                          ),
                                         ],
                                       ),
-                                      key: Key(e.id.toString())),
+                                      key: Key(e.ad.toString())),
                                 )
                                 .toList(),
                           );
                         },
                       );
-                    } else if (!(snapshot.hasError)) {
-                      return SearchField(
-                        suggestions: [],
-                      ).emptyWidget;
                     }
-                    return const CircularProgressIndicator(
-                      color: Color(0XFF976775),
-                    );
+                    return SearchField<myData<BaseCategory>>(
+                        autoCorrect: true,
+                        hint: 'Kategori Seçiniz',
+                        onSuggestionTap: (e) {
+                          dropdownvalue = e.searchKey;
+                          setState(() {
+                            dropdownvalue = e.key.toString();
+                          });
+                        },
+                        suggestionAction: SuggestionAction.unfocus,
+                        itemHeight: 50,
+                        searchStyle: const TextStyle(color: Color(0XFF976775)),
+                        suggestionStyle:
+                            const TextStyle(color: Color(0XFF976775)),
+                        // suggestionsDecoration: BoxDecoration(color: Colors.red),
+                        suggestions: []);
                   },
                 ),
-                FutureBuilder<myData<BaseCategory>>(
-                  future: baseCategoryListele(),
+                // const SizedBox(
+                //   height: 40,
+                // ),
+                const SizedBox(
+                  height: 10,
+                ),
+
+                FutureBuilder<myData<Product>>(
+                  future: productListele(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return ListView.builder(
                         shrinkWrap: true,
                         itemCount: 1,
                         itemBuilder: (context, index) {
-                          // TfTest.addListener(() => markaListeleWithFilter(TfTest.text, 1, 2, 'Id', true));
-                          return SearchField<myData<BaseCategory>>(
+                          return SearchField<myData<Product>>(
                             autoCorrect: true,
                             hint: 'Ürün Seçiniz',
                             onSuggestionTap: (e) {
+                              setState(() {
+
+                              });
                               dropdownvalue = e.searchKey;
                               setState(() {
                                 dropdownvalue = e.key.toString();
@@ -265,80 +252,54 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
                             suggestionAction: SuggestionAction.unfocus,
                             itemHeight: 50,
                             searchStyle:
-                                const TextStyle(color: Color(0XFF976775)),
+                            const TextStyle(color: Color(0XFF976775)),
                             suggestionStyle:
-                                const TextStyle(color: Color(0XFF976775)),
+                            const TextStyle(color: Color(0XFF976775)),
                             // suggestionsDecoration: BoxDecoration(color: Colors.red),
                             suggestions: snapshot.data!.data!
                                 .map(
                                   (e) => SearchFieldListItem<
-                                          myData<BaseCategory>>(e.id.toString(),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text(e.id.toString(),
-                                                style: const TextStyle(
-                                                    color: Color(0XFF6E3F52))),
-                                          ),
-                                          Row(
-                                            children: [
-                                              GestureDetector(
-                                                child: const Text('Load More'),
-                                                onTap: () {
-                                                  // pageNum +=1;
-                                                  print("e: ${e.id}");
-
-                                                  pageSize += 5;
-
-                                                  setState(() {});
-                                                },
-                                              ),
-                                              GestureDetector(
-                                                child: const Icon(
-                                                  Icons.delete_outline,
-                                                  color: Color(0XFF6E3F52),
-                                                ),
-                                                onTap: () {
-                                                  // varyantElemanSil(e.id!);
-                                                },
-                                              ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              GestureDetector(
-                                                child: const Icon(
-                                                  Icons.border_color_outlined,
-                                                  color: Color(0XFF6E3F52),
-                                                ),
-                                                onTap: () {
-                                                  // showGuncellemeDialog(e.id!);
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                        ],
+                                  myData<Product>>(e.productName.toString(),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(e.productName.toString(),
+                                            style: const TextStyle(
+                                                color: Color(0XFF6E3F52))),
                                       ),
-                                      key: Key(e.id.toString())),
-                                )
+
+                                    ],
+                                  ),
+                                  key: Key(e.id.toString())),
+                            )
                                 .toList(),
                           );
                         },
                       );
-                    } else if (!(snapshot.hasError)) {
-                      return SearchField(
-                        suggestions: [],
-                      ).emptyWidget;
                     }
-                    return const CircularProgressIndicator(
-                      color: Color(0XFF976775),
-                    );
+                    return SearchField<myData<Product>>(
+                        autoCorrect: true,
+                        hint: 'Ürün Seçiniz',
+                        onSuggestionTap: (e) {
+                          dropdownvalue = e.searchKey;
+                          setState(() {
+                            dropdownvalue = e.key.toString();
+                          });
+                        },
+                        suggestionAction: SuggestionAction.unfocus,
+                        itemHeight: 50,
+                        searchStyle: const TextStyle(color: Color(0XFF976775)),
+                        suggestionStyle:
+                        const TextStyle(color: Color(0XFF976775)),
+                        // suggestionsDecoration: BoxDecoration(color: Colors.red),
+                        suggestions: []);
                   },
                 ),
                 const SizedBox(
-                  height: 40,
+                  height: 10,
                 ),
                 // SearchField<myData<BaseCategory>>(
                 //   hint: 'Kategori Seçiniz',
@@ -408,9 +369,7 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
                 //       )
                 //       .toList(),
                 // ),
-                const SizedBox(
-                  height: 40,
-                ),
+
                 Align(
                   alignment: Alignment.topRight,
                   child: Container(
@@ -428,7 +387,7 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
                           })),
                 ),
                 const SizedBox(
-                  height: 40,
+                  height: 10,
                 ),
                 AnimatedButton(
                     color: const Color(0XFF463848),

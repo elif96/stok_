@@ -36,7 +36,7 @@ class _IsBaslatState extends State<IsBaslat> {
 
   List<String> list = <String>['1', '2', '3', '4'];
 
-  late myData<myWareHouse> cevaps;
+  myData<myWareHouse> cevaps = myData<myWareHouse>();
 
   Future<myData<myWareHouse>> warehouseListele() async {
     http.Response res = await http
@@ -574,7 +574,7 @@ print(response.body);
                                                                           0XFF6E3F52),
                                                                       width:
                                                                           3))),
-                                                          items: cevaps.data?.map(
+                                                          items: cevaps.data == null ? [] : cevaps.data?.map(
                                                               (myWareHouse value) {
                                                             return DropdownMenuItem<
                                                                 String>(
@@ -1418,11 +1418,6 @@ print(response.body);
                                   letterSpacing: 2,
                                 ),
                               ),
-                              ElevatedButton(
-                                  onPressed: () {
-                                    warehouseListele();
-                                  },
-                                  child: Text('Çağır'))
                             ],
                           ),
                         ),
