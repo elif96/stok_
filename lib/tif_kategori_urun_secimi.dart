@@ -93,8 +93,12 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
 
     product =
         myData<Product>.fromJson(json.decode(res.body), Product.fromJsonModel);
+    print(json.decode(res.body));
     print('object');
+    print(product.data![0].id);
     print(category.data![0].id);
+    print(category.data![1].id);
+
     print("uzunluk:${category.data?.length}");
     print('object');
 
@@ -131,7 +135,7 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
                 TextField(
                   controller: tfTif,
                   decoration: InputDecoration(
-                    hintText: tfTif.text == "" ? "TİF Listesi" : tfTif.text,
+                    hintText:  this.widget.sonuc?.data![0].malzemeAdi.toString(),
                     suffixIcon: IconButton(
                       onPressed: () {
                         Navigator.push(
@@ -180,7 +184,7 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
                             suggestionStyle:
                                 const TextStyle(color: Color(0XFF976775)),
                             // suggestionsDecoration: BoxDecoration(color: Colors.red),
-                            suggestions: snapshot.data!.data!
+                            suggestions: snapshot.data == null ? [] :snapshot.data!.data!
                                 .map(
                                   (e) => SearchFieldListItem<
                                           myData<Category>>(e.ad.toString(),
@@ -256,7 +260,7 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
                             suggestionStyle:
                             const TextStyle(color: Color(0XFF976775)),
                             // suggestionsDecoration: BoxDecoration(color: Colors.red),
-                            suggestions: snapshot.data!.data!
+                            suggestions: snapshot.data == null ? [] : snapshot.data!.data!
                                 .map(
                                   (e) => SearchFieldListItem<
                                   myData<Product>>(e.productName.toString(),

@@ -1,25 +1,29 @@
 class Product {
-  int? id;
   int? categoryId;
+  String? productName;
   String? barkod;
   String? urunKimlikNo;
   String? sistemSeriNo;
-  String? productName;
+  int? id;
 
-  Product({required id, required categoryId, required barkod, required urunKimlikNo, required sistemSeriNo, required productName});
-
+  Product(
+      {this.categoryId,
+      this.productName,
+      this.barkod,
+      this.urunKimlikNo,
+      this.sistemSeriNo,
+      this.id});
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
-      id: json['id'],
-      categoryId: json['categoryId'],
-      barkod: json['barkod'],
-      urunKimlikNo: json['urunKimlikNo'],
-      sistemSeriNo: json['sistemSeriNo'],
-      productName: json['productName'],
-    );
+        categoryId: json['categoryId'],
+        productName: json['productName'],
+        barkod: json['barkod'],
+        urunKimlikNo: json['urunKimlikNo'],
+        sistemSeriNo: json['sistemSeriNo'],
+        id: json['id']);
   }
 
-  static Product fromJsonModel(Map<String, dynamic> json) => Product.fromJson(json);
-
+  static Product fromJsonModel(Map<String, dynamic> json) =>
+      Product.fromJson(json);
 }

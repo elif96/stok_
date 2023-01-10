@@ -92,7 +92,7 @@ class _MarkaTanimState extends State<MarkaTanim> {
                         side: const BorderSide(width: 1.0, color: Color(0XFF463848)),
                       ),
                       onPressed: () {
-                        Servis().markaEkle(tfMarkaAdi.text);
+                        markaEkle();
 
 
                       },

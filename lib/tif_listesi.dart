@@ -58,7 +58,7 @@ class _TifListesiState extends State<TifListesi> {
   }
 
   //region baseCategory
-  late myData<BaseCategory> baseCategory = myData<BaseCategory>();
+  myData<BaseCategory> baseCategory = myData<BaseCategory>();
   var tfTifList = TextEditingController();
 
   Future<myData<BaseCategory>> baseCategoryListele() async {
@@ -80,7 +80,7 @@ class _TifListesiState extends State<TifListesi> {
   //endregion
 
   //region duzey1
-  late myData<BaseCategory> duzey1 = myData<BaseCategory>();
+  myData<BaseCategory> duzey1 = myData<BaseCategory>();
 
   Future<myData<BaseCategory>> duzey1Listele(int ParentIdFilter) async {
     // print("parent id:${ParentIdFilter}");
@@ -113,7 +113,7 @@ class _TifListesiState extends State<TifListesi> {
   //endregion
 
   //region duzey2
-  late myData<BaseCategory> duzey2 = myData<BaseCategory>();
+  myData<BaseCategory> duzey2 = myData<BaseCategory>();
 
   Future<myData<BaseCategory>> duzey2Listele(int ParentIdFilter) async {
     setState(() {});
@@ -176,7 +176,7 @@ class _TifListesiState extends State<TifListesi> {
   //endregion
 
   //region duzey3
-  late myData<BaseCategory> duzey3 = myData<BaseCategory>();
+  myData<BaseCategory> duzey3 = myData<BaseCategory>();
 
   Future<myData<BaseCategory>> duzey3Listele(int ParentIdFilter) async {
     http.Response res = await http.get(Uri.parse(
@@ -210,7 +210,7 @@ class _TifListesiState extends State<TifListesi> {
   //endregion
 
   //region duzey4
-  late myData<BaseCategory> duzey4 = myData<BaseCategory>();
+  myData<BaseCategory> duzey4 = myData<BaseCategory>();
 
   Future<myData<BaseCategory>> duzey4Listele(int ParentIdFilter) async {
     http.Response res = await http.get(Uri.parse(
@@ -242,7 +242,7 @@ class _TifListesiState extends State<TifListesi> {
   //endregion
 
   //region duzey5
-  late myData<BaseCategory> duzey5 = myData<BaseCategory>();
+  myData<BaseCategory> duzey5 = myData<BaseCategory>();
 
   Future<myData<BaseCategory>> duzey5Listele(int ParentIdFilter) async {
     http.Response res = await http.get(Uri.parse(
@@ -303,7 +303,7 @@ class _TifListesiState extends State<TifListesi> {
                   ),
                   SearchField<myData<BaseCategory>>(
                     hint: 'Hesap Kodu Seçiniz',
-                    suggestions: baseCategory.data
+                    suggestions:  baseCategory.data == null ? [] : baseCategory.data
                         ?.map(
                           (e) =>
                           SearchFieldListItem<myData<BaseCategory>>(e.hesapKodu.toString(),
@@ -355,7 +355,7 @@ class _TifListesiState extends State<TifListesi> {
 
                   SearchField<myData<BaseCategory>>(
                     hint: 'Düzey 1 Seçiniz',
-                    suggestions: duzey1.data
+                    suggestions:  duzey1.data == null ? [] : duzey1.data
                         ?.map(
                           (e) =>
                           SearchFieldListItem<myData<BaseCategory>>(e.duzey1.toString(),
@@ -411,7 +411,7 @@ class _TifListesiState extends State<TifListesi> {
                   ),
                   SearchField<myData<BaseCategory>>(
                     hint: 'Düzey 2 Seçiniz',
-                    suggestions: duzey2.data
+                    suggestions:  duzey2.data == null ? [] : duzey2.data
                         ?.map(
                           (e) =>
                           SearchFieldListItem<myData<BaseCategory>>(e.duzey2.toString(),
@@ -468,7 +468,7 @@ class _TifListesiState extends State<TifListesi> {
                   ),
                   SearchField<myData<BaseCategory>>(
                     hint: 'Düzey 3 Seçiniz',
-                    suggestions: duzey3.data
+                    suggestions:  duzey3.data == null ? [] : duzey3.data
                         ?.map(
                           (e) =>
                           SearchFieldListItem<myData<BaseCategory>>(e.duzey3.toString(),
@@ -524,7 +524,7 @@ class _TifListesiState extends State<TifListesi> {
                   ),
                   SearchField<myData<BaseCategory>>(
                     hint: 'Düzey 4 Seçiniz',
-                    suggestions: duzey4.data
+                    suggestions:  duzey4.data == null ? [] : duzey4.data
                         ?.map(
                           (e) =>
                           SearchFieldListItem<myData<BaseCategory>>(e.duzey4.toString(),
@@ -575,7 +575,7 @@ class _TifListesiState extends State<TifListesi> {
                   ),
                   SearchField<myData<BaseCategory>>(
                     hint: 'Düzey 5 Seçiniz',
-                    suggestions: duzey5.data
+                    suggestions:  duzey5.data == null ? [] : duzey5.data
                         ?.map(
                           (e) =>
                           SearchFieldListItem<myData<BaseCategory>>(e.duzey5.toString(),
