@@ -38,6 +38,7 @@ class Product {
         category: Category.fromJson(json['category']),
         productVariantElements: List<ProductVariantElements>.from(items.map((itemsJson) => ProductVariantElements.fromJsonModel(itemsJson))),
     );
+
   }
 
 
