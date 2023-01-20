@@ -1,18 +1,17 @@
-
-class Varyant {
+class Variant {
   String? varyantAdi;
   int? id;
 
-  Varyant({this.varyantAdi, this.id});
+  Variant({this.varyantAdi, this.id});
 
-  factory Varyant.fromJson(Map<String, dynamic> json) {
-    return Varyant(
+  factory Variant.fromJson(Map<String, dynamic> json) {
+    return Variant(
     varyantAdi: json['varyantAdi'],
     id: json['id'],
     );
   }
 
-  static Varyant fromJsonModel(Map<String, dynamic> json) => Varyant.fromJson(json);
+  static Variant fromJsonModel(Map<String, dynamic> json) => Variant.fromJson(json);
 
 }
 

@@ -1,5 +1,3 @@
-import 'package:stok_takip_uygulamasi/model/Warehouse.dart';
-
 class ProductProcess {
   List<ProductProcessData> data = <ProductProcessData>[];
   Null errors;

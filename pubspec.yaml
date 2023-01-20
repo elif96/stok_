@@ -44,6 +44,7 @@ dependencies:
   flutter_barcode_scanner: ^2.0.0
   loadmore: ^2.0.1
   dropdown_search: ^5.0.5
+  dropdown_textfield: ^1.0.7
 
 
 

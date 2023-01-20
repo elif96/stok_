@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:searchfield/searchfield.dart';
 import 'package:stok_takip_uygulamasi/drawer_menu.dart';
-import 'package:stok_takip_uygulamasi/model/Varyant.dart';
+import 'package:stok_takip_uygulamasi/model/Variant.dart';
 import 'package:http/http.dart' as http;
 import 'package:stok_takip_uygulamasi/model/myData.dart';
 
@@ -22,15 +22,15 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
   var trimmedValue;
 
   var cevap;
-  late myData<Varyant> cevaps;
+  late myData<Variant> cevaps;
 
-  Future<myData<Varyant>> varyanListeleWithFilter(String VaryantAdiFilter, int Page,
+  Future<myData<Variant>> varyanListeleWithFilter(String VaryantAdiFilter, int Page,
       int PageSize, String Orderby, bool Desc, bool isDeleted) async {
     //https://stok.bahcelievler.bel.tr/api/Brands/GetAll?MarkaAdiFilter=a&Page=1&PageSize=12&Orderby=Id&Desc=false
 
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/Variants/GetAll?VaryantAdiFilter=${VaryantAdiFilter}&Page=${Page}&PageSize=${PageSize}&Orderby=${Orderby}&Desc=${Desc}&isDeleted=${isDeleted}'));
-    cevaps = myData<Varyant>.fromJson(json.decode(res.body), Varyant.fromJsonModel);
+    cevaps = myData<Variant>.fromJson(json.decode(res.body), Variant.fromJsonModel);
     // print('----*');
     // print(res.body);
     // print(cevaps.data);
@@ -249,7 +249,7 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
             child: ListView(
               shrinkWrap: true,
               children: [
-                FutureBuilder<myData<Varyant>>(
+                FutureBuilder<myData<Variant>>(
                   future:
                   varyanListeleWithFilter('', pageNum, pageSize, 'Id', true,false),
                   builder: (context, snapshot) {
@@ -260,7 +260,7 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
                         itemCount: 1,
                         itemBuilder: (context, index) {
                           // TfTest.addListener(() => markaListeleWithFilter(TfTest.text, 1, 2, 'Id', true));
-                          return SearchField<myData<Varyant>>(
+                          return SearchField<myData<Variant>>(
                             autoCorrect: true,
                             hint: 'Varyant Seçiniz',
                             onSuggestionTap: (e) {
@@ -277,7 +277,7 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
                             // suggestionsDecoration: BoxDecoration(color: Colors.red),
                             suggestions: snapshot.data!.data!
                                 .map(
-                                  (e) => SearchFieldListItem<myData<Varyant>>(
+                                  (e) => SearchFieldListItem<myData<Variant>>(
 
                                   e.varyantAdi.toString(),
                                   child: Row(

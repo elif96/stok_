@@ -5,13 +5,26 @@ import 'package:stok_takip_uygulamasi/onaya_gonder_grid.dart';
 import 'drawer_menu.dart';
 
 class VaryantSecimi extends StatefulWidget {
-  const VaryantSecimi({Key? key}) : super(key: key);
+  final String? variantAdi;
+  final List? varyantElemanAdi;
+  final String? productName;
+
+  const VaryantSecimi({Key? key, this.variantAdi, this.varyantElemanAdi, this.productName}) : super(key: key);
 
   @override
   State<VaryantSecimi> createState() => _VaryantSecimiState();
 }
 
 class _VaryantSecimiState extends State<VaryantSecimi> {
+  @override
+  initState() {
+    super.initState();
+    print("varyantAdi: ${this.widget.variantAdi}");
+    print("varyantElemanAdi: ${this.widget.varyantElemanAdi}");
+    print("productName: ${this.widget.productName}");
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

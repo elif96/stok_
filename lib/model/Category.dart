@@ -1,9 +1,3 @@
-import 'package:stok_takip_uygulamasi/model/BaseCategory.dart';
-import 'package:stok_takip_uygulamasi/model/Marka.dart';
-import 'package:stok_takip_uygulamasi/model/Model.dart';
-import 'package:stok_takip_uygulamasi/model/Product.dart';
-import 'package:stok_takip_uygulamasi/model/Varyant.dart';
-
 class Category {
   String? ad;
   int? brandId;
@@ -13,6 +7,7 @@ class Category {
   int? envanterTuru;
   String? barkod;
   int? id;
+
 
   Category({
     this.ad,

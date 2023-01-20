@@ -8,8 +8,6 @@ import 'package:stok_takip_uygulamasi/model/Category.dart';
 import 'package:stok_takip_uygulamasi/model/Product.dart';
 import 'package:stok_takip_uygulamasi/model/myData.dart';
 import 'package:stok_takip_uygulamasi/tif_listesi.dart';
-import 'package:stok_takip_uygulamasi/varyant_secimi.dart';
-
 import 'model/BaseCategory.dart';
 import 'package:http/http.dart' as http;
 
@@ -60,24 +58,17 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
 
   late myData<BaseCategory> baseCategory = myData<BaseCategory>();
 
-  // Future<myData<BaseCategory>> baseCategoryListele() async {
-  //   http.Response res = await http.get(Uri.parse(
-  //       'https://stok.bahcelievler.bel.tr/api/BaseCategories/GetAll?Page=1&PageSize=4&Orderby=Id&Desc=false&isDeleted=false'));
-  //   baseCategory = myData<BaseCategory>.fromJson(
-  //       json.decode(res.body), BaseCategory.fromJsonModel);
-  //
-  //   return baseCategory;
-  // }
-
   late myData<Category> category = myData<Category>();
 
   Future<myData<Category>> categoryListele() async {
     http.Response res = await http.get(Uri.parse(
-        'https://stok.bahcelievler.bel.tr/api/Categories/GetAll?BrandIdFilter=0&BrandModelIdFilter=0&BaseCategoryIdFilter=${this.widget.sonuc?.data![0].id}&Id=0&Page=1&PageSize=12&Orderby=Id&Desc=false&isDeleted=false&includeParents=true&includeChildren=false'));
+        'https://stok.bahcelievler.bel.tr/api/Categories/GetAll?BaseCategoryIdFilter=${this.widget.sonuc?.data![0].id}&Id=0&Page=1&PageSize=12&Orderby=Id&Desc=false&isDeleted=false&includeParents=true&includeChildren=true'));
+
     // print(res.body);
     category = myData<Category>.fromJson(
         json.decode(res.body), Category.fromJsonModel);
-
+    // print("kat: ${category.data![0].id}");
+    // print(category.data![0].ad);
     // print("uzunluk:${category.data?.length}");
     // print(this.widget.sonuc?.data![0].id);
     return category;
@@ -87,20 +78,20 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
 
   Future<myData<Product>> productListele() async {
     http.Response res = await http.get(Uri.parse(
-        'https://stok.bahcelievler.bel.tr/api/Products/GetAll?CategoryIdFilter=${category.data![0].id}&Id=0&Page=1&PageSize=12&Orderby=Id&Desc=false&isDeleted=false&includeParents=false&includeChildren=false'));
-    print(res.body);
-    print('https://stok.bahcelievler.bel.tr/api/Products/GetAll?CategoryIdFilter=${category.data![0].id}&Id=0&Page=1&PageSize=12&Orderby=Id&Desc=false&isDeleted=false&includeParents=false&includeChildren=false');
-
-    product =
-        myData<Product>.fromJson(json.decode(res.body), Product.fromJsonModel);
-    print(json.decode(res.body));
-    print('object');
+        'https://stok.bahcelievler.bel.tr/api/Products/GetAll?CategoryIdFilter=${category.data![0].id}&Id=0&Page=1&PageSize=12&Orderby=Id&Desc=false&isDeleted=false&includeParents=true&includeChildren=true'));
+    // print(res.body);
+    // print(
+    //     'https://stok.bahcelievler.bel.tr/api/Products/GetAll?CategoryIdFilter=${category.data![0].id}&Id=0&Page=1&PageSize=12&Orderby=Id&Desc=false&isDeleted=false&includeParents=true&includeChildren=true');
+    //
+    // print(json.decode(res.body));
+    product = myData<Product>.fromJson(json.decode(res.body), Product.fromJsonModel);
+    // print(json.decode(res.body));
+    // print('object');
     print(product.data![0].id);
-    print(category.data![0].id);
-    print(category.data![1].id);
-
-    print("uzunluk:${category.data?.length}");
-    print('object');
+    // print(category.data![1].id);
+    //
+    // print("uzunluk:${category.data?.length}");
+    // print('object');
 
     return product;
   }
@@ -135,7 +126,7 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
                 TextField(
                   controller: tfTif,
                   decoration: InputDecoration(
-                    hintText:  this.widget.sonuc?.data![0].malzemeAdi.toString(),
+                    hintText: this.widget.sonuc?.data![0].malzemeAdi.toString(),
                     suffixIcon: IconButton(
                       onPressed: () {
                         Navigator.push(
@@ -184,26 +175,29 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
                             suggestionStyle:
                                 const TextStyle(color: Color(0XFF976775)),
                             // suggestionsDecoration: BoxDecoration(color: Colors.red),
-                            suggestions: snapshot.data == null ? [] :snapshot.data!.data!
-                                .map(
-                                  (e) => SearchFieldListItem<
-                                          myData<Category>>(e.ad.toString(),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text(e.ad.toString(),
-                                                style: const TextStyle(
-                                                    color: Color(0XFF6E3F52))),
+                            suggestions: snapshot.data == null
+                                ? []
+                                : snapshot.data!.data!
+                                    .map(
+                                      (e) => SearchFieldListItem<
+                                              myData<Category>>(e.ad.toString(),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Text(e.ad.toString(),
+                                                    style: const TextStyle(
+                                                        color:
+                                                            Color(0XFF6E3F52))),
+                                              ),
+                                            ],
                                           ),
-
-                                        ],
-                                      ),
-                                      key: Key(e.ad.toString())),
-                                )
-                                .toList(),
+                                          key: Key(e.ad.toString())),
+                                    )
+                                    .toList(),
                           );
                         },
                       );
@@ -245,9 +239,7 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
                             autoCorrect: true,
                             hint: 'Ürün Seçiniz',
                             onSuggestionTap: (e) {
-                              setState(() {
-
-                              });
+                              setState(() {});
                               dropdownvalue = e.searchKey;
                               setState(() {
                                 dropdownvalue = e.key.toString();
@@ -256,30 +248,35 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
                             suggestionAction: SuggestionAction.unfocus,
                             itemHeight: 50,
                             searchStyle:
-                            const TextStyle(color: Color(0XFF976775)),
+                                const TextStyle(color: Color(0XFF976775)),
                             suggestionStyle:
-                            const TextStyle(color: Color(0XFF976775)),
+                                const TextStyle(color: Color(0XFF976775)),
                             // suggestionsDecoration: BoxDecoration(color: Colors.red),
-                            suggestions: snapshot.data == null ? [] : snapshot.data!.data!
-                                .map(
-                                  (e) => SearchFieldListItem<
-                                  myData<Product>>(e.productName.toString(),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(e.productName.toString(),
-                                            style: const TextStyle(
-                                                color: Color(0XFF6E3F52))),
-                                      ),
-
-                                    ],
-                                  ),
-                                  key: Key(e.id.toString())),
-                            )
-                                .toList(),
+                            suggestions: snapshot.data == null
+                                ? []
+                                : snapshot.data!.data!
+                                    .map(
+                                      (e) => SearchFieldListItem<
+                                              myData<Product>>(
+                                          e.productName.toString(),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                    e.productName.toString(),
+                                                    style: const TextStyle(
+                                                        color:
+                                                            Color(0XFF6E3F52))),
+                                              ),
+                                            ],
+                                          ),
+                                          key: Key(e.id.toString())),
+                                    )
+                                    .toList(),
                           );
                         },
                       );
@@ -297,7 +294,7 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
                         itemHeight: 50,
                         searchStyle: const TextStyle(color: Color(0XFF976775)),
                         suggestionStyle:
-                        const TextStyle(color: Color(0XFF976775)),
+                            const TextStyle(color: Color(0XFF976775)),
                         // suggestionsDecoration: BoxDecoration(color: Colors.red),
                         suggestions: []);
                   },
@@ -397,10 +394,24 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
                     color: const Color(0XFF463848),
                     text: 'Seç',
                     pressEvent: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => VaryantSecimi()));
+                      print(product.data![0].productName);
+                      print(product.data![0].categoryId);
+                      print(product.data![0].barkod);
+                      print(product.data![0].urunKimlikNo);
+                      print(product.data![0].sistemSeriNo);
+                      print(product.data![0].id);
+                      print(product.data![1].id);
+                      // print(product.data?[0].productVariantElements?[0]);
+                      // print(product.data?[0].category?.ad);
+                      // print(product.data?[0].productVariantElements?[0].id);
+                      // print(product
+                      //     .data![0].productVariantElements![0].productId);
+                      // print(product.data![0].productVariantElements![0]
+                      //     .variantElementId);
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => VaryantSecimi(variantAdi: product.data![0].category?.ad.toString(), varyantElemanAdi: product.data![0].productVariantElements,productName: product.data![0].productName)));
                       // Navigator.push(
                       //     context,
                       //     MaterialPageRoute(

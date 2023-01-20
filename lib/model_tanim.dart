@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:custom_searchable_dropdown/custom_searchable_dropdown.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
-import 'package:loadmore/loadmore.dart';
 import 'package:searchfield/searchfield.dart';
 import 'package:stok_takip_uygulamasi/drawer_menu.dart';
 import 'package:stok_takip_uygulamasi/model/Marka.dart';
@@ -34,7 +34,7 @@ class _ModelTanimState extends State<ModelTanim> {
     // markaListele();
     setState(() {});
 
-    markaListeleWithFilter('', 1, 5, 'Id', true);
+    // markaListeleWithFilter('', 1, 5, 'Id', true);
     setState(() {});
   }
 
@@ -46,34 +46,18 @@ class _ModelTanimState extends State<ModelTanim> {
 
   Future<myData<Marka>> markaListeleWithFilter(String MarkaAdiFilter, int Page,
       int PageSize, String Orderby, bool Desc) async {
-    //https://stok.bahcelievler.bel.tr/api/Brands/GetAll?MarkaAdiFilter=a&Page=1&PageSize=12&Orderby=Id&Desc=false
-
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/Brands/GetAll?MarkaAdiFilter=${MarkaAdiFilter}&Page=${Page}&PageSize=${PageSize}&Orderby=${Orderby}&Desc=${Desc}'));
     cevaps = myData<Marka>.fromJson(json.decode(res.body), Marka.fromJsonModel);
-    // print(cvp[0].markaAdi);
-    // setState(() {});
-    // for (int i = 0; i < cvp.length; i++) {
-    //   print(cvp[i].markaAdi);
-    // }
 
-    // for (int i = 0; i < cevaps!.data!.length; i++) {
-    //   cevapSon.data?.add(cevaps.data![i]);
-    //   print(cevapSon.data?.length);
-    // }
-
+    setState(() {});
     // for (int i = 0; i < cevaps.data!.length; i++) {
+    //   print(cevaps.data![i].markaAdi);
     //   cevapSon.data?.add(cevaps.data![i]);
     // }
 
-    // for (int i = 0; i < cevapSon.data!.length; i++) {
-    //   print(cevapSon.data![i].markaAdi);
-    // }
-
-    // print(res.body);
-    // print(cevap.data.length);
-    // print(cevap.data[0].markaAdi);
-
+    // print(cevapSon.data?[0].markaAdi);
+    print(cevaps.data![0].markaAdi);
     setState(() {});
     return cevaps;
   }
@@ -110,7 +94,7 @@ class _ModelTanimState extends State<ModelTanim> {
 
   Future<void> modelEkle() async {
     var url = Uri.parse('https://stok.bahcelievler.bel.tr/api/BrandModels');
-    print("ddd: ${dropdownvalue}");
+    // print("ddd: ${dropdownvalue}");
     // print("ddd: ${trimmedValue}");
     if (dropdownvalue == null || dropdownvalue == "") {
       print('object');
@@ -323,19 +307,10 @@ class _ModelTanimState extends State<ModelTanim> {
       isLoadingVertical = false;
     });
   }
-  Future<void> _refresh() async {
-    await Future.delayed(const Duration(seconds: 0, milliseconds: 2000));
-  }
 
-  Future<bool> _loadMore() async {
-    await Future.delayed(const Duration(seconds: 0, milliseconds: 2000));
+  var myController = new TextEditingController();
+  var dropdownValue;
 
-
-    pageNumber = pageNumber+1;
-    markaListeleWithFilter('', pageNumber, 5, 'Id', true);
-    print(pageNumber);
-    return true;
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -430,210 +405,399 @@ class _ModelTanimState extends State<ModelTanim> {
                   //     ),
                   //   ),
                   // ),
-                  RefreshIndicator(
-                    onRefresh: _refresh,
-                    child: LoadMore(
-                      textBuilder: DefaultLoadMoreTextBuilder.turkish,
-                      isFinish: cevaps.data!.length == 0,
-                      onLoadMore: _loadMore,
-                      child: ListView.builder(
-                        controller: scrollController,
-                        shrinkWrap: true,
-                        // controller: controller,
-                        itemBuilder: (context, index) {
-                          return Card(
-                              child: Column(
-                            children: [
-                              Text(cevaps.data![index]
-                                  .markaAdi
-                                  .toString()),
+                  ElevatedButton(
+                      onPressed: () {
+                        markaListeleWithFilter('ve', 1, 5, 'Id', true);
+                      },
+                      child: Text('dkf')),
 
-                            ],
-                          ));
-                        },
-                        itemCount: cevaps.data?.length,
+                  // DropdownSearch<String>(
+                  //
+                  //   items: cevaps.data.map((e)=>e['name']).toList(),
+                  //   showSearchBox: true,
+                  //   label: "Menu mode",
+                  //   hint: "country in menu mode",
+                  //   onChanged: (value){
+                  //     print(value);
+                  //   },
+                  //   selectedItem: "Canada",
+                  // ),
+
+                  // SearchField<Marka>(
+                  //
+                  //   onSubmit:  (dropdownValue){
+                  //     print(dropdownValue);
+                  //     markaListeleWithFilter(dropdownValue.toString(), 1, 1000, 'Id', true);
+                  //   },
+                  //   onSuggestionTap: (x){
+                  //     print(x);
+                  //     markaListeleWithFilter(x.toString(), 1, 1000, 'Id', true);
+                  //   },
+                  //     suggestions:cevaps.data == null
+                  //     ? []
+                  //     : cevaps.data!
+                  //     .map(
+                  //       (e) =>
+                  //       SearchFieldListItem<Marka>(
+                  //           e.markaAdi.toString(),
+                  //           child: Row(
+                  //             mainAxisAlignment:
+                  //             MainAxisAlignment.spaceBetween,
+                  //             children: [
+                  //               Padding(
+                  //                 padding: const EdgeInsets.all(8.0),
+                  //                 child: Text(e.markaAdi.toString(),
+                  //                     style: const TextStyle(
+                  //                         color: Color(0XFF6E3F52))),
+                  //               ),
+                  //               Row(
+                  //                 children: [
+                  //                   GestureDetector(
+                  //                     child: const Icon(
+                  //                       Icons.border_color_outlined,
+                  //                       color: Color(0XFF6E3F52),
+                  //                     ),
+                  //                     onTap: () {
+                  //                       showGuncellemeDialog(e.id!);
+                  //                     },
+                  //                   ),
+                  //                 ],
+                  //               ),
+                  //             ],
+                  //           ),
+                  //           key: Key(e.id.toString())),
+                  // )
+                  //     .toList()
+                  // ),
+
+                  // FutureBuilder<myData<Marka>>(
+                  //   future: markaListeleWithFilter(TfTest.text, 1, 1000, 'Id', true),
+                  //   builder: (context, snapshot) {
+                  //     if (snapshot.hasData) {
+                  //           TfTest.addListener(() => markaListeleWithFilter(TfTest.text, 1, 2, 'Id', true));
+                  //           return SearchField<myData<Marka>>(
+                  //             autoCorrect: true,
+                  //             hint: 'Marka Seçiniz',
+                  //             onSuggestionTap: (e) {
+                  //               dropdownvalue = e.searchKey;
+                  //               setState(() {
+                  //                 dropdownvalue = e.key.toString();
+                  //               });
+                  //             },
+                  //             suggestionAction: SuggestionAction.unfocus,
+                  //             itemHeight: 50,
+                  //             searchStyle: const TextStyle(color: Color(0XFF976775)),
+                  //             suggestionStyle:
+                  //             const TextStyle(color: Color(0XFF976775)),
+                  //             // suggestionsDecoration: BoxDecoration(color: Colors.red),
+                  //             suggestions: snapshot.data!.data!
+                  //                 .map(
+                  //                   (e) => SearchFieldListItem<myData<Marka>>(
+                  //
+                  //                   e.markaAdi.toString(),
+                  //                   child: Row(
+                  //                     mainAxisAlignment:
+                  //                     MainAxisAlignment.spaceBetween,
+                  //                     children: [
+                  //
+                  //                       Padding(
+                  //                         padding: const EdgeInsets.all(8.0),
+                  //                         child: Text(e.markaAdi.toString(),
+                  //                             style: const TextStyle(
+                  //                                 color: Color(0XFF6E3F52))),
+                  //                       ),
+                  //                       // Row(
+                  //                       //   children: [
+                  //                       //     GestureDetector(
+                  //                       //       child: const Text('Load More'),
+                  //                       //
+                  //                       //       onTap: () {
+                  //                       //         // pageNum +=1;
+                  //                       //         print("e: ${e.varyantAdi}");
+                  //                       //
+                  //                       //
+                  //                       //         pageSize += 5;
+                  //                       //
+                  //                       //         setState(() {});
+                  //                       //       },
+                  //                       //     ),
+                  //                       //     GestureDetector(
+                  //                       //       child: const Icon(
+                  //                       //         Icons.delete_outline,
+                  //                       //         color: Color(0XFF6E3F52),
+                  //                       //       ),
+                  //                       //       onTap: () {
+                  //                       //         varyantElemanSil(e.id!);
+                  //                       //       },
+                  //                       //     ),
+                  //                       //     const SizedBox(
+                  //                       //       width: 10,
+                  //                       //     ),
+                  //                       //     GestureDetector(
+                  //                       //       child: const Icon(
+                  //                       //         Icons.border_color_outlined,
+                  //                       //         color: Color(0XFF6E3F52),
+                  //                       //       ),
+                  //                       //       onTap: () {
+                  //                       //         showGuncellemeDialog(e.id!);
+                  //                       //       },
+                  //                       //     ),
+                  //                       //   ],
+                  //                       // ),
+                  //                     ],
+                  //                   ),
+                  //                   key: Key(e.id.toString())),
+                  //             )
+                  //                 .toList(),
+                  //           );
+                  //
+                  //
+                  //
+                  //     } else if (!(snapshot.hasError)) {
+                  //       return SearchField(
+                  //         suggestions: [],
+                  //       ).emptyWidget;
+                  //     }
+                  //     return const CircularProgressIndicator(
+                  //       color: Color(0XFF976775),
+                  //     );
+                  //   },
+                  // ),
+                  SingleChildScrollView(
+                    child: Form(
+
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Single selection dropdown with search option",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+
+                            DropDownTextField(
+                              searchShowCursor: false,
+                              enableSearch: true,
+                              searchKeyboardType: TextInputType.number,
+                              dropDownList: cevaps.data == null
+                                  ? [DropDownValueModel(name: ' ', value: ' ')]
+                                  : cevaps.data!
+                                  .map(
+                                    (e) => DropDownValueModel(
+                                    name: e.markaAdi.toString(),
+                                    value: e.id
+                                    // child: Row(
+                                    //   mainAxisAlignment:
+                                    //   MainAxisAlignment.spaceBetween,
+                                    //   children: [
+                                    //     Padding(
+                                    //       padding: const EdgeInsets.all(8.0),
+                                    //       child: Text(e.markaAdi.toString(),
+                                    //           style: const TextStyle(
+                                    //               color: Color(0XFF6E3F52))),
+                                    //     ),
+                                    //     Row(
+                                    //       children: [
+                                    //         GestureDetector(
+                                    //           child: const Icon(
+                                    //             Icons.border_color_outlined,
+                                    //             color: Color(0XFF6E3F52),
+                                    //           ),
+                                    //           onTap: () {
+                                    //             showGuncellemeDialog(e.id!);
+                                    //           },
+                                    //         ),
+                                    //       ],
+                                    //     ),
+                                    //   ],
+                                    // ),
+                                    // key: Key(e.id.toString())
+                                    ),
+                              ).toList(),
+                              onChanged: (x) {
+
+                                setState(() {
+                                  print("dropdownvalue: ${x}");
+                                  markaListeleWithFilter(x, 1, 1000, 'Id', true);
+
+                                });
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
 
-                  LazyLoadScrollView(
-                    child: SearchField<Marka>(
-                      autoCorrect: true,
-                      hint: 'Marka Seçiniz',
-                      onSuggestionTap: (e) {
-                        dropdownvalue = e.searchKey;
-                        setState(() {
-                          dropdownvalue = e.key.toString();
-                        });
-                      },
-                      suggestionAction: SuggestionAction.unfocus,
-                      itemHeight: 50,
-                      searchStyle: const TextStyle(color: Color(0XFF976775)),
-                      suggestionStyle:
-                          const TextStyle(color: Color(0XFF976775)),
-                      // suggestionsDecoration: BoxDecoration(color: Colors.red),
-                      suggestions: cevaps.data == null
-                          ? []
-                          : cevaps.data!
-                              .map(
-                                (e) => SearchFieldListItem<Marka>(
-                                    e.markaAdi.toString(),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(e.markaAdi.toString(),
-                                              style: const TextStyle(
-                                                  color: Color(0XFF6E3F52))),
-                                        ),
-                                        Row(
-                                          children: [
-                                            GestureDetector(
-                                              child: const Text('Load More'),
-                                              onTap: () {
-                                                // pageNum +=1;
-                                                print("e: ${e.markaAdi}");
-
-                                                pageSize += 5;
-
-                                                setState(() {});
-                                              },
-                                            ),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                            GestureDetector(
-                                              child: const Icon(
-                                                Icons.border_color_outlined,
-                                                color: Color(0XFF6E3F52),
-                                              ),
-                                              onTap: () {
-                                                showGuncellemeDialog(e.id!);
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    key: Key(e.id.toString())),
-                              )
-                              .toList(),
-                    ),
-                    onEndOfPage: () => loadMore(),
-                  ),
-
-                  LazyLoadScrollView(
-                    scrollDirection: Axis.vertical,
-                    onEndOfPage: () => loadMore(),
-                    child: CustomSearchableDropDown(
-                      decoration:
-                          BoxDecoration(border: Border.all(color: Colors.blue)),
-                      dropdownHintText: 'Marka Adı ',
-                      dropdownItemStyle:
-                          const TextStyle(color: Color(0XFF976775)),
-                      menuMode: true,
-                      labelStyle: const TextStyle(color: Color(0XFF976775)),
-                      items: cevaps.data == null
-                          ? []
-                          : cevaps.data!.map((item) {
-                              return DropdownMenuItem(
-                                value: item.id.toString(),
-                                child: Text(item.markaAdi.toString()),
-                              );
-                            }).toList(),
-                      onChanged: (newVal) {
-                        dropdownvalue = newVal;
-                      },
-                      label: 'Model Seçin',
-                      dropDownMenuItems: cevaps.data == null
-                          ? []
-                          : cevaps.data!.map((item) {
-                              // print(item.markaAdi);
-                              return item.markaAdi;
-                            }).toList(),
-                    ),
-                  ),
-                  // LazyLoadScrollView(
-                  //   onEndOfPage: () => loadMore(),
-                  //   child: SearchField<Marka>(
-                  //     autoCorrect: true,
-                  //     hint: 'Marka Seçiniz',
-                  //     onSuggestionTap: (e) {
-                  //       dropdownvalue = e.searchKey;
+                  // CustomSearchableDropDown(
+                  //
+                  //     onChanged: (x) {
+                  //       print("dropdownvalue: ${x}");
                   //       setState(() {
-                  //         dropdownvalue = e.key.toString();
+                  //         markaListeleWithFilter(x, 1, 1000, 'Id', true);
+                  //
                   //       });
                   //     },
-                  //     suggestionAction: SuggestionAction.unfocus,
-                  //     itemHeight: 50,
-                  //     searchStyle: TextStyle(color: Color(0XFF976775)),
-                  //     suggestionStyle: TextStyle(color: Color(0XFF976775)),
-                  //     // suggestionsDecoration: BoxDecoration(color: Colors.red),
-                  //     suggestions: cvpSon
-                  //         .map(
-                  //           (e) => SearchFieldListItem<Marka>(e.markaAdi.toString(),
-                  //               child: Row(
-                  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //                 children: [
-                  //                   GestureDetector(
-                  //                     child: Text('Load More'),
-                  //                     onTap: () {
-                  //                       print(
-                  //                           pageNumber * 5 == (cvpSon.length) + 1);
-                  //                       print(pageNumber * 5);
-                  //                       print(cvpSon.length);
-                  //                       // pageNum +=1;
-                  //                       // print("e: ${e.markaAdi}");
-                  //                       // print('object');
-                  //                       // print(cvpSon[0].markaAdi);
-                  //
-                  //                       pageNumber += 1;
-                  //                       markaListeleWithFilter(
-                  //                           '', pageNumber, 5, 'Id', true);
-                  //                       setState(() {});
-                  //                     },
-                  //                   ),
-                  //                   Padding(
-                  //                     padding: const EdgeInsets.all(8.0),
-                  //                     child: Text(e.markaAdi.toString(),
-                  //                         style:
-                  //                             TextStyle(color: Color(0XFF6E3F52))),
-                  //                   ),
-                  //                   Row(
+                  //     menuMode: true,
+                  //     items: cevaps.data == null
+                  //         ? ['']
+                  //         : cevaps.data!
+                  //             .map(
+                  //               (e) => SearchFieldListItem<Marka>(
+                  //                   e.markaAdi.toString(),
+                  //                   child: Row(
+                  //                     mainAxisAlignment:
+                  //                         MainAxisAlignment.spaceBetween,
                   //                     children: [
-                  //                       GestureDetector(
-                  //                         child: Icon(
-                  //                           Icons.delete_outline,
-                  //                           color: Color(0XFF6E3F52),
-                  //                         ),
-                  //                         onTap: () {
-                  //                           markaSil(e.id!);
-                  //                           setState(() {});
-                  //                         },
+                  //                       Padding(
+                  //                         padding: const EdgeInsets.all(8.0),
+                  //                         child: Text(e.markaAdi.toString(),
+                  //                             style: const TextStyle(
+                  //                                 color: Color(0XFF6E3F52))),
                   //                       ),
-                  //                       SizedBox(
-                  //                         width: 10,
-                  //                       ),
-                  //                       GestureDetector(
-                  //                         child: Icon(
-                  //                           Icons.border_color_outlined,
-                  //                           color: Color(0XFF6E3F52),
-                  //                         ),
-                  //                         onTap: () {
-                  //                           showGuncellemeDialog(e.id!);
-                  //                         },
+                  //                       Row(
+                  //                         children: [
+                  //                           GestureDetector(
+                  //                             child: const Icon(
+                  //                               Icons.border_color_outlined,
+                  //                               color: Color(0XFF6E3F52),
+                  //                             ),
+                  //                             onTap: () {
+                  //                               showGuncellemeDialog(e.id!);
+                  //                             },
+                  //                           ),
+                  //                         ],
                   //                       ),
                   //                     ],
                   //                   ),
-                  //                 ],
-                  //               ),
-                  //               key: Key(e.id.toString())),
-                  //         )
-                  //         .toList(),
-                  //   ),
+                  //                   key: Key(e.id.toString())),
+                  //             )
+                  //             .toList(),
+                  //     label: dropdownValue,
+                  //     dropDownMenuItems: cevaps.data == null
+                  //         ? ['']
+                  //         : cevaps.data!
+                  //             .map(
+                  //               (e) => SearchFieldListItem<Marka>(
+                  //                   e.markaAdi.toString(),
+                  //                   child: Row(
+                  //                     mainAxisAlignment:
+                  //                         MainAxisAlignment.spaceBetween,
+                  //                     children: [
+                  //                       Padding(
+                  //                         padding: const EdgeInsets.all(8.0),
+                  //                         child: Text(e.markaAdi.toString(),
+                  //                             style: const TextStyle(
+                  //                                 color: Color(0XFF6E3F52))),
+                  //                       ),
+                  //                       Row(
+                  //                         children: [
+                  //                           GestureDetector(
+                  //                             child: const Icon(
+                  //                               Icons.border_color_outlined,
+                  //                               color: Color(0XFF6E3F52),
+                  //                             ),
+                  //                             onTap: () {
+                  //                               showGuncellemeDialog(e.id!);
+                  //                             },
+                  //                           ),
+                  //                         ],
+                  //                       ),
+                  //                     ],
+                  //                   ),
+                  //                   key: Key(e.id.toString())),
+                  //             )
+                  //             .toList()
                   // ),
+
+                  SearchField<Marka>(
+                    autoCorrect: true,
+                    hint: 'Marka Seçiniz',
+                    onSuggestionTap: (e) {
+                      dropdownvalue = e.searchKey;
+                      setState(() {
+                        dropdownvalue = e.key.toString();
+                      });
+                    },
+                    suggestionAction: SuggestionAction.unfocus,
+                    itemHeight: 50,
+                    searchStyle: const TextStyle(color: Color(0XFF976775)),
+                    onSubmit: (x) {
+                      print("dropdownvalue: ${x}");
+                      setState(() {
+                        markaListeleWithFilter(x, 1, 1000, 'Id', true);
+
+                      });
+                    },
+                    suggestionStyle: const TextStyle(color: Color(0XFF976775)),
+                    // suggestionsDecoration: BoxDecoration(color: Colors.red),
+                    suggestions: cevaps.data == null
+                        ? []
+                        : cevaps.data!
+                            .map(
+                              (e) => SearchFieldListItem<Marka>(
+                                  e.markaAdi.toString(),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(e.markaAdi.toString(),
+                                            style: const TextStyle(
+                                                color: Color(0XFF6E3F52))),
+                                      ),
+                                      Row(
+                                        children: [
+                                          GestureDetector(
+                                            child: const Icon(
+                                              Icons.border_color_outlined,
+                                              color: Color(0XFF6E3F52),
+                                            ),
+                                            onTap: () {
+                                              showGuncellemeDialog(e.id!);
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  key: Key(e.id.toString())),
+                            )
+                            .toList(),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  CustomSearchableDropDown(
+                    decoration:
+                        BoxDecoration(border: Border.all(color: Colors.blue)),
+                    dropdownHintText: 'Marka Adı ',
+                    dropdownItemStyle:
+                        const TextStyle(color: Color(0XFF976775)),
+                    menuMode: true,
+                    labelStyle: const TextStyle(color: Color(0XFF976775)),
+                    items: cevaps.data == null
+                        ? []
+                        : cevaps.data!.map((item) {
+                            return DropdownMenuItem(
+                              value: item.id.toString(),
+                              child: Text(item.markaAdi.toString()),
+                            );
+                          }).toList(),
+                    onChanged: (newVal) {
+                      dropdownvalue = newVal;
+                    },
+                    label: 'Model Seçin',
+                    dropDownMenuItems: cevaps.data == null
+                        ? []
+                        : cevaps.data!.map((item) {
+                            // print(item.markaAdi);
+                            return item.markaAdi;
+                          }).toList(),
+                  ),
+
                   const SizedBox(
                     height: 10,
                   ),
@@ -695,20 +859,7 @@ class _ModelTanimState extends State<ModelTanim> {
                       });
                     },
                   ),
-                  // ElevatedButton(
-                  //   child: Text('GETİR'),
-                  //   onPressed: () {
-                  //     markaListeleWithFilter('', pageNumber, 5, 'Id', true);
-                  //   },
-                  // ),
-                  // ElevatedButton(
-                  //   child: Text('GETİR More'),
-                  //   onPressed: () {
-                  //     pageNumber += 1;
-                  //     markaListeleWithFilter('', pageNumber, 5, 'Id', true);
-                  //     setState(() {});
-                  //   },
-                  // ),
+
                 ],
               ),
             )
