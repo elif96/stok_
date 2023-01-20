@@ -25,8 +25,6 @@ class Product {
     this.id,
   });
 
-
-
   factory Product.fromJson(Map<String, dynamic> json) {
     final items = json['productVariantElements'].cast<Map<String, dynamic>>();
 
