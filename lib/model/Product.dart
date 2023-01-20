@@ -40,6 +40,7 @@ class Product {
     );
   }
 
+
   static Product fromJsonModel(Map<String, dynamic> json) =>
       Product.fromJson(json);
 }
