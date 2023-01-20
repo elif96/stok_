@@ -28,7 +28,6 @@ class Product {
   factory Product.fromJson(Map<String, dynamic> json) {
     final items = json['productVariantElements'].cast<Map<String, dynamic>>();
 
-
     return Product(
         categoryId: json['categoryId'],
         productName: json['productName'],
