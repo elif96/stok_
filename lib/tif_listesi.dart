@@ -19,14 +19,14 @@ class TifListesi extends StatefulWidget {
   final int? anaDepo;
   final int? hedefDepo;
   final String? sonuc;
-
+  final int? islemId;
   TifListesi({Key? key,
      this.islemTuru,
      this.islemAdi,
      this.islemAciklamasi,
      this.anaDepo,
      this.hedefDepo,
-     this.islemTarihi, this.sonuc})
+     this.islemTarihi, this.sonuc,this.islemId})
       : super(key: key);
 
   @override
@@ -164,11 +164,12 @@ class _TifListesiState extends State<TifListesi> {
 
 
     sonuc = selected.data![0].malzemeAdi;
+    print(sonuc);
 
-    print("duzey son: ${selected.data![0].malzemeAdi}");
-    print("duzey son: ${selected.data![0].duzeyKodu}");
-    print("duzey son: ${selected.data![0].hesapKodu}");
-    print("duzey son: ${selected.data![0].id}");
+    // print("duzey son: ${selected.data![0].malzemeAdi}");
+    // print("duzey son: ${selected.data![0].duzeyKodu}");
+    // print("duzey son: ${selected.data![0].hesapKodu}");
+    // print("duzey son: ${selected.data![0].id}");
 
     return selected;
   }
@@ -276,6 +277,7 @@ class _TifListesiState extends State<TifListesi> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+
           primary: true,
           backgroundColor: const Color(0xFF976775),
           title: Text('TİF LİSTESİ',
@@ -656,19 +658,19 @@ class _TifListesiState extends State<TifListesi> {
                     },
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (
-                            context) => TifKategoriUrunSecimi(islemTuru: this.widget.islemTuru
-                            .toString(),
+
+                        print(widget.islemId);
+
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>TifKategoriUrunSecimi(islemTuru: this.widget.islemTuru.toString(),
                             islemAdi: this.widget.islemAdi.toString(),
-                            islemAciklamasi: this.widget.islemAciklamasi
-                                .toString(),
+                            islemAciklamasi:
+                            this.widget.islemAciklamasi.toString(),
                             anaDepo: int.parse(
                                 this.widget.anaDepo.toString()),
                             hedefDepo: int.parse(
                                 this.widget.hedefDepo.toString()),
-                            islemTarihi: this.widget.islemTarihi.toString(),
-                          sonuc: selected,
-                        )));
+                            islemTarihi:
+                            this.widget.islemTarihi.toString(), sonuc: selected,islemId: widget.islemId,)));
                       },
                       child: Text(_isButtonDisabled ? "Hold on..." : "SEÇ",
                           style: const TextStyle(

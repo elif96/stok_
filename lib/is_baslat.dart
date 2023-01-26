@@ -4,8 +4,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stok_takip_uygulamasi/drawer_menu.dart';
 import 'package:stok_takip_uygulamasi/Islem_bilgileri.dart';
+import 'package:stok_takip_uygulamasi/model/ProductCategory.dart';
+import 'package:stok_takip_uygulamasi/model/ProductProcess.dart';
+import 'package:stok_takip_uygulamasi/model/ProductProcessDto.dart';
 import 'package:stok_takip_uygulamasi/model/Warehouse.dart';
 import 'package:stok_takip_uygulamasi/model/myData.dart';
+import 'package:stok_takip_uygulamasi/model/myDataSingle.dart';
 import 'package:stok_takip_uygulamasi/model/myWareHouse.dart';
 import 'package:stok_takip_uygulamasi/stokBul.dart';
 import 'package:intl/intl.dart';
@@ -43,7 +47,8 @@ class _IsBaslatState extends State<IsBaslat> {
         .get(Uri.parse('https://stok.bahcelievler.bel.tr/api/Warehouses'));
     // print(res.body);
 
-    cevaps = myData<myWareHouse>.fromJson(json.decode(res.body), myWareHouse.fromJsonModel);
+    cevaps = myData<myWareHouse>.fromJson(
+        json.decode(res.body), myWareHouse.fromJsonModel);
 
     print(cevaps);
     print(cevaps.data![0].ad);
@@ -67,9 +72,24 @@ class _IsBaslatState extends State<IsBaslat> {
     setState(() => _currentStep = step);
   }
 
+  // late myDataSingle<ProductProcessDto> islemid = myDataSingle<ProductProcessDto>();
+  //
+  // Future<myDataSingle<ProductProcessDto>> productP() async {
+  //   http.Response res = await http.get(Uri.parse(
+  //       'https://stok.bahcelievler.bel.tr/api/ProductProcesses/181'));
+  //   islemid = myDataSingle<ProductProcessDto>.fromJson(
+  //       json.decode(res.body), ProductProcessDto.fromJsonModel);
+  //
+  //   // print(islemid.data![0].id);
+  //
+  //   setState(() {});
+  //   return islemid;
+  // }
+
+  myDataSingle<ProductProcess> islemBilgileri = myDataSingle<ProductProcess>();
+
   Future<void> isBaslat(String islemAdi, String islemAciklama, int islemTuru,
       int anaDepoId, int hedefDepoId, String islemTarihi) async {
-
     var url =
         Uri.parse('https://stok.bahcelievler.bel.tr/api/ProductProcesses');
     http.Response response = await http.post(url,
@@ -82,7 +102,19 @@ class _IsBaslatState extends State<IsBaslat> {
           "hedefDepoID": int.parse(hedefDepo),
           "islemTarihi": tfIslemTarihi.text
         }));
-print(response.body);
+    print('object');
+    print(response.body);
+
+    islemBilgileri =myDataSingle<ProductProcess>.fromJson(
+        json.decode(response.body), ProductProcess.fromJsonModel);
+
+    // islemId = myData<ProductProcess>.fromJson(
+    //     json.decode(response.body), ProductProcess.fromJsonModel);
+    // // islemId = myData<ProductProcess>.fromJson(jsonDecode(response.body), ProductProcess.fromJsonModel);
+    // // islemId = myData<ProductProcess>.fromJson(
+    // //     json.decode(response.body), ProductProcess.fromJsonModel);
+    // print(islemId);
+
     if (response.reasonPhrase == 'Bad Request') {
       //model olduğu için marka silinemedi
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -96,7 +128,9 @@ print(response.body);
         content: Text("İş başlatma işlemi başarıyla gerçekleştirildi."),
         backgroundColor: Colors.green,
       ));
+
       // tfIslemAdi.clear();
+      print(islemBilgileri.data!.id);
       Navigator.push(
           context,
           MaterialPageRoute(
@@ -106,7 +140,7 @@ print(response.body);
                   hedefDepo: int.parse(hedefDepo),
                   islemAdi: tfIslemAdi.text,
                   islemAciklamasi: tfIslemAciklamasi.text,
-                  islemTarihi: tfIslemTarihi.text)));
+                  islemTarihi: tfIslemTarihi.text, islemId: islemBilgileri.data!.id)));
       setState(() {});
     }
   }
@@ -196,6 +230,7 @@ print(response.body);
                                                         )),
                                                     content: Column(
                                                       children: <Widget>[
+
                                                         TextField(
                                                           controller:
                                                               tfIslemAdi,
@@ -574,20 +609,25 @@ print(response.body);
                                                                           0XFF6E3F52),
                                                                       width:
                                                                           3))),
-                                                          items: cevaps.data == null ? [] : cevaps.data?.map(
-                                                              (myWareHouse value) {
-                                                            return DropdownMenuItem<
-                                                                String>(
-                                                              value: value.id
-                                                                  .toString(),
-                                                              child: Text(
-                                                                  value.ad
-                                                                      .toString(),
-                                                                  style: const TextStyle(
-                                                                      color: Color(
-                                                                          0XFF976775))),
-                                                            );
-                                                          }).toList(),
+                                                          items: cevaps.data ==
+                                                                  null
+                                                              ? []
+                                                              : cevaps.data?.map(
+                                                                  (myWareHouse
+                                                                      value) {
+                                                                  return DropdownMenuItem<
+                                                                      String>(
+                                                                    value: value
+                                                                        .id
+                                                                        .toString(),
+                                                                    child: Text(
+                                                                        value.ad
+                                                                            .toString(),
+                                                                        style: const TextStyle(
+                                                                            color:
+                                                                                Color(0XFF976775))),
+                                                                  );
+                                                                }).toList(),
                                                           onChanged: (newVal) {
                                                             setState(() {
                                                               anaDepo = newVal;
@@ -610,8 +650,9 @@ print(response.body);
                                                                           0XFF6E3F52),
                                                                       width:
                                                                           3))),
-                                                          items: cevaps.data?.map(
-                                                              (myWareHouse value) {
+                                                          items: cevaps.data
+                                                              ?.map((myWareHouse
+                                                                  value) {
                                                             return DropdownMenuItem<
                                                                 String>(
                                                               value: value.id

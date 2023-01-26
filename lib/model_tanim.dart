@@ -565,7 +565,6 @@ class _ModelTanimState extends State<ModelTanim> {
                   // ),
                   SingleChildScrollView(
                     child: Form(
-
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Column(
@@ -575,7 +574,6 @@ class _ModelTanimState extends State<ModelTanim> {
                               "Single selection dropdown with search option",
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
-
                             DropDownTextField(
                               searchShowCursor: false,
                               enableSearch: true,
@@ -583,44 +581,44 @@ class _ModelTanimState extends State<ModelTanim> {
                               dropDownList: cevaps.data == null
                                   ? [DropDownValueModel(name: ' ', value: ' ')]
                                   : cevaps.data!
-                                  .map(
-                                    (e) => DropDownValueModel(
-                                    name: e.markaAdi.toString(),
-                                    value: e.id
-                                    // child: Row(
-                                    //   mainAxisAlignment:
-                                    //   MainAxisAlignment.spaceBetween,
-                                    //   children: [
-                                    //     Padding(
-                                    //       padding: const EdgeInsets.all(8.0),
-                                    //       child: Text(e.markaAdi.toString(),
-                                    //           style: const TextStyle(
-                                    //               color: Color(0XFF6E3F52))),
-                                    //     ),
-                                    //     Row(
-                                    //       children: [
-                                    //         GestureDetector(
-                                    //           child: const Icon(
-                                    //             Icons.border_color_outlined,
-                                    //             color: Color(0XFF6E3F52),
-                                    //           ),
-                                    //           onTap: () {
-                                    //             showGuncellemeDialog(e.id!);
-                                    //           },
-                                    //         ),
-                                    //       ],
-                                    //     ),
-                                    //   ],
-                                    // ),
-                                    // key: Key(e.id.toString())
-                                    ),
-                              ).toList(),
+                                      .map(
+                                        (e) => DropDownValueModel(
+                                            name: e.markaAdi.toString(),
+                                            value: e.id
+                                            // child: Row(
+                                            //   mainAxisAlignment:
+                                            //   MainAxisAlignment.spaceBetween,
+                                            //   children: [
+                                            //     Padding(
+                                            //       padding: const EdgeInsets.all(8.0),
+                                            //       child: Text(e.markaAdi.toString(),
+                                            //           style: const TextStyle(
+                                            //               color: Color(0XFF6E3F52))),
+                                            //     ),
+                                            //     Row(
+                                            //       children: [
+                                            //         GestureDetector(
+                                            //           child: const Icon(
+                                            //             Icons.border_color_outlined,
+                                            //             color: Color(0XFF6E3F52),
+                                            //           ),
+                                            //           onTap: () {
+                                            //             showGuncellemeDialog(e.id!);
+                                            //           },
+                                            //         ),
+                                            //       ],
+                                            //     ),
+                                            //   ],
+                                            // ),
+                                            // key: Key(e.id.toString())
+                                            ),
+                                      )
+                                      .toList(),
                               onChanged: (x) {
-
                                 setState(() {
                                   print("dropdownvalue: ${x}");
-                                  markaListeleWithFilter(x, 1, 1000, 'Id', true);
-
+                                  markaListeleWithFilter(
+                                      x, 1, 1000, 'Id', true);
                                 });
                               },
                             ),
@@ -727,7 +725,6 @@ class _ModelTanimState extends State<ModelTanim> {
                       print("dropdownvalue: ${x}");
                       setState(() {
                         markaListeleWithFilter(x, 1, 1000, 'Id', true);
-
                       });
                     },
                     suggestionStyle: const TextStyle(color: Color(0XFF976775)),
@@ -859,7 +856,6 @@ class _ModelTanimState extends State<ModelTanim> {
                       });
                     },
                   ),
-
                 ],
               ),
             )

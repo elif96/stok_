@@ -1,4 +1,4 @@
-class Category {
+class ProductCategory {
   String? ad;
   int? brandId;
   int? brandModelId;
@@ -9,7 +9,7 @@ class Category {
   int? id;
 
 
-  Category({
+  ProductCategory({
     this.ad,
     this.brandId,
     this.brandModelId,
@@ -19,8 +19,8 @@ class Category {
     this.barkod,
     this.id});
 
-  factory Category.fromJson(Map<String, dynamic> json) {
-    return Category(
+  factory ProductCategory.fromJson(Map<String, dynamic> json) {
+    return ProductCategory(
       ad: json['ad'],
       brandId: json['brandId'],
       brandModelId: json['brandModelId'],
@@ -32,7 +32,6 @@ class Category {
     );
   }
 
-  static Category fromJsonModel(Map<String, dynamic> json) =>
-      Category.fromJson(json);
-
+  static ProductCategory fromJsonModel(Map<String, dynamic> json) =>
+      ProductCategory.fromJson(json);
 }

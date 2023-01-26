@@ -6,6 +6,7 @@ import 'package:loadmore/loadmore.dart';
 import 'package:stok_takip_uygulamasi/drawer_menu.dart';
 import 'package:stok_takip_uygulamasi/model/ProductProcess.dart';
 import 'package:http/http.dart' as http;
+import 'package:stok_takip_uygulamasi/model/myData.dart';
 
 class IslemlerDetay extends StatefulWidget {
   final String islemAdi;
@@ -105,34 +106,34 @@ class _DraftsState extends State<Drafts> {
     });
   }
 
-  List<ProductProcessData> drafts = <ProductProcessData>[];
-  List<ProductProcessData> draftsList = <ProductProcessData>[];
+  late myData<ProductProcess> drafts = myData<ProductProcess>();
+  late myData<ProductProcess> draftsList = myData<ProductProcess>();
   int pageNum = 1;
 
-  Future<List<ProductProcessData>> draftsListele() async {
+  Future<myData<ProductProcess>> draftsListele() async {
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/ProductProcesses/GetAllDrafts?AnaDepoIDFilter=0&HedefDepoIdFilter=0&Page=1&PageSize=12&Orderby=Id&Desc=false&isDeleted=false'));
-    drafts = ProductProcess.fromJson(json.decode(res.body)).data.toList();
+    drafts = myData<ProductProcess>.fromJson(json.decode(res.body), ProductProcess.fromJsonModel);
 
     setState(() {});
     return drafts;
   }
 
-  Future<List<ProductProcessData>> draftsListeleWithFilter(
+  Future<myData<ProductProcess>> draftsListeleWithFilter(
       int Page,
       int PageSize,
       String Orderby,
       bool Desc,
       bool isDeleted) async {
 
-    drafts.clear();
+    // drafts.data!.clear();
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/ProductProcesses/GetAllDrafts?AnaDepoIDFilter=0&HedefDepoIdFilter=0&Page=${Page}&PageSize=${PageSize}&Orderby=${Orderby}&Desc=${Desc}&isDeleted=${isDeleted}'));
-    drafts = ProductProcess.fromJson(json.decode(res.body)).data.toList();
+    drafts = myData<ProductProcess>.fromJson(json.decode(res.body),ProductProcess.fromJsonModel);
 
 
-    for (int i = 0; i < drafts.length; i++) {
-        draftsList.add(drafts[i]);
+    for (int i = 0; i < drafts.data!.length; i++) {
+        draftsList.data?.add(drafts.data![i]);
 
 
     }
@@ -165,7 +166,7 @@ class _DraftsState extends State<Drafts> {
         onRefresh: _refresh,
         child: LoadMore(
           textBuilder: DefaultLoadMoreTextBuilder.turkish,
-          isFinish: drafts.length==0,
+          isFinish: drafts.data!.length==0,
           onLoadMore: _loadMore,
           child: ListView.builder(
             controller: scrollController,
@@ -175,18 +176,18 @@ class _DraftsState extends State<Drafts> {
               return Card(
                   child: Column(
                 children: [
-                  Text(draftsList[index].islemAdi.toString()),
-                  Text(draftsList[index].islemTuru.toString()),
-                  Text(draftsList[index].islemTarihi.toString()),
-                  Text(draftsList[index].islemAciklama.toString()),
-                  Text(draftsList[index].onayiBeklenenUser.toString()),
-                  Text(draftsList[index].onayIsteyenUser.toString()),
-                  Text(draftsList[index].anaDepoId.toString()),
-                  Text(draftsList[index].hedefDepoID.toString()),
+                  Text(draftsList.data![index].islemAdi.toString() == null ? '' : draftsList.data![index].islemAdi.toString()),
+                  Text(draftsList.data![index].islemTuru.toString() == null ? '' : draftsList.data![index].islemTuru.toString()),
+                  Text(draftsList.data![index].islemTarihi.toString() == null ? '' : draftsList.data![index].islemTarihi.toString()),
+                  Text(draftsList.data![index].islemAciklama.toString() == null ? '' : draftsList.data![index].islemAciklama.toString()),
+                  Text(draftsList.data![index].onayiBeklenenUser.toString() == null ? '' : draftsList.data![index].onayiBeklenenUser.toString()),
+                  Text(draftsList.data![index].onayIsteyenUser.toString() == null ? '' : draftsList.data![index].onayIsteyenUser.toString()),
+                  Text(draftsList.data![index].anaDepoId.toString() == null ? '' : draftsList.data![index].anaDepoId.toString()),
+                  Text(draftsList.data![index].hedefDepoID.toString() == null ? '' : draftsList.data![index].hedefDepoID.toString()),
                 ],
               ));
             },
-            itemCount: draftsList.length,
+            itemCount: draftsList.data?.length,
           ),
         ),
       );
@@ -223,34 +224,34 @@ class _WaitingForMyConfirmationsState extends State<WaitingForMyConfirmations> {
     });
   }
 
-  List<ProductProcessData> WaitingForMyConfirmations = <ProductProcessData>[];
-  List<ProductProcessData> WaitingForMyConfirmationsList = <ProductProcessData>[];
+  late myData<ProductProcess> WaitingForMyConfirmations = myData<ProductProcess>();
+  late myData<ProductProcess> WaitingForMyConfirmationsList = myData<ProductProcess>();
   int pageNumWaitingForMyConfirmations = 1;
 
-  Future<List<ProductProcessData>> WaitingForMyConfirmationsListele() async {
+  Future<myData<ProductProcess>> WaitingForMyConfirmationsListele() async {
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/ProductProcesses/GetAllWaitingForMyConfirmations?AnaDepoIDFilter=0&HedefDepoIdFilter=0&Id=0&Page=1&PageSize=12&Orderby=Id&Desc=false&isDeleted=false&includeParents=true&includeChildren=true'));
-    WaitingForMyConfirmations = ProductProcess.fromJson(json.decode(res.body)).data.toList();
+    WaitingForMyConfirmations = myData<ProductProcess>.fromJson(json.decode(res.body), ProductProcess.fromJsonModel);
 
     setState(() {});
     return WaitingForMyConfirmations;
   }
 
-  Future<List<ProductProcessData>> WaitingForMyConfirmationsWithFilter(
+  Future<myData<ProductProcess>> WaitingForMyConfirmationsWithFilter(
       int Page,
       int PageSize,
       String Orderby,
       bool Desc,
       bool isDeleted) async {
 
-    WaitingForMyConfirmations.clear();
+    WaitingForMyConfirmations.data!.clear();
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/ProductProcesses/GetAllWaitingForMyConfirmations?AnaDepoIDFilter=0&HedefDepoIdFilter=0&Id=0&Page=${Page}&PageSize=${PageSize}&Orderby=${Orderby}&Desc=${Desc}&isDeleted=${isDeleted}&includeParents=true&includeChildren=true'));
-    WaitingForMyConfirmations = ProductProcess.fromJson(json.decode(res.body)).data.toList();
+    WaitingForMyConfirmations = myData<ProductProcess>.fromJson(json.decode(res.body), ProductProcess.fromJsonModel);
   print(res.body);
 
-    for (int i = 0; i < WaitingForMyConfirmations.length; i++) {
-      WaitingForMyConfirmationsList.add(WaitingForMyConfirmations[i]);
+    for (int i = 0; i < WaitingForMyConfirmations.data!.length; i++) {
+      WaitingForMyConfirmationsList.data!.add(WaitingForMyConfirmations.data![i]);
 
 
     }
@@ -283,7 +284,7 @@ class _WaitingForMyConfirmationsState extends State<WaitingForMyConfirmations> {
       onRefresh: _refresh,
       child: LoadMore(
         textBuilder: DefaultLoadMoreTextBuilder.turkish,
-        isFinish: WaitingForMyConfirmations.length==0,
+        isFinish: WaitingForMyConfirmations.data!.length==0,
         onLoadMore: _loadMore,
         child: ListView.builder(
           controller: scrollController,
@@ -293,18 +294,18 @@ class _WaitingForMyConfirmationsState extends State<WaitingForMyConfirmations> {
             return Card(
                 child: Column(
                   children: [
-                    Text(WaitingForMyConfirmationsList[index].islemAdi.toString()),
-                    Text(WaitingForMyConfirmationsList[index].islemTuru.toString()),
-                    Text(WaitingForMyConfirmationsList[index].islemTarihi.toString()),
-                    Text(WaitingForMyConfirmationsList[index].islemAciklama.toString()),
-                    Text(WaitingForMyConfirmationsList[index].onayiBeklenenUser.toString()),
-                    Text(WaitingForMyConfirmationsList[index].onayIsteyenUser.toString()),
-                    Text(WaitingForMyConfirmationsList[index].anaDepoId.toString()),
-                    Text(WaitingForMyConfirmationsList[index].hedefDepoID.toString()),
+                    Text(WaitingForMyConfirmationsList.data![index].islemAdi.toString()),
+                    Text(WaitingForMyConfirmationsList.data![index].islemTuru.toString()),
+                    Text(WaitingForMyConfirmationsList.data![index].islemTarihi.toString()),
+                    Text(WaitingForMyConfirmationsList.data![index].islemAciklama.toString()),
+                    Text(WaitingForMyConfirmationsList.data![index].onayiBeklenenUser.toString()),
+                    Text(WaitingForMyConfirmationsList.data![index].onayIsteyenUser.toString()),
+                    Text(WaitingForMyConfirmationsList.data![index].anaDepoId.toString()),
+                    Text(WaitingForMyConfirmationsList.data![index].hedefDepoID.toString()),
                   ],
                 ));
           },
-          itemCount: WaitingForMyConfirmationsList.length,
+          itemCount: WaitingForMyConfirmationsList.data!.length,
         ),
       ),
     );
@@ -343,34 +344,34 @@ class _WaitingForConfirmationsState extends State<WaitingForConfirmations> {
     });
   }
 
-  List<ProductProcessData> WaitingForConfirmations = <ProductProcessData>[];
-  List<ProductProcessData> WaitingForConfirmationsList = <ProductProcessData>[];
+  late myData<ProductProcess> WaitingForConfirmations = myData<ProductProcess>();
+  late myData<ProductProcess> WaitingForConfirmationsList = myData<ProductProcess>();
   int pageNumWaitingForConfirmations = 1;
 
-  Future<List<ProductProcessData>> WaitingForConfirmationsListele() async {
+  Future<myData<ProductProcess>> WaitingForConfirmationsListele() async {
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/ProductProcesses/GetAllWaitingForConfirmations?AnaDepoIDFilter=0&HedefDepoIdFilter=0&Page=1&PageSize=12&Orderby=Id&Desc=false&isDeleted=false'));
-    WaitingForConfirmations = ProductProcess.fromJson(json.decode(res.body)).data.toList();
+    WaitingForConfirmations = myData<ProductProcess>.fromJson(json.decode(res.body), ProductProcess.fromJsonModel);
 
     setState(() {});
     return WaitingForConfirmations;
   }
 
-  Future<List<ProductProcessData>> WaitingForConfirmationsWithFilter(
+  Future<myData<ProductProcess>> WaitingForConfirmationsWithFilter(
       int Page,
       int PageSize,
       String Orderby,
       bool Desc,
       bool isDeleted) async {
 
-    WaitingForConfirmations.clear();
+    WaitingForConfirmations.data!.clear();
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/ProductProcesses/GetAllWaitingForConfirmations?AnaDepoIDFilter=0&HedefDepoIdFilter=0&Page=${Page}&PageSize=${PageSize}&Orderby=${Orderby}&Desc=${Desc}&isDeleted=${isDeleted}'));
-    WaitingForConfirmations = ProductProcess.fromJson(json.decode(res.body)).data.toList();
+    WaitingForConfirmations = myData<ProductProcess>.fromJson(json.decode(res.body), ProductProcess.fromJsonModel);
 
 
-    for (int i = 0; i < WaitingForConfirmations.length; i++) {
-      WaitingForConfirmationsList.add(WaitingForConfirmations[i]);
+    for (int i = 0; i < WaitingForConfirmations.data!.length; i++) {
+      WaitingForConfirmationsList.data!.add(WaitingForConfirmations.data![i]);
 
 
     }
@@ -403,7 +404,7 @@ class _WaitingForConfirmationsState extends State<WaitingForConfirmations> {
       onRefresh: _refresh,
       child: LoadMore(
         textBuilder: DefaultLoadMoreTextBuilder.turkish,
-        isFinish: WaitingForConfirmations.length==0,
+        isFinish: WaitingForConfirmations.data!.length==0,
         onLoadMore: _loadMore,
         child: ListView.builder(
           controller: scrollController,
@@ -413,18 +414,18 @@ class _WaitingForConfirmationsState extends State<WaitingForConfirmations> {
             return Card(
                 child: Column(
                   children: [
-                    Text(WaitingForConfirmationsList[index].islemAdi.toString()),
-                    Text(WaitingForConfirmationsList[index].islemTuru.toString()),
-                    Text(WaitingForConfirmationsList[index].islemTarihi.toString()),
-                    Text(WaitingForConfirmationsList[index].islemAciklama.toString()),
-                    Text(WaitingForConfirmationsList[index].onayiBeklenenUser.toString()),
-                    Text(WaitingForConfirmationsList[index].onayIsteyenUser.toString()),
-                    Text(WaitingForConfirmationsList[index].anaDepoId.toString()),
-                    Text(WaitingForConfirmationsList[index].hedefDepoID.toString()),
+                    Text(WaitingForConfirmationsList.data![index].islemAdi.toString()),
+                    Text(WaitingForConfirmationsList.data![index].islemTuru.toString()),
+                    Text(WaitingForConfirmationsList.data![index].islemTarihi.toString()),
+                    Text(WaitingForConfirmationsList.data![index].islemAciklama.toString()),
+                    Text(WaitingForConfirmationsList.data![index].onayiBeklenenUser.toString()),
+                    Text(WaitingForConfirmationsList.data![index].onayIsteyenUser.toString()),
+                    Text(WaitingForConfirmationsList.data![index].anaDepoId.toString()),
+                    Text(WaitingForConfirmationsList.data![index].hedefDepoID.toString()),
                   ],
                 ));
           },
-          itemCount: WaitingForConfirmationsList.length,
+          itemCount: WaitingForConfirmationsList.data!.length,
         ),
       ),
     );
@@ -461,34 +462,34 @@ class _RejectedsState extends State<Rejecteds> {
     });
   }
 
-  List<ProductProcessData> Rejecteds = <ProductProcessData>[];
-  List<ProductProcessData> RejectedsList = <ProductProcessData>[];
+  late myData<ProductProcess> Rejecteds = myData<ProductProcess>();
+  late myData<ProductProcess> RejectedsList = myData<ProductProcess>();
   int pageNumRejecteds = 1;
 
-  Future<List<ProductProcessData>> RejectedsListele() async {
+  Future<myData<ProductProcess>> RejectedsListele() async {
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/ProductProcesses/GetAllRejecteds?AnaDepoIDFilter=0&HedefDepoIdFilter=0&Page=1&PageSize=12&Orderby=Id&Desc=false&isDeleted=false'));
-    Rejecteds = ProductProcess.fromJson(json.decode(res.body)).data.toList();
+    Rejecteds = myData<ProductProcess>.fromJson(json.decode(res.body), ProductProcess.fromJsonModel);
 
     setState(() {});
     return Rejecteds;
   }
 
-  Future<List<ProductProcessData>> RejectedsWithFilter(
+  Future<myData<ProductProcess>> RejectedsWithFilter(
       int Page,
       int PageSize,
       String Orderby,
       bool Desc,
       bool isDeleted) async {
 
-    Rejecteds.clear();
+    Rejecteds.data!.clear();
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/ProductProcesses/GetAllRejecteds?AnaDepoIDFilter=0&HedefDepoIdFilter=0&Page=${Page}&PageSize=${PageSize}&Orderby=${Orderby}&Desc=${Desc}&isDeleted=${isDeleted}'));
-    Rejecteds = ProductProcess.fromJson(json.decode(res.body)).data.toList();
+    Rejecteds = myData<ProductProcess>.fromJson(json.decode(res.body), ProductProcess.fromJsonModel);
 
 
-    for (int i = 0; i < Rejecteds.length; i++) {
-      RejectedsList.add(Rejecteds[i]);
+    for (int i = 0; i < Rejecteds.data!.length; i++) {
+      RejectedsList.data!.add(Rejecteds.data![i]);
 
 
     }
@@ -521,7 +522,7 @@ class _RejectedsState extends State<Rejecteds> {
       onRefresh: _refresh,
       child: LoadMore(
         textBuilder: DefaultLoadMoreTextBuilder.turkish,
-        isFinish: Rejecteds.length==0,
+        isFinish: Rejecteds.data!.length==0,
         onLoadMore: _loadMore,
         child: ListView.builder(
           controller: scrollController,
@@ -531,18 +532,18 @@ class _RejectedsState extends State<Rejecteds> {
             return Card(
                 child: Column(
                   children: [
-                    Text(RejectedsList[index].islemAdi.toString()),
-                    Text(RejectedsList[index].islemTuru.toString()),
-                    Text(RejectedsList[index].islemTarihi.toString()),
-                    Text(RejectedsList[index].islemAciklama.toString()),
-                    Text(RejectedsList[index].onayiBeklenenUser.toString()),
-                    Text(RejectedsList[index].onayIsteyenUser.toString()),
-                    Text(RejectedsList[index].anaDepoId.toString()),
-                    Text(RejectedsList[index].hedefDepoID.toString()),
+                    Text(RejectedsList.data![index].islemAdi.toString()),
+                    Text(RejectedsList.data![index].islemTuru.toString()),
+                    Text(RejectedsList.data![index].islemTarihi.toString()),
+                    Text(RejectedsList.data![index].islemAciklama.toString()),
+                    Text(RejectedsList.data![index].onayiBeklenenUser.toString()),
+                    Text(RejectedsList.data![index].onayIsteyenUser.toString()),
+                    Text(RejectedsList.data![index].anaDepoId.toString()),
+                    Text(RejectedsList.data![index].hedefDepoID.toString()),
                   ],
                 ));
           },
-          itemCount: RejectedsList.length,
+          itemCount: RejectedsList.data!.length,
         ),
       ),
     );
@@ -579,34 +580,34 @@ class _MyConfirmationState extends State<MyConfirmation> {
     });
   }
 
-  List<ProductProcessData> MyConfirmation = <ProductProcessData>[];
-  List<ProductProcessData> MyConfirmationList = <ProductProcessData>[];
+  myData<ProductProcess> MyConfirmation = myData<ProductProcess>();
+  myData<ProductProcess> MyConfirmationList = myData<ProductProcess>();
   int pageNumMyConfirmation = 1;
 
-  Future<List<ProductProcessData>> MyConfirmationListele() async {
+  Future<myData<ProductProcess>> MyConfirmationListele() async {
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/ProductProcesses/GetAllMyConfirmation?AnaDepoIDFilter=0&HedefDepoIdFilter=0&Page=1&PageSize=12&Orderby=Id&Desc=false&isDeleted=false'));
-    MyConfirmation = ProductProcess.fromJson(json.decode(res.body)).data.toList();
+    MyConfirmation = myData<ProductProcess>.fromJson(json.decode(res.body), ProductProcess.fromJsonModel);
 
     setState(() {});
     return MyConfirmation;
   }
 
-  Future<List<ProductProcessData>> MyConfirmationWithFilter(
+  Future<myData<ProductProcess>> MyConfirmationWithFilter(
       int Page,
       int PageSize,
       String Orderby,
       bool Desc,
       bool isDeleted) async {
 
-    MyConfirmation.clear();
+    MyConfirmation.data!.clear();
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/ProductProcesses/GetAllMyConfirmation?AnaDepoIDFilter=0&HedefDepoIdFilter=0&Page=${Page}&PageSize=${PageSize}&Orderby=${Orderby}&Desc=${Desc}&isDeleted=${isDeleted}'));
-    MyConfirmation = ProductProcess.fromJson(json.decode(res.body)).data.toList();
+    MyConfirmation = myData<ProductProcess>.fromJson(json.decode(res.body), ProductProcess.fromJsonModel);
 
 
-    for (int i = 0; i < MyConfirmation.length; i++) {
-      MyConfirmationList.add(MyConfirmation[i]);
+    for (int i = 0; i < MyConfirmation.data!.length; i++) {
+      MyConfirmationList.data!.add(MyConfirmation.data![i]);
 
 
     }
@@ -639,7 +640,7 @@ class _MyConfirmationState extends State<MyConfirmation> {
       onRefresh: _refresh,
       child: LoadMore(
         textBuilder: DefaultLoadMoreTextBuilder.turkish,
-        isFinish: MyConfirmation.length==0,
+        isFinish: MyConfirmation.data!.length==0,
         onLoadMore: _loadMore,
         child: ListView.builder(
           controller: scrollController,
@@ -649,18 +650,18 @@ class _MyConfirmationState extends State<MyConfirmation> {
             return Card(
                 child: Column(
                   children: [
-                    Text(MyConfirmationList[index].islemAdi.toString()),
-                    Text(MyConfirmationList[index].islemTuru.toString()),
-                    Text(MyConfirmationList[index].islemTarihi.toString()),
-                    Text(MyConfirmationList[index].islemAciklama.toString()),
-                    Text(MyConfirmationList[index].onayiBeklenenUser.toString()),
-                    Text(MyConfirmationList[index].onayIsteyenUser.toString()),
-                    Text(MyConfirmationList[index].anaDepoId.toString()),
-                    Text(MyConfirmationList[index].hedefDepoID.toString()),
+                    Text(MyConfirmationList.data![index].islemAdi.toString()),
+                    Text(MyConfirmationList.data![index].islemTuru.toString()),
+                    Text(MyConfirmationList.data![index].islemTarihi.toString()),
+                    Text(MyConfirmationList.data![index].islemAciklama.toString()),
+                    Text(MyConfirmationList.data![index].onayiBeklenenUser.toString()),
+                    Text(MyConfirmationList.data![index].onayIsteyenUser.toString()),
+                    Text(MyConfirmationList.data![index].anaDepoId.toString()),
+                    Text(MyConfirmationList.data![index].hedefDepoID.toString()),
                   ],
                 ));
           },
-          itemCount: MyConfirmationList.length,
+          itemCount: MyConfirmationList.data!.length,
         ),
       ),
     );
@@ -697,34 +698,34 @@ class _RejectedsByMeState extends State<RejectedsByMe> {
     });
   }
 
-  List<ProductProcessData> RejectedsByMe = <ProductProcessData>[];
-  List<ProductProcessData> RejectedsByMeList = <ProductProcessData>[];
+  late myData<ProductProcess> RejectedsByMe = myData<ProductProcess>();
+  late myData<ProductProcess> RejectedsByMeList = myData<ProductProcess>();
   int pageNumRejectedsByMe = 1;
 
-  Future<List<ProductProcessData>> RejectedsByMeListele() async {
+  Future<myData<ProductProcess>> RejectedsByMeListele() async {
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/ProductProcesses/GetAllRejectedsByMe?AnaDepoIDFilter=0&HedefDepoIdFilter=0&Page=1&PageSize=12&Orderby=Id&Desc=false&isDeleted=false'));
-    RejectedsByMe = ProductProcess.fromJson(json.decode(res.body)).data.toList();
+    RejectedsByMe = myData<ProductProcess>.fromJson(json.decode(res.body),ProductProcess.fromJsonModel);
 
     setState(() {});
     return RejectedsByMe;
   }
 
-  Future<List<ProductProcessData>> RejectedsByMeWithFilter(
+  Future<myData<ProductProcess>> RejectedsByMeWithFilter(
       int Page,
       int PageSize,
       String Orderby,
       bool Desc,
       bool isDeleted) async {
 
-    RejectedsByMe.clear();
+    RejectedsByMe.data!.clear();
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/ProductProcesses/GetAllRejectedsByMe?AnaDepoIDFilter=0&HedefDepoIdFilter=0&Page=${Page}&PageSize=${PageSize}&Orderby=${Orderby}&Desc=${Desc}&isDeleted=${isDeleted}'));
-    RejectedsByMe = ProductProcess.fromJson(json.decode(res.body)).data.toList();
+    RejectedsByMe = myData<ProductProcess>.fromJson(json.decode(res.body), ProductProcess.fromJsonModel);
 
 
-    for (int i = 0; i < RejectedsByMe.length; i++) {
-      RejectedsByMeList.add(RejectedsByMe[i]);
+    for (int i = 0; i < RejectedsByMe.data!.length; i++) {
+      RejectedsByMeList.data!.add(RejectedsByMe.data![i]);
 
 
     }
@@ -757,7 +758,7 @@ class _RejectedsByMeState extends State<RejectedsByMe> {
       onRefresh: _refresh,
       child: LoadMore(
         textBuilder: DefaultLoadMoreTextBuilder.turkish,
-        isFinish: RejectedsByMe.length==0,
+        isFinish: RejectedsByMe.data!.length==0,
         onLoadMore: _loadMore,
         child: ListView.builder(
           controller: scrollController,
@@ -767,18 +768,18 @@ class _RejectedsByMeState extends State<RejectedsByMe> {
             return Card(
                 child: Column(
                   children: [
-                    Text(RejectedsByMeList[index].islemAdi.toString()),
-                    Text(RejectedsByMeList[index].islemTuru.toString()),
-                    Text(RejectedsByMeList[index].islemTarihi.toString()),
-                    Text(RejectedsByMeList[index].islemAciklama.toString()),
-                    Text(RejectedsByMeList[index].onayiBeklenenUser.toString()),
-                    Text(RejectedsByMeList[index].onayIsteyenUser.toString()),
-                    Text(RejectedsByMeList[index].anaDepoId.toString()),
-                    Text(RejectedsByMeList[index].hedefDepoID.toString()),
+                    Text(RejectedsByMeList.data![index].islemAdi.toString()),
+                    Text(RejectedsByMeList.data![index].islemTuru.toString()),
+                    Text(RejectedsByMeList.data![index].islemTarihi.toString()),
+                    Text(RejectedsByMeList.data![index].islemAciklama.toString()),
+                    Text(RejectedsByMeList.data![index].onayiBeklenenUser.toString()),
+                    Text(RejectedsByMeList.data![index].onayIsteyenUser.toString()),
+                    Text(RejectedsByMeList.data![index].anaDepoId.toString()),
+                    Text(RejectedsByMeList.data![index].hedefDepoID.toString()),
                   ],
                 ));
           },
-          itemCount: RejectedsByMeList.length,
+          itemCount: RejectedsByMeList.data!.length,
         ),
       ),
     );

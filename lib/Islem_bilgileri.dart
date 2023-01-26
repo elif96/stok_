@@ -20,6 +20,7 @@ class IslemBilgileri extends StatefulWidget {
   final String? islemTarihi;
   final int? anaDepo;
   final int? hedefDepo;
+  final int? islemId;
 
   const IslemBilgileri(
       {Key? key,
@@ -28,7 +29,8 @@ class IslemBilgileri extends StatefulWidget {
       this.islemAciklamasi,
       this.anaDepo,
       this.hedefDepo,
-      this.islemTarihi})
+      this.islemTarihi,
+      this.islemId})
       : super(key: key);
 
   @override
@@ -45,6 +47,7 @@ class _IslemBilgileriState extends State<IslemBilgileri> {
     // baseCategoryListele();
     _isButtonDisabled = true;
     setState(() {});
+
   }
 
   //region islemBilgileri
@@ -54,6 +57,18 @@ class _IslemBilgileriState extends State<IslemBilgileri> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(
+            height: 15,
+          ),
+          Row(
+            children: [
+              const Text(
+                "İşlem Id: ",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text(" ${this.widget.islemId}"),
+            ],
+          ),
           const SizedBox(
             height: 15,
           ),
@@ -893,6 +908,15 @@ class _IslemBilgileriState extends State<IslemBilgileri> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Row(
+                        children: [
+                          const Text(
+                            "İşlem Id: ",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text(" ${this.widget.islemId}"),
+                        ],
+                      ),
                       const SizedBox(
                         height: 15,
                       ),
@@ -1002,6 +1026,7 @@ class _IslemBilgileriState extends State<IslemBilgileri> {
                       // print(prefs.getInt('anaDepo'));
                       // print(prefs.getInt('hedefDepo'));
                       // print('islem tanim');
+                      print(widget.islemId);
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -1016,6 +1041,7 @@ class _IslemBilgileriState extends State<IslemBilgileri> {
                                         this.widget.hedefDepo.toString()),
                                     islemTarihi:
                                         this.widget.islemTarihi.toString(),
+                                islemId: this.widget.islemId
                                   )));
                       // Navigator.push(context, MaterialPageRoute(builder: (context)=> Test(islemTuru: this.widget.islemTuru.toString(), islemAdi: this.widget.islemAdi.toString(), islemAciklamasi: this.widget.islemAciklamasi.toString(), anaDepo: int.parse(this.widget.anaDepo.toString()), hedefDepo: int.parse(this.widget.hedefDepo.toString()), islemTarihi: this.widget.islemTarihi.toString())));
                       //   showUrunAra();

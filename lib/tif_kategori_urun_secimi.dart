@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:searchfield/searchfield.dart';
 import 'package:stok_takip_uygulamasi/drawer_menu.dart';
-import 'package:stok_takip_uygulamasi/model/Category.dart';
+import 'package:stok_takip_uygulamasi/model/ProductCategory.dart';
 import 'package:stok_takip_uygulamasi/model/Product.dart';
 import 'package:stok_takip_uygulamasi/model/myData.dart';
 import 'package:stok_takip_uygulamasi/tif_listesi.dart';
+import 'package:stok_takip_uygulamasi/urun_ozet.dart';
 import 'model/BaseCategory.dart';
 import 'package:http/http.dart' as http;
 
@@ -21,6 +22,10 @@ class TifKategoriUrunSecimi extends StatefulWidget {
   final myData<BaseCategory>? sonuc;
   final String? kategori;
   final String? urunler;
+  final int? islemId;
+  final String? selected;
+  final Product? selectedProduct;
+
 
   const TifKategoriUrunSecimi(
       {Key? key,
@@ -32,7 +37,8 @@ class TifKategoriUrunSecimi extends StatefulWidget {
       this.islemTarihi,
       this.sonuc,
       this.kategori,
-      this.urunler})
+      this.urunler,
+      this.islemId,this.selected,this.selectedProduct})
       : super(key: key);
 
   @override
@@ -42,7 +48,7 @@ class TifKategoriUrunSecimi extends StatefulWidget {
 var urun;
 var kategori = 'sdfsdf';
 var urunler = 'asdasd';
-
+var islemId;
 class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
   @override
   initState() {
@@ -58,15 +64,15 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
 
   late myData<BaseCategory> baseCategory = myData<BaseCategory>();
 
-  late myData<Category> category = myData<Category>();
+  late myData<ProductCategory> category = myData<ProductCategory>();
 
-  Future<myData<Category>> categoryListele() async {
+  Future<myData<ProductCategory>> categoryListele() async {
     http.Response res = await http.get(Uri.parse(
         'https://stok.bahcelievler.bel.tr/api/Categories/GetAll?BaseCategoryIdFilter=${this.widget.sonuc?.data![0].id}&Id=0&Page=1&PageSize=12&Orderby=Id&Desc=false&isDeleted=false&includeParents=true&includeChildren=true'));
 
     // print(res.body);
-    category = myData<Category>.fromJson(
-        json.decode(res.body), Category.fromJsonModel);
+    category = myData<ProductCategory>.fromJson(
+        json.decode(res.body), ProductCategory.fromJsonModel);
     // print("kat: ${category.data![0].id}");
     // print(category.data![0].ad);
     // print("uzunluk:${category.data?.length}");
@@ -84,10 +90,11 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
     //     'https://stok.bahcelievler.bel.tr/api/Products/GetAll?CategoryIdFilter=${category.data![0].id}&Id=0&Page=1&PageSize=12&Orderby=Id&Desc=false&isDeleted=false&includeParents=true&includeChildren=true');
     //
     // print(json.decode(res.body));
-    product = myData<Product>.fromJson(json.decode(res.body), Product.fromJsonModel);
+    product =
+        myData<Product>.fromJson(json.decode(res.body), Product.fromJsonModel);
     // print(json.decode(res.body));
     // print('object');
-    print(product.data![0].id);
+    print(product.data![0]);
     // print(category.data![1].id);
     //
     // print("uzunluk:${category.data?.length}");
@@ -95,6 +102,29 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
 
     return product;
   }
+
+  myData<Product> selectedProduct = myData<Product>();
+
+  Future<myData<Product>> getSelected(String id) async {
+    setState(() {});
+    // print("parent id:${ParentIdFilter}");
+    http.Response res = await http.get(Uri.parse(
+        'https://stok.bahcelievler.bel.tr/api/Products/GetAll?CategoryIdFilter=0&BrandIdFilter=0&BrandModelIdFilter=0&Id=$id&Page=1&PageSize=12&Orderby=Id&Desc=false&isDeleted=false&includeParents=true&includeChildren=true'));
+
+
+    selectedProduct = myData<Product>.fromJson(json.decode(res.body), Product.fromJsonModel);
+
+
+    print(selectedProduct);
+
+    // print("duzey son: ${selected.data![0].malzemeAdi}");
+    // print("duzey son: ${selected.data![0].duzeyKodu}");
+    // print("duzey son: ${selected.data![0].hesapKodu}");
+    // print("duzey son: ${selected.data![0].id}");
+
+    return selectedProduct;
+  }
+
 
   var dropdownvalue;
   int pageSize = 5;
@@ -142,7 +172,8 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
                                     hedefDepo: int.parse(
                                         this.widget.hedefDepo.toString()),
                                     islemTarihi:
-                                        this.widget.islemTarihi.toString())));
+                                        this.widget.islemTarihi.toString(),
+                                islemId: this.widget.islemId)));
                       },
                       icon: Icon(Icons.search_sharp),
                     ),
@@ -151,7 +182,7 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
                 const SizedBox(
                   height: 10,
                 ),
-                FutureBuilder<myData<Category>>(
+                FutureBuilder<myData<ProductCategory>>(
                   future: categoryListele(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
@@ -159,7 +190,7 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
                         shrinkWrap: true,
                         itemCount: 1,
                         itemBuilder: (context, index) {
-                          return SearchField<myData<Category>>(
+                          return SearchField<myData<ProductCategory>>(
                             autoCorrect: true,
                             hint: 'Kategori Seçiniz',
                             onSuggestionTap: (e) {
@@ -180,7 +211,8 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
                                 : snapshot.data!.data!
                                     .map(
                                       (e) => SearchFieldListItem<
-                                              myData<Category>>(e.ad.toString(),
+                                              myData<ProductCategory>>(
+                                          e.ad.toString(),
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
@@ -244,6 +276,15 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
                               setState(() {
                                 dropdownvalue = e.key.toString();
                               });
+                              print(((((dropdownvalue.replaceAll('[', '')).replaceAll(']', ''))
+                                              .replaceAll('<', ''))
+                                          .replaceAll('>', ''))
+                                      .replaceAll("'", ''));
+
+                              getSelected(((((dropdownvalue.replaceAll('[', '')).replaceAll(']', ''))
+                                  .replaceAll('<', ''))
+                                  .replaceAll('>', ''))
+                                  .replaceAll("'", ''));
                             },
                             suggestionAction: SuggestionAction.unfocus,
                             itemHeight: 50,
@@ -394,13 +435,13 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
                     color: const Color(0XFF463848),
                     text: 'Seç',
                     pressEvent: () {
-                      print(product.data![0].productName);
-                      print(product.data![0].categoryId);
-                      print(product.data![0].barkod);
-                      print(product.data![0].urunKimlikNo);
-                      print(product.data![0].sistemSeriNo);
-                      print(product.data![0].id);
-                      print(product.data![1].id);
+                      // print(product.data![0].productName);
+                      // print(product.data![0].categoryId);
+                      // print(product.data![0].barkod);
+                      // print(product.data![0].urunKimlikNo);
+                      // print(product.data![0].sistemSeriNo);
+                      // print(product.data![0].id);
+                      // print(product.data![1].id);
                       // print(product.data?[0].productVariantElements?[0]);
                       // print(product.data?[0].category?.ad);
                       // print(product.data?[0].productVariantElements?[0].id);
@@ -408,10 +449,30 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
                       //     .data![0].productVariantElements![0].productId);
                       // print(product.data![0].productVariantElements![0]
                       //     .variantElementId);
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => VaryantSecimi(variantAdi: product.data![0].category?.ad.toString(), varyantElemanAdi: product.data![0].productVariantElements,productName: product.data![0].productName)));
+                      // print(product.data?[0].productVariantElements[0].variantElement.varyantElemanAdi);
+
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => UrunOzet(
+                                  islemTuru: widget.islemTuru,
+                                  productVariantElements:
+                                      product.data?[0].productVariantElements,
+                                  productName: product.data?[0].productName,
+                                  categoryAdi: product.data?[0].category?.ad,
+                                  categorybirim:
+                                      product.data?[0].category?.birim,
+                                  categoryEnvanterTuru:
+                                      product.data?[0].category?.envanterTuru,
+                                  barkod: product.data?[0].barkod,
+                                  urunKimlikNo: product.data?[0].urunKimlikNo,
+                                  sistemSeriNo: product.data?[0].sistemSeriNo,
+                                  id: product.data?[0].id,
+
+                              islemId: widget.islemId,
+                                  selectedProduct:selectedProduct)));
+
+                      // builder: (context) => VaryantSecimi(variantAdi: product.data![0].productName, varyantElemanAdi: product.data![0].productVariantElements,productName: product.data![0].productName)));
                       // Navigator.push(
                       //     context,
                       //     MaterialPageRoute(
