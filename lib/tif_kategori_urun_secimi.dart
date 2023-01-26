@@ -174,7 +174,6 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
                                     islemTarihi:
                                         this.widget.islemTarihi.toString(),
                                 islemId: this.widget.islemId)));
-
                       },
                       icon: Icon(Icons.search_sharp),
                     ),
