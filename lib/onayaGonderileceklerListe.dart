@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:stok_takip_uygulamasi/depodan_urun_secimi.dart';
+import 'package:stok_takip_uygulamasi/is_baslat.dart';
 import 'package:stok_takip_uygulamasi/model/ProductProcess.dart';
 import 'package:stok_takip_uygulamasi/model/myData.dart';
 import 'package:stok_takip_uygulamasi/tif_kategori_urun_secimi.dart';
@@ -41,6 +43,26 @@ class _onayaGonderileceklerListeState extends State<onayaGonderileceklerListe> {
     return onayaGidecekUrunler;
   }
 
+  Future<void> sendToAproval(int id) async{
+    http.Response res = await http.get(Uri.parse(
+        'https://stok.bahcelievler.bel.tr/api/ProductProcesses/SendForApprovalToProductProcess/$id'));
+    if(res.statusCode == 204 && res.reasonPhrase == 'No Content'){
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("İşlem başarıyla onaya gönderildi."),
+        backgroundColor: Colors.green,
+      ));
+      Navigator.push(context, MaterialPageRoute(builder: (context)=> IsBaslat()));
+    }
+    else{
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("İşlem sırasında bir hata oluştu."),
+        backgroundColor: Colors.red,
+      ));
+    }
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,12 +86,6 @@ class _onayaGonderileceklerListeState extends State<onayaGonderileceklerListe> {
                       child: FutureBuilder(
                         builder: (context, snapshot) {
 
-                          // WHILE THE CALL IS BEING MADE AKA LOADING
-                          if (ConnectionState.active != null && !snapshot.hasData) {
-                            return Center(child: Text('Loading'));
-                          }
-
-
                           return ListView.builder(
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
@@ -79,6 +95,7 @@ class _onayaGonderileceklerListeState extends State<onayaGonderileceklerListe> {
                                   children: [
                                     Text('Ürün Adı: ${onayaGidecekUrunler.data?[0].productTransactions?[index].product?.productName}'),
                                     Text('Ürün Miktarı: ${onayaGidecekUrunler.data?[0].productTransactions?[index].miktar}'),
+                                    Text((onayaGidecekUrunler?.data?[0].productTransactions?.length).toString())
 
                                   ],
                                 ),
@@ -139,7 +156,30 @@ class _onayaGonderileceklerListeState extends State<onayaGonderileceklerListe> {
                       //         this.widget.hedefDepo.toString()),
                       //     islemTarihi: this.widget.islemTarihi.toString())));
                       // setState(() {});
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => TifKategoriUrunSecimi(islemTuru: onayaGidecekUrunler.data![0].productTransactions?[0].productProcessId.toString(), islemId: widget.islemId, islemAciklamasi: onayaGidecekUrunler.data![0].islemAciklama,anaDepo: onayaGidecekUrunler.data?[0].anaDepoId, hedefDepo: onayaGidecekUrunler.data?[0]?.hedefDepoID, islemTarihi: onayaGidecekUrunler.data![0].islemTarihi,)));
+                      print("işlem tur: ${onayaGidecekUrunler.data![0].islemTuru.toString()}");
+                      print("işlem id: ${widget.islemId}");
+                      print("açıklama: ${onayaGidecekUrunler.data![0].islemAciklama}");
+                      print("ana depo: ${onayaGidecekUrunler.data?[0].anaDepoId}");
+                      print("hedef depo: ${onayaGidecekUrunler.data?[0].hedefDepoID}");
+                      print("işlem tarihi: ${onayaGidecekUrunler.data![0].islemTarihi}");
+                      if(onayaGidecekUrunler.data![0].islemTuru.toString() == "5" || onayaGidecekUrunler.data![0].islemTuru.toString()=="6" || onayaGidecekUrunler.data![0].islemTuru.toString() == "7" || onayaGidecekUrunler.data![0].islemTuru.toString() =="8"){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => DepodanUrunSecimi(
+                          islemTuru: onayaGidecekUrunler.data![0].islemTuru.toString(),
+                          islemId: widget.islemId, islemAciklamasi: onayaGidecekUrunler.data![0].islemAciklama,
+                            anaDepo: onayaGidecekUrunler.data?[0].anaDepoId, hedefDepo: onayaGidecekUrunler.data?[0]?.hedefDepoID,
+                            islemTarihi: onayaGidecekUrunler.data![0].islemTarihi,
+                          islemAdi: onayaGidecekUrunler.data![0].islemAdi,
+
+                        )));
+
+                      }
+                      else{
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => TifKategoriUrunSecimi(islemTuru: onayaGidecekUrunler.data![0].islemTuru.toString(),
+                          islemId: widget.islemId, islemAciklamasi: onayaGidecekUrunler.data![0].islemAciklama,
+                          anaDepo: onayaGidecekUrunler.data?[0].anaDepoId, hedefDepo: onayaGidecekUrunler.data?[0]?.hedefDepoID,
+                          islemTarihi: onayaGidecekUrunler.data![0].islemTarihi,)));
+                      }
+
                     },
                     child: const Text("DAHA FAZLA\nÜRÜN EKLE",
                         style: TextStyle(
@@ -155,6 +195,7 @@ class _onayaGonderileceklerListeState extends State<onayaGonderileceklerListe> {
                         width: 1.0, color: Color(0XFF463848)),
                   ),
                   onPressed: () {
+                    sendToAproval(int.parse(widget.islemId.toString()));
                     // Navigator.push(context, MaterialPageRoute(builder: (context)=> OnayaGonderGrid()));
                     setState(() {});
                   },

@@ -46,8 +46,6 @@ class TifKategoriUrunSecimi extends StatefulWidget {
 }
 
 var urun;
-var kategori = 'sdfsdf';
-var urunler = 'asdasd';
 var islemId;
 class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
   @override
@@ -168,7 +166,7 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
                                     islemAciklamasi:
                                         this.widget.islemAciklamasi.toString(),
                                     anaDepo: int.parse(
-                                        this.widget.anaDepo.toString()),
+                                        this.widget.anaDepo.toString()) ?? 0,
                                     hedefDepo: int.parse(
                                         this.widget.hedefDepo.toString()),
                                     islemTarihi:
@@ -451,27 +449,35 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
                       // print(product.data![0].productVariantElements![0]
                       //     .variantElementId);
                       // print(product.data?[0].productVariantElements[0].variantElement.varyantElemanAdi);
+                      if(product.data?[0].category?.ad == null || product.data?[0].category?.ad ==""){
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text("Lütfen menüden seçim yapınız."),
+                          backgroundColor: Colors.red,
+                        ));
+                      }
+                      else{
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UrunOzet(
+                                    islemTuru: widget.islemTuru,
+                                    productVariantElements:
+                                    product.data?[0].productVariantElements,
+                                    productName: product.data?[0].productName,
+                                    categoryAdi: product.data?[0].category?.ad,
+                                    categorybirim:
+                                    product.data?[0].category?.birim,
+                                    categoryEnvanterTuru:
+                                    product.data?[0].category?.envanterTuru,
+                                    barkod: product.data?[0].barkod,
+                                    urunKimlikNo: product.data?[0].urunKimlikNo,
+                                    sistemSeriNo: product.data?[0].sistemSeriNo,
+                                    id: product.data?[0].id,
 
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => UrunOzet(
-                                  islemTuru: widget.islemTuru,
-                                  productVariantElements:
-                                      product.data?[0].productVariantElements,
-                                  productName: product.data?[0].productName,
-                                  categoryAdi: product.data?[0].category?.ad,
-                                  categorybirim:
-                                      product.data?[0].category?.birim,
-                                  categoryEnvanterTuru:
-                                      product.data?[0].category?.envanterTuru,
-                                  barkod: product.data?[0].barkod,
-                                  urunKimlikNo: product.data?[0].urunKimlikNo,
-                                  sistemSeriNo: product.data?[0].sistemSeriNo,
-                                  id: product.data?[0].id,
+                                    islemId: widget.islemId,
+                                    selectedProduct:selectedProduct)));
+                      }
 
-                              islemId: widget.islemId,
-                                  selectedProduct:selectedProduct)));
 
                       // builder: (context) => VaryantSecimi(variantAdi: product.data![0].productName, varyantElemanAdi: product.data![0].productVariantElements,productName: product.data![0].productName)));
                       // Navigator.push(

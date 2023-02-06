@@ -56,6 +56,7 @@ class _UrunOzetState extends State<UrunOzet> {
     super.initState();
     print(widget.selectedProduct?.data![0].category?.ad.toString());
     print("kat bir: ${widget.categorybirim.toString()}");
+    print(widget.selectedProduct?.data?.length);
     print(widget.selectedProduct?.data![0].barkod);
     if (widget.categorybirim == 1) {
       print("dsada");
@@ -102,26 +103,50 @@ class _UrunOzetState extends State<UrunOzet> {
   Future<void> productTransaction() async {
     var url =
         Uri.parse('https://stok.bahcelievler.bel.tr/api/ProductTransactions');
+    print("1 kere çalıştım.");
     print(widget.productVariantElements![0].productId);
+    print(widget.selectedProduct?.data![0].id);
     print(widget.islemId);
     print(widget.islemTuru);
     print(tfMiktar.text);
     http.Response response = await http.post(url,
         headers: {'Accept': '*/*', 'Content-Type': 'application/json'},
         body: json.encoder.convert({
-          "productId": widget.productVariantElements![0].productId,
+          // "productId": widget.productVariantElements![0].productId,
+          "productId": widget.selectedProduct?.data?[0].id,
           "productProcessId": widget.islemId,
           "islemTuru": widget.islemTuru,
           "miktar": tfMiktar.text,
           "parentId": 0
         }));
     print(response.body);
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                onayaGonderileceklerListe(
-                    islemId: widget.islemId)));
+    if(tfMiktar.text == "" || tfMiktar.text == null){
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Lütfen miktar giriniz."),
+        backgroundColor: Colors.red,
+      ));
+    }
+    else{
+      if(response.body.contains('"errors":null')){
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    onayaGonderileceklerListe(
+                        islemId: widget.islemId)));
+      }
+      else{
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Onaya gönderdiğiniz işlem üzerinde işlem yapamazsınız"),
+          backgroundColor: Colors.red,
+        ));
+      }
+
+    }
+
+  }
+
+  Future<void> sendToAproval() async{
 
   }
 

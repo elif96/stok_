@@ -53,7 +53,7 @@ class _VaryantTanimState extends State<VaryantTanim> {
         content: Text("Varyant ekleme işlemi başarıyla gerçekleştirildi."),
         backgroundColor: Colors.green,
       ));
-      tfVaryantAdi.clear();
+      Navigator.pop(context);
       setState(() {});
     }
 

@@ -1,16 +1,10 @@
-import 'dart:convert';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:searchfield/searchfield.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stok_takip_uygulamasi/depodan_urun_secimi.dart';
 import 'package:stok_takip_uygulamasi/drawer_menu.dart';
-import 'package:stok_takip_uygulamasi/model/myData.dart';
-import 'package:stok_takip_uygulamasi/tif_listesi.dart';
-import 'package:stok_takip_uygulamasi/model/BaseCategoryParentChild.dart';
 import 'package:stok_takip_uygulamasi/tif_kategori_urun_secimi.dart';
-import 'model/BaseCategory.dart';
 import 'package:http/http.dart' as http;
 
 class IslemBilgileri extends StatefulWidget {
@@ -126,7 +120,7 @@ class _IslemBilgileriState extends State<IslemBilgileri> {
                 "Ana Depo:  ",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              Text(" ${this.widget.anaDepo}"),
+              Text("${this.widget.anaDepo.toString()} == null ? null : ${this.widget.anaDepo.toString()}"),
             ],
           ),
           const SizedBox(
@@ -1027,22 +1021,52 @@ class _IslemBilgileriState extends State<IslemBilgileri> {
                       // print(prefs.getInt('hedefDepo'));
                       // print('islem tanim');
                       print(widget.islemId);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TifKategoriUrunSecimi(
+                      if(widget.islemTuru == "5" || widget.islemTuru == "6" || widget.islemTuru == "7" || widget.islemTuru == "8"){
+                       print(widget.islemTuru);
+                       print(widget.islemAdi);
+                       print(widget.islemAciklamasi);
+                       print(widget.anaDepo);
+                       print(widget.hedefDepo);
+                       print(widget.islemTarihi);
+                       print(widget.islemId);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DepodanUrunSecimi(
                                     islemTuru: this.widget.islemTuru.toString(),
                                     islemAdi: this.widget.islemAdi.toString(),
                                     islemAciklamasi:
-                                        this.widget.islemAciklamasi.toString(),
+                                    this.widget.islemAciklamasi.toString(),
                                     anaDepo: int.parse(
                                         this.widget.anaDepo.toString()),
                                     hedefDepo: int.parse(
                                         this.widget.hedefDepo.toString()),
                                     islemTarihi:
-                                        this.widget.islemTarihi.toString(),
-                                islemId: this.widget.islemId
-                                  )));
+                                    this.widget.islemTarihi.toString(),
+                                    islemId: this.widget.islemId
+                                )));
+                      }
+                      else{
+
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TifKategoriUrunSecimi(
+                                    islemTuru: this.widget.islemTuru.toString(),
+                                    islemAdi: this.widget.islemAdi.toString(),
+                                    islemAciklamasi:
+                                    this.widget.islemAciklamasi.toString(),
+                                    anaDepo: int.parse(
+                                        this.widget.anaDepo.toString()) == null ? 0 : int.parse(
+                                        this.widget.anaDepo.toString()),
+                                    hedefDepo: int.parse(
+                                        this.widget.hedefDepo.toString()),
+                                    islemTarihi:
+                                    this.widget.islemTarihi.toString(),
+                                    islemId: this.widget.islemId
+                                )));
+                      }
+
                       // Navigator.push(context, MaterialPageRoute(builder: (context)=> Test(islemTuru: this.widget.islemTuru.toString(), islemAdi: this.widget.islemAdi.toString(), islemAciklamasi: this.widget.islemAciklamasi.toString(), anaDepo: int.parse(this.widget.anaDepo.toString()), hedefDepo: int.parse(this.widget.hedefDepo.toString()), islemTarihi: this.widget.islemTarihi.toString())));
                       //   showUrunAra();
                     },

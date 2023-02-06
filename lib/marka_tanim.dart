@@ -39,6 +39,7 @@ class _MarkaTanimState extends State<MarkaTanim> {
         content: Text("Marka kayıt işlemi başarılı."),
         backgroundColor: Colors.green,
       ));
+      Navigator.pop(context);
       setState(() {});
     } else if(tfMarkaAdi.text == "" || tfMarkaAdi.text.isEmpty){
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

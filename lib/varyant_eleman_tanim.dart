@@ -88,6 +88,7 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
             Text("Varyant eleman ekleme işlemi başarıyla gerçekleştirildi."),
         backgroundColor: Colors.green,
       ));
+      Navigator.pop(context);
       setState(() {});
     }
   }

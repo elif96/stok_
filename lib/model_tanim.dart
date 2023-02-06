@@ -310,6 +310,7 @@ class _ModelTanimState extends State<ModelTanim> {
 
   var myController = new TextEditingController();
   var dropdownValue;
+  String? _selectedItem;
 
   @override
   Widget build(BuildContext context) {
@@ -410,6 +411,7 @@ class _ModelTanimState extends State<ModelTanim> {
                         markaListeleWithFilter('ve', 1, 5, 'Id', true);
                       },
                       child: Text('dkf')),
+
 
                   // DropdownSearch<String>(
                   //

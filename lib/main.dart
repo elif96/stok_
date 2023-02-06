@@ -1,10 +1,10 @@
+import 'dart:async';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stok_takip_uygulamasi/is_baslat.dart';
-
-
 
 void main() {
   runApp(const MyApp());
@@ -80,6 +80,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  Future loader() async {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CircularProgressIndicator();
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -120,9 +128,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 const TextField(
                   style: TextStyle(color: Color(0XFF976775)),
                   controller: null,
-                  decoration: InputDecoration( 
+                  decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(width: 1, color: Color(0XFF976775)),
+                        borderSide:
+                            BorderSide(width: 1, color: Color(0XFF976775)),
                       ),
                       filled: true,
                       hintStyle: TextStyle(color: Color(0XFF6E3F52)),
@@ -135,7 +144,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   controller: null,
                   decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(width: 1, color: Color(0XFF976775)),
+                        borderSide:
+                            BorderSide(width: 1, color: Color(0XFF976775)),
                       ),
                       filled: true,
                       hintStyle: TextStyle(color: Color(0XFF6E3F52)),
@@ -144,16 +154,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 const SizedBox(height: 15),
                 Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 50.0,
-                  child:  AnimatedButton(
-                      color: const Color(0XFF6E3F52),
-                      text: 'GİRİŞ',
-                      pressEvent: () {
-                        //kullanıcı kontrolü
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>IsBaslat()));
-                      })
-                ),
+                    width: MediaQuery.of(context).size.width,
+                    height: 50.0,
+                    child: AnimatedButton(
+                        color: const Color(0XFF6E3F52),
+                        text: 'GİRİŞ',
+                        pressEvent: () {
+                          //kullanıcı kontrolü
+                      Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => IsBaslat()));
+                        })),
               ],
             ),
           ),

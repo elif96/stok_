@@ -45,6 +45,9 @@ dependencies:
   loadmore: ^2.0.1
   dropdown_search: ^5.0.5
   dropdown_textfield: ^1.0.7
+  image_picker: ^0.8.6+1
+  http_parser: ^4.0.2
+
 
 
 
