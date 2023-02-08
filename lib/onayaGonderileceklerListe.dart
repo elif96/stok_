@@ -70,7 +70,7 @@ class _onayaGonderileceklerListeState extends State<onayaGonderileceklerListe> {
         primary: true,
         backgroundColor: const Color(0xFF976775),
         title: Text('ONAYA GÖNDERLİCEKLER',
-            style: GoogleFonts.notoSansTaiLe(
+            style: GoogleFonts.raleway(
               fontSize: 18,
               color: Colors.white,
               fontWeight: FontWeight.bold,

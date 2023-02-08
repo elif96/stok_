@@ -157,7 +157,7 @@ class _UrunOzetState extends State<UrunOzet> {
         primary: true,
         backgroundColor: const Color(0xFF976775),
         title: Text('ÜRÜN ÖZETİ',
-            style: GoogleFonts.notoSansTaiLe(
+            style: GoogleFonts.raleway(
               fontSize: 18,
               color: Colors.white,
               fontWeight: FontWeight.bold,
@@ -176,14 +176,14 @@ class _UrunOzetState extends State<UrunOzet> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("Kategori: ",
-                        style: GoogleFonts.notoSansTaiLe(
+                        style: GoogleFonts.raleway(
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
                           color: const Color(0XFF463848),
                         )),
                     Text(
                         "${widget.selectedProduct?.data![0].category!.ad.toString()}",
-                        style: GoogleFonts.notoSansTaiLe(
+                        style: GoogleFonts.raleway(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
                           color: const Color(0XFF976775),
@@ -195,14 +195,14 @@ class _UrunOzetState extends State<UrunOzet> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("Ürün: ",
-                        style: GoogleFonts.notoSansTaiLe(
+                        style: GoogleFonts.raleway(
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
                           color: const Color(0XFF463848),
                         )),
                     Text(
                         "${widget.selectedProduct?.data![0].productName.toString()}",
-                        style: GoogleFonts.notoSansTaiLe(
+                        style: GoogleFonts.raleway(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
                           color: const Color(0XFF976775),
@@ -214,14 +214,14 @@ class _UrunOzetState extends State<UrunOzet> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("Barkod: ",
-                        style: GoogleFonts.notoSansTaiLe(
+                        style: GoogleFonts.raleway(
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
                           color: const Color(0XFF463848),
                         )),
                     Text(
                         "${widget.selectedProduct?.data![0].barkod.toString()}",
-                        style: GoogleFonts.notoSansTaiLe(
+                        style: GoogleFonts.raleway(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
                           color: const Color(0XFF976775),
@@ -233,14 +233,14 @@ class _UrunOzetState extends State<UrunOzet> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("Ürün Kimlik No: ",
-                        style: GoogleFonts.notoSansTaiLe(
+                        style: GoogleFonts.raleway(
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
                           color: const Color(0XFF463848),
                         )),
                     Text(
                         "${widget.selectedProduct?.data![0].urunKimlikNo.toString()}",
-                        style: GoogleFonts.notoSansTaiLe(
+                        style: GoogleFonts.raleway(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
                           color: const Color(0XFF976775),
@@ -252,14 +252,14 @@ class _UrunOzetState extends State<UrunOzet> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("Sistem Seri No: ",
-                        style: GoogleFonts.notoSansTaiLe(
+                        style: GoogleFonts.raleway(
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
                           color: const Color(0XFF463848),
                         )),
                     Text(
                         "${widget.selectedProduct?.data![0].sistemSeriNo.toString()}",
-                        style: GoogleFonts.notoSansTaiLe(
+                        style: GoogleFonts.raleway(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
                           color: const Color(0XFF976775),
@@ -268,7 +268,7 @@ class _UrunOzetState extends State<UrunOzet> {
                 ),
                 SizedBox(height: 10),
                 Text("Varyanlar:",
-                    style: GoogleFonts.notoSansTaiLe(
+                    style: GoogleFonts.raleway(
                       fontSize: 13,
                       fontWeight: FontWeight.bold,
                       color: const Color(0XFF463848),
@@ -281,7 +281,7 @@ class _UrunOzetState extends State<UrunOzet> {
                       children: [
                         Text(
                             "${widget.selectedProduct?.data![0].productVariantElements![index].variantElement.variant.varyantAdi.toString()} - ${widget.selectedProduct?.data![0].productVariantElements![index].variantElement.varyantElemanAdi.toString()}",
-                            style: GoogleFonts.notoSansTaiLe(
+                            style: GoogleFonts.raleway(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
                               color: const Color(0XFF976775),
@@ -297,13 +297,13 @@ class _UrunOzetState extends State<UrunOzet> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("İşlem Türü: ",
-                        style: GoogleFonts.notoSansTaiLe(
+                        style: GoogleFonts.raleway(
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
                           color: const Color(0XFF463848),
                         )),
                     Text("${widget.islemTuru.toString()}",
-                        style: GoogleFonts.notoSansTaiLe(
+                        style: GoogleFonts.raleway(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
                           color: const Color(0XFF976775),
@@ -318,7 +318,7 @@ class _UrunOzetState extends State<UrunOzet> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text('Miktar:',
-                          style: GoogleFonts.notoSansTaiLe(
+                          style: GoogleFonts.raleway(
                             fontSize: 13,
                             fontWeight: FontWeight.bold,
                             color: const Color(0XFF463848),
@@ -401,7 +401,7 @@ class _UrunOzetState extends State<UrunOzet> {
                                                                           : widget.selectedProduct?.data![0].category!.birim == 16
                                                                               ? 'CM3'
                                                                               : '',
-                              style: GoogleFonts.notoSansTaiLe(
+                              style: GoogleFonts.raleway(
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
                                 color: const Color(0XFF976775),

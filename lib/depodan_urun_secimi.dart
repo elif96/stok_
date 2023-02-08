@@ -80,7 +80,7 @@ class _DepodanUrunSecimiState extends State<DepodanUrunSecimi> {
         primary: true,
         backgroundColor: const Color(0xFF976775),
         title: Text('Depodan Ürün Seçimi',
-            style: GoogleFonts.notoSansTaiLe(
+            style: GoogleFonts.raleway(
               fontSize: 18,
               color: Colors.white,
               fontWeight: FontWeight.bold,

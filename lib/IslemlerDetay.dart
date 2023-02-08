@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:stok_takip_uygulamasi/Islem_bilgileri.dart';
@@ -10,6 +9,7 @@ import 'package:stok_takip_uygulamasi/drawer_menu.dart';
 import 'package:stok_takip_uygulamasi/is_baslat.dart';
 import 'package:stok_takip_uygulamasi/model/ProductProcess.dart';
 import 'package:http/http.dart' as http;
+import 'package:stok_takip_uygulamasi/model/ProductTransationImages.dart';
 import 'package:stok_takip_uygulamasi/model/myData.dart';
 
 class IslemlerDetay extends StatefulWidget {
@@ -452,9 +452,25 @@ class _WaitingForMyConfirmationsState extends State<WaitingForMyConfirmations> {
     WaitingForMyConfirmations = myData<ProductProcess>.fromJson(
         json.decode(res.body), ProductProcess.fromJsonModel);
 
+    // getProductTransactionImages(WaitingForMyConfirmations.data?[0].productTransactions?[0].id);
     setState(() {});
     return WaitingForMyConfirmations;
   }
+
+  //https://stok.bahcelievler.bel.tr/api/ProductProcesses/376
+  late myData<ProductTransactionImages> productTransactionImages = myData<ProductTransactionImages>();
+
+  // Future<myData<ProductTransactionImages>> getProductTransactionImages(int? productTransactionId) async {
+  //   http.Response res = await http.get(Uri.parse(
+  //       'https://stok.bahcelievler.bel.tr/api/ProductTransactionImages/GetAll?ProductTransactionIdFilter=$productTransactionId&Id=0&Page=1&PageSize=12&Orderby=Id&Desc=true&isDeleted=true&includeParents=true&includeChildren=true'));
+  //   productTransactionImages = myData<ProductTransactionImages>.fromJson(
+  //       json.decode(res.body), ProductTransactionImages.fromJsonModel);
+  //
+  //   print(productTransactionImages.data?.length);
+  //   setState(() {});
+  //   return productTransactionImages;
+  // }
+
   File? _image;
   XFile? _pickedFile;
   final _picker = ImagePicker();
@@ -470,6 +486,8 @@ class _WaitingForMyConfirmationsState extends State<WaitingForMyConfirmations> {
         postImage(id, _image!);
       });
     }
+    print(_image?.path);
+
 
     // try {
     //   final image = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -571,8 +589,24 @@ class _WaitingForMyConfirmationsState extends State<WaitingForMyConfirmations> {
       final responseData = json.decode(responsed.body);
       print(response.statusCode);
       print(responseData);
-      if (response.statusCode == 200) print('Uploaded!');
       print(response.statusCode);
+
+      if (response.statusCode == 201) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Görsel başarıyla eklendi."),
+          backgroundColor: Colors.green,
+        ));
+        Navigator.pop(context);
+        Navigator.pop(context);
+      }
+      else{
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Görsel eklenme sırasında bir hata oluştu."),
+          backgroundColor: Colors.red,
+        ));
+        Navigator.pop(context);
+        Navigator.pop(context);
+      }
 
 
   }
@@ -616,204 +650,391 @@ class _WaitingForMyConfirmationsState extends State<WaitingForMyConfirmations> {
                           ),
                           trailing: Column(
                             children: [
+                              // Expanded(
+                              //   child: InkWell(
+                              //     onTap: () {
+                              //       //call your onpressed function here
+                              //       print('Button Pressed');
+                              //       // showModalBottomSheet<void>(
+                              //       //   context: context,
+                              //       //   builder: (BuildContext context) {
+                              //       //     return SizedBox(
+                              //       //       height:
+                              //       //       MediaQuery
+                              //       //           .of(context)
+                              //       //           .size
+                              //       //           .height /
+                              //       //           5,
+                              //       //       child: Center(
+                              //       //         child: Column(
+                              //       //           mainAxisAlignment:
+                              //       //           MainAxisAlignment.center,
+                              //       //           children: <Widget>[
+                              //       //
+                              //       //             ListView(
+                              //       //         shrinkWrap: true,
+                              //       //               children: [
+                              //       //
+                              //       //
+                              //       //               ListTile(
+                              //       //
+                              //       //                 title: Text('Fotoğraf Çek'),
+                              //       //                 onTap: (){
+                              //       //                   takePhoto(urun!.id.toString());
+                              //       //                 },
+                              //       //               ),
+                              //       //               Divider(thickness: 3,),
+                              //       //               ListTile(
+                              //       //                 title: Text('Galeriden Seç'),
+                              //       //                 onTap: (){
+                              //       //                   pickImage();
+                              //       //                 },
+                              //       //               ),
+                              //       //
+                              //       //
+                              //       //               ]
+                              //       //             ),
+                              //       //
+                              //       //           ],
+                              //       //         ),
+                              //       //       ),
+                              //       //     );
+                              //       //   },
+                              //       // );
+                              //       showModalBottomSheet(context: context, builder: (BuildContext context){
+                              //         return  FutureBuilder<myData<ProductProcess>>(
+                              //           future: productsBelongsToProcess(urun!.id.toString()),
+                              //           builder: (context, snapshot) {
+                              //             if (snapshot.hasData) {
+                              //               var productListesi = snapshot.data?.data;
+                              //
+                              //               return SingleChildScrollView(
+                              //                 child: ListView.builder(
+                              //                   physics: NeverScrollableScrollPhysics(),
+                              //                   shrinkWrap: true,
+                              //                   itemCount: productListesi?[0].productTransactions?.length,
+                              //                   itemBuilder: (context, index) {
+                              //                     var product = WaitingForMyConfirmations.data?[0];
+                              //
+                              //                     return Container(
+                              //                       child: Card(
+                              //                         child: ListTile(
+                              //                           title: Text(
+                              //
+                              //                               product?.productTransactions?[index].product?.productName.toString() == null
+                              //                                   ? ''
+                              //                                   : product!.productTransactions![index].product!.productName.toString()
+                              //
+                              //                           ),
+                              //                           trailing: InkWell(
+                              //                             onTap: () {
+                              //                               //call your onpressed function here
+                              //                               print('Button Pressed');
+                              //                               showModalBottomSheet<void>(
+                              //                                 context: context,
+                              //                                 builder: (BuildContext context) {
+                              //                                   return SizedBox(
+                              //                                     height:
+                              //                                     MediaQuery
+                              //                                         .of(context)
+                              //                                         .size
+                              //                                         .height /
+                              //                                         5,
+                              //                                     child: Center(
+                              //                                       child: Column(
+                              //                                         mainAxisAlignment:
+                              //                                         MainAxisAlignment.center,
+                              //                                         children: <Widget>[
+                              //
+                              //                                           ListView(
+                              //                                       shrinkWrap: true,
+                              //                                             children: [
+                              //
+                              //
+                              //                                             ListTile(
+                              //
+                              //                                               title: Text('Fotoğraf Çek'),
+                              //                                               onTap: (){
+                              //                                                 takePhoto(product!.productTransactions![index].id.toString());
+                              //                                               },
+                              //                                             ),
+                              //                                             Divider(thickness: 3,),
+                              //                                             ListTile(
+                              //                                               title: Text('Galeriden Seç'),
+                              //                                               onTap: (){
+                              //                                                 pickImage(product!.productTransactions![index].id.toString());
+                              //                                               },
+                              //                                             ),
+                              //
+                              //
+                              //                                             ]
+                              //                                           ),
+                              //
+                              //                                         ],
+                              //                                       ),
+                              //                                     ),
+                              //                                   );
+                              //                                 },
+                              //                               );
+                              //                               // showModalBottomSheet<void>(
+                              //                               //   context: context,
+                              //                               //   builder: (BuildContext context) {
+                              //                               //     return SizedBox(
+                              //                               //       height:
+                              //                               //       MediaQuery
+                              //                               //           .of(context)
+                              //                               //           .size
+                              //                               //           .height /
+                              //                               //           5,
+                              //                               //       child: Center(
+                              //                               //         child: Column(
+                              //                               //           mainAxisAlignment:
+                              //                               //           MainAxisAlignment.center,
+                              //                               //           children: <Widget>[
+                              //                               //
+                              //                               //             ListView(
+                              //                               //                 shrinkWrap: true,
+                              //                               //                 children: [
+                              //                               //
+                              //                               //
+                              //                               //                   ListTile(
+                              //                               //
+                              //                               //                     title: Text('Fotoğraf Çek'),
+                              //                               //                     onTap: (){
+                              //                               //                       takePhoto(product!.productTransactions![index].product!.id.toString());
+                              //                               //                     },
+                              //                               //                   ),
+                              //                               //                   Divider(thickness: 3,),
+                              //                               //                   ListTile(
+                              //                               //                     title: Text('Galeriden Seç'),
+                              //                               //                     onTap: (){
+                              //                               //                       pickImage(product!.productTransactions![index].product!.id.toString());
+                              //                               //                     },
+                              //                               //                   ),
+                              //                               //
+                              //                               //
+                              //                               //                 ]
+                              //                               //             ),
+                              //                               //
+                              //                               //           ],
+                              //                               //         ),
+                              //                               //       ),
+                              //                               //     );
+                              //                               //   },
+                              //                               // );
+                              //                               },
+                              //                             child: Icon(Icons.photo_camera),
+                              //                           ),
+                              //                         ),
+                              //                       ),
+                              //                     );
+                              //                   },
+                              //                 ),
+                              //               );
+                              //             } else {
+                              //               return Center();
+                              //             }
+                              //           },
+                              //         );
+                              //       });
+                              //       },
+                              //     child: Icon(Icons.photo_camera),
+                              //   ),
+                              // ),
+                              // SizedBox(height: 10,),
                               Expanded(
                                 child: InkWell(
                                   onTap: () {
                                     //call your onpressed function here
                                     print('Button Pressed');
-                                    // showModalBottomSheet<void>(
-                                    //   context: context,
-                                    //   builder: (BuildContext context) {
-                                    //     return SizedBox(
-                                    //       height:
-                                    //       MediaQuery
-                                    //           .of(context)
-                                    //           .size
-                                    //           .height /
-                                    //           5,
-                                    //       child: Center(
-                                    //         child: Column(
-                                    //           mainAxisAlignment:
-                                    //           MainAxisAlignment.center,
-                                    //           children: <Widget>[
-                                    //
-                                    //             ListView(
-                                    //         shrinkWrap: true,
-                                    //               children: [
-                                    //
-                                    //
-                                    //               ListTile(
-                                    //
-                                    //                 title: Text('Fotoğraf Çek'),
-                                    //                 onTap: (){
-                                    //                   takePhoto(urun!.id.toString());
-                                    //                 },
-                                    //               ),
-                                    //               Divider(thickness: 3,),
-                                    //               ListTile(
-                                    //                 title: Text('Galeriden Seç'),
-                                    //                 onTap: (){
-                                    //                   pickImage();
-                                    //                 },
-                                    //               ),
-                                    //
-                                    //
-                                    //               ]
-                                    //             ),
-                                    //
-                                    //           ],
-                                    //         ),
-                                    //       ),
-                                    //     );
-                                    //   },
-                                    // );
-                                    showModalBottomSheet(context: context, builder: (BuildContext context){
-                                      return  FutureBuilder<myData<ProductProcess>>(
-                                        future: productsBelongsToProcess(urun!.id.toString()),
-                                        builder: (context, snapshot) {
-                                          if (snapshot.hasData) {
-                                            var productListesi = snapshot.data?.data;
+                                    showDialog<void>(
+                                      context: context,
+                                      barrierDismissible: true,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          // title: const Text('AlertDialog Title'),
+                                          content: SingleChildScrollView(
+                                            child: ListBody(
+                                              children: <Widget>[
+                                                Text('İşlemi onaylamadan önce ürünlere fotoğraf eklemek isterseniz misiniz ?', style: TextStyle(color: Color(0xFFAAA3B4), fontWeight: FontWeight.bold)),
 
-                                            return SingleChildScrollView(
-                                              child: ListView.builder(
-                                                physics: NeverScrollableScrollPhysics(),
-                                                shrinkWrap: true,
-                                                itemCount: productListesi?[0].productTransactions?.length,
-                                                itemBuilder: (context, index) {
-                                                  var product = WaitingForMyConfirmations.data?[0];
+                                              ],
+                                            ),
+                                          ),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              child: const Text('Fotoğraf Ekle', style: TextStyle(color: Color(0xFF6E3F52), fontWeight: FontWeight.bold)),
+                                              onPressed: () {
+                                                showModalBottomSheet(context: context, builder: (BuildContext context){
+                                                  return  FutureBuilder<myData<ProductProcess>>(
+                                                    future: productsBelongsToProcess(urun!.id.toString()),
+                                                    builder: (context, snapshot) {
+                                                      if (snapshot.hasData) {
+                                                        var productListesi = snapshot.data?.data;
 
-                                                  return Container(
-                                                    child: Card(
-                                                      child: ListTile(
-                                                        title: Text(
+                                                        return SingleChildScrollView(
+                                                          child: ListView.builder(
+                                                            physics: NeverScrollableScrollPhysics(),
+                                                            shrinkWrap: true,
+                                                            itemCount: productListesi?[0].productTransactions?.length,
+                                                            itemBuilder: (context, index) {
+                                                              var product = WaitingForMyConfirmations.data?[0];
 
-                                                            product?.productTransactions?[index].product?.productName.toString() == null
-                                                                ? ''
-                                                                : product!.productTransactions![index].product!.productName.toString()
+                                                              return Container(
+                                                                child: Card(
+                                                                  child: ListTile(
+                                                                    title: Row(
+                                                                      children: [
+                                                                        Text(
 
-                                                        ),
-                                                        trailing: InkWell(
-                                                          onTap: () {
-                                                            //call your onpressed function here
-                                                            print('Button Pressed');
-                                                            showModalBottomSheet<void>(
-                                                              context: context,
-                                                              builder: (BuildContext context) {
-                                                                return SizedBox(
-                                                                  height:
-                                                                  MediaQuery
-                                                                      .of(context)
-                                                                      .size
-                                                                      .height /
-                                                                      5,
-                                                                  child: Center(
-                                                                    child: Column(
-                                                                      mainAxisAlignment:
-                                                                      MainAxisAlignment.center,
-                                                                      children: <Widget>[
+                                                                            product?.productTransactions?[index].product?.productName.toString() == null
+                                                                                ? ''
+                                                                                : product!.productTransactions![index].product!.productName.toString()
 
-                                                                        ListView(
-                                                                    shrinkWrap: true,
-                                                                          children: [
-
-
-                                                                          ListTile(
-
-                                                                            title: Text('Fotoğraf Çek'),
-                                                                            onTap: (){
-                                                                              takePhoto(product!.productTransactions![index].id.toString());
-                                                                            },
-                                                                          ),
-                                                                          Divider(thickness: 3,),
-                                                                          ListTile(
-                                                                            title: Text('Galeriden Seç'),
-                                                                            onTap: (){
-                                                                              pickImage(product!.productTransactions![index].id.toString());
-                                                                            },
-                                                                          ),
-
-
-                                                                          ]
                                                                         ),
+Text((product?.productTransactions?[index].productTransactionImages?[index].imageFileName).toString()),
 
+                                                                        Image.file(
+                                                                          File((product?.productTransactions?[index].productTransactionImages?[index].imageFileName).toString()),
+                                                                          width: 5,
+                                                                          height: 5,
+                                                                        )
+                                                                        // Text((product?.productTransactions?[0].productTransactionImages?[index].imageFileName).toString())
                                                                       ],
                                                                     ),
+                                                                    trailing: InkWell(
+                                                                      onTap: () {
+                                                                        //call your onpressed function here
+                                                                        print(WaitingForMyConfirmations.data?[0].productTransactions?[0].id);
+                                                                        // getProductTransactionImages(WaitingForMyConfirmations.data?[0].productTransactions?[index].id);
+                                                                        print('Button Pressed');
+                                                                        showModalBottomSheet<void>(
+                                                                          context: context,
+                                                                          builder: (BuildContext context) {
+                                                                            return SizedBox(
+                                                                              height:
+                                                                              MediaQuery
+                                                                                  .of(context)
+                                                                                  .size
+                                                                                  .height /
+                                                                                  5,
+                                                                              child: Center(
+                                                                                child: Column(
+                                                                                  mainAxisAlignment:
+                                                                                  MainAxisAlignment.center,
+                                                                                  children: <Widget>[
+
+                                                                                    ListView(
+                                                                                        shrinkWrap: true,
+                                                                                        children: [
+
+
+                                                                                          ListTile(
+
+                                                                                            title: Text('Fotoğraf Çek'),
+                                                                                            onTap: (){
+                                                                                              takePhoto(product!.productTransactions![index].id.toString());
+                                                                                            },
+                                                                                          ),
+                                                                                          Divider(thickness: 3,),
+                                                                                          ListTile(
+                                                                                            title: Text('Galeriden Seç'),
+                                                                                            onTap: (){
+                                                                                              pickImage(product!.productTransactions![index].id.toString());
+                                                                                            },
+                                                                                          ),
+
+
+                                                                                        ]
+                                                                                    ),
+
+                                                                                  ],
+                                                                                ),
+                                                                              ),
+                                                                            );
+                                                                          },
+                                                                        );
+                                                                        // showModalBottomSheet<void>(
+                                                                        //   context: context,
+                                                                        //   builder: (BuildContext context) {
+                                                                        //     return SizedBox(
+                                                                        //       height:
+                                                                        //       MediaQuery
+                                                                        //           .of(context)
+                                                                        //           .size
+                                                                        //           .height /
+                                                                        //           5,
+                                                                        //       child: Center(
+                                                                        //         child: Column(
+                                                                        //           mainAxisAlignment:
+                                                                        //           MainAxisAlignment.center,
+                                                                        //           children: <Widget>[
+                                                                        //
+                                                                        //             ListView(
+                                                                        //                 shrinkWrap: true,
+                                                                        //                 children: [
+                                                                        //
+                                                                        //
+                                                                        //                   ListTile(
+                                                                        //
+                                                                        //                     title: Text('Fotoğraf Çek'),
+                                                                        //                     onTap: (){
+                                                                        //                       takePhoto(product!.productTransactions![index].product!.id.toString());
+                                                                        //                     },
+                                                                        //                   ),
+                                                                        //                   Divider(thickness: 3,),
+                                                                        //                   ListTile(
+                                                                        //                     title: Text('Galeriden Seç'),
+                                                                        //                     onTap: (){
+                                                                        //                       pickImage(product!.productTransactions![index].product!.id.toString());
+                                                                        //                     },
+                                                                        //                   ),
+                                                                        //
+                                                                        //
+                                                                        //                 ]
+                                                                        //             ),
+                                                                        //
+                                                                        //           ],
+                                                                        //         ),
+                                                                        //       ),
+                                                                        //     );
+                                                                        //   },
+                                                                        // );
+                                                                      },
+                                                                      child: Icon(Icons.photo_camera),
+                                                                    ),
                                                                   ),
-                                                                );
-                                                              },
-                                                            );
-                                                            // showModalBottomSheet<void>(
-                                                            //   context: context,
-                                                            //   builder: (BuildContext context) {
-                                                            //     return SizedBox(
-                                                            //       height:
-                                                            //       MediaQuery
-                                                            //           .of(context)
-                                                            //           .size
-                                                            //           .height /
-                                                            //           5,
-                                                            //       child: Center(
-                                                            //         child: Column(
-                                                            //           mainAxisAlignment:
-                                                            //           MainAxisAlignment.center,
-                                                            //           children: <Widget>[
-                                                            //
-                                                            //             ListView(
-                                                            //                 shrinkWrap: true,
-                                                            //                 children: [
-                                                            //
-                                                            //
-                                                            //                   ListTile(
-                                                            //
-                                                            //                     title: Text('Fotoğraf Çek'),
-                                                            //                     onTap: (){
-                                                            //                       takePhoto(product!.productTransactions![index].product!.id.toString());
-                                                            //                     },
-                                                            //                   ),
-                                                            //                   Divider(thickness: 3,),
-                                                            //                   ListTile(
-                                                            //                     title: Text('Galeriden Seç'),
-                                                            //                     onTap: (){
-                                                            //                       pickImage(product!.productTransactions![index].product!.id.toString());
-                                                            //                     },
-                                                            //                   ),
-                                                            //
-                                                            //
-                                                            //                 ]
-                                                            //             ),
-                                                            //
-                                                            //           ],
-                                                            //         ),
-                                                            //       ),
-                                                            //     );
-                                                            //   },
-                                                            // );
+                                                                ),
+                                                              );
                                                             },
-                                                          child: Icon(Icons.photo_camera),
-                                                        ),
-                                                      ),
-                                                    ),
+                                                          ),
+                                                        );
+                                                      } else {
+                                                        return Center();
+                                                      }
+                                                    },
                                                   );
-                                                },
-                                              ),
-                                            );
-                                          } else {
-                                            return Center();
-                                          }
-                                        },
-                                      );
-                                    });
-                                    },
-                                  child: Icon(Icons.photo_camera),
-                                ),
-                              ),
-                              SizedBox(height: 10,),
-                              Expanded(
-                                child: InkWell(
-                                  onTap: () {
-                                    //call your onpressed function here
-                                    print('Button Pressed');
-                                    approvalToProductProcess(urun!.id.toString());
+                                                });
+                                              },
+                                            ),
+                                            TextButton(
+                                              child: const Text('Onaya Gönder', style: TextStyle(color: Color(0xFF6E3F52), fontWeight: FontWeight.bold)),
+                                              onPressed: () {
+                                                approvalToProductProcess(urun!.id.toString());
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                            TextButton(
+                                              child: const Text('Vazgeç', style: TextStyle(color: Color(0xFF6E3F52), fontWeight: FontWeight.bold)),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                    // approvalToProductProcess(urun!.id.toString());
                                   },
                                   child: Icon(Icons.check),
                                 ),

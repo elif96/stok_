@@ -172,7 +172,7 @@ class _VaryantElemanTanimState extends State<VaryantElemanTanim> {
               height: 15,
             ),
             Text('Lütfen güncellemek istediğiniz yeni marka adını girin.',
-                style: GoogleFonts.notoSansTaiLe(
+                style: GoogleFonts.raleway(
                   fontSize: 15,
                   color: const Color(0XFF976775),
                 )),

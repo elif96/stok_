@@ -110,7 +110,7 @@ class _UrunOzetDepoState extends State<UrunOzetDepo> {
         primary: true,
         backgroundColor: const Color(0xFF976775),
         title: Text('ÜRÜN ÖZETİ',
-            style: GoogleFonts.notoSansTaiLe(
+            style: GoogleFonts.raleway(
               fontSize: 18,
               color: Colors.white,
               fontWeight: FontWeight.bold,
@@ -131,7 +131,7 @@ class _UrunOzetDepoState extends State<UrunOzetDepo> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("Ürün: ",
-                        style: GoogleFonts.notoSansTaiLe(
+                        style: GoogleFonts.raleway(
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
                           color: const Color(0XFF463848),
@@ -145,7 +145,7 @@ class _UrunOzetDepoState extends State<UrunOzetDepo> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("Barkod: ",
-                        style: GoogleFonts.notoSansTaiLe(
+                        style: GoogleFonts.raleway(
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
                           color: const Color(0XFF463848),
@@ -159,7 +159,7 @@ class _UrunOzetDepoState extends State<UrunOzetDepo> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("Ürün Kimlik No: ",
-                        style: GoogleFonts.notoSansTaiLe(
+                        style: GoogleFonts.raleway(
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
                           color: const Color(0XFF463848),
@@ -173,7 +173,7 @@ class _UrunOzetDepoState extends State<UrunOzetDepo> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("Sistem Seri No: ",
-                        style: GoogleFonts.notoSansTaiLe(
+                        style: GoogleFonts.raleway(
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
                           color: const Color(0XFF463848),
@@ -202,13 +202,13 @@ class _UrunOzetDepoState extends State<UrunOzetDepo> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("İşlem Türü: ",
-                        style: GoogleFonts.notoSansTaiLe(
+                        style: GoogleFonts.raleway(
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
                           color: const Color(0XFF463848),
                         )),
                     Text("${widget.islemTuru.toString()}",
-                        style: GoogleFonts.notoSansTaiLe(
+                        style: GoogleFonts.raleway(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
                           color: const Color(0XFF976775),
@@ -223,7 +223,7 @@ class _UrunOzetDepoState extends State<UrunOzetDepo> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text('Miktar:',
-                          style: GoogleFonts.notoSansTaiLe(
+                          style: GoogleFonts.raleway(
                             fontSize: 13,
                             fontWeight: FontWeight.bold,
                             color: const Color(0XFF463848),
@@ -306,7 +306,7 @@ class _UrunOzetDepoState extends State<UrunOzetDepo> {
                           //                                                 : widget.selectedProduct?.data![0].category!.birim == 16
                           //                                                     ? 'CM3'
                           //                                                     : '',
-                          //     style: GoogleFonts.notoSansTaiLe(
+                          //     style: GoogleFonts.raleway(
                           //       fontSize: 12,
                           //       fontWeight: FontWeight.bold,
                           //       color: const Color(0XFF976775),

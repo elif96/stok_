@@ -76,7 +76,7 @@ class ProductProcess {
       anaDepo: json['anaDepo'] != null ? new AnaDepo.fromJson(json['anaDepo']) : null,
       hedefDepo: json['hedefDepo'] != null ? new HedefDepo.fromJson(json['hedefDepo']) : null,
 
-        productTransactions: json['hedefDepo'] != null ? List<ProductTransactions>.from(items?.map(
+        productTransactions: json['productTransactions'] != null ? List<ProductTransactions>.from(items?.map(
               (itemsJson) => ProductTransactions.fromJsonModel(itemsJson))) : null
     );
   }

@@ -97,12 +97,6 @@ class _TifListesiState extends State<TifListesi> {
       getSelected(urunhks, "", "", "", "", "");
       setState(() {});
     } else {
-      // print('DUZEY 1');
-      // print(duzey1);
-      // print((int.parse(((((urunhk.replaceAll('[', '')).replaceAll(']', ''))
-      //     .replaceAll('<', ''))
-      //     .replaceAll('>', ''))
-      //     .replaceAll("'", ''))).runtimeType);
 
       _isButtonDisabled = true;
       setState(() {});
@@ -281,7 +275,7 @@ class _TifListesiState extends State<TifListesi> {
           primary: true,
           backgroundColor: const Color(0xFF976775),
           title: Text('TİF LİSTESİ',
-              style: GoogleFonts.notoSansTaiLe(
+              style: GoogleFonts.raleway(
                 fontSize: 18,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -294,8 +288,8 @@ class _TifListesiState extends State<TifListesi> {
           child: SingleChildScrollView(
               child: Center(
                 child: Column(children: [
-                  Text('Lütfen ürün seçimi veya barkod ile tarama yapınız.',
-                      style: GoogleFonts.notoSansTaiLe(
+                  Text('Lütfen ürün seçimi yapınız.',
+                      style: GoogleFonts.raleway(
                         fontSize: 15,
                         color: const Color(0XFF976775),
                       )),
@@ -308,7 +302,8 @@ class _TifListesiState extends State<TifListesi> {
                     suggestions:  baseCategory.data == null ? [] : baseCategory.data
                         ?.map(
                           (e) =>
-                          SearchFieldListItem<myData<BaseCategory>>(e.hesapKodu.toString(),
+                          SearchFieldListItem<myData<BaseCategory>>(
+                              e.hesapKodu.toString(),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment
                                     .spaceBetween,
@@ -325,6 +320,8 @@ class _TifListesiState extends State<TifListesi> {
                     )
                         .toList() ?? [],
                     onSuggestionTap: (e) {
+                      print(e.key.toString());
+                      print(e.searchKey);
                       urunhks = e.searchKey;
                       // print("hk: ${urunhk}");
                       setState(() {
@@ -635,32 +632,12 @@ class _TifListesiState extends State<TifListesi> {
                           width: 1.0, color: Color(0XFF463848)),
                     ),
                     onPressed: () async {
-                      // final Future<SharedPreferences> _prefs =
-                      // SharedPreferences.getInstance();
-                      //
-                      // final SharedPreferences prefs = await _prefs;
-                      // prefs.getString('islemAdi');
-                      // prefs.getString('islemAciklamasi');
-                      // prefs.getString('islemTarihi');
-                      // prefs.getInt('islemTuru');
-                      // prefs.getInt('anaDepo');
-                      // prefs.getInt('hedefDepo');
-                      // print('test');
-                      // print(prefs.getString('islemAdi'));
-                      // print(prefs.getString('islemAciklamasi'));
-                      // print(prefs.getString('islemTarihi'));
-                      // print(prefs.getInt('islemTuru'));
-                      // print(prefs.getInt('anaDepo'));
-                      // print(prefs.getInt('hedefDepo'));
-                      // print('test');
-
                       setState(() {});
                     },
                     child: GestureDetector(
                       onTap: () {
 
-                        print(widget.islemId);
-
+                        _isButtonDisabled ==true ? null :
                         Navigator.push(context, MaterialPageRoute(builder: (context)=>TifKategoriUrunSecimi(islemTuru: this.widget.islemTuru.toString(),
                             islemAdi: this.widget.islemAdi.toString(),
                             islemAciklamasi:
@@ -671,8 +648,19 @@ class _TifListesiState extends State<TifListesi> {
                                 this.widget.hedefDepo.toString()),
                             islemTarihi:
                             this.widget.islemTarihi.toString(), sonuc: selected,islemId: widget.islemId,)));
+
+                        // Navigator.push(context, MaterialPageRoute(builder: (context)=>TifKategoriUrunSecimi(islemTuru: this.widget.islemTuru.toString(),
+                        //     islemAdi: this.widget.islemAdi.toString(),
+                        //     islemAciklamasi:
+                        //     this.widget.islemAciklamasi.toString(),
+                        //     anaDepo: int.parse(
+                        //         this.widget.anaDepo.toString()),
+                        //     hedefDepo: int.parse(
+                        //         this.widget.hedefDepo.toString()),
+                        //     islemTarihi:
+                        //     this.widget.islemTarihi.toString(), sonuc: selected,islemId: widget.islemId,)));
                       },
-                      child: Text(_isButtonDisabled ? "Hold on..." : "SEÇ",
+                      child: Text("SEÇ",
                           style: const TextStyle(
                               color: Color(0XFFDBDCE8),
                               fontSize: 15,

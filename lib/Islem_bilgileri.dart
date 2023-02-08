@@ -170,7 +170,7 @@ class _IslemBilgileriState extends State<IslemBilgileri> {
   //         crossAxisAlignment: CrossAxisAlignment.start,
   //         children: [
   //           Text('Lütfen ürün seçimi veya barkod ile tarama yapınız.',
-  //               style: GoogleFonts.notoSansTaiLe(
+  //               style: GoogleFonts.raleway(
   //                 fontSize: 15,
   //                 color: const Color(0XFF976775),
   //               )),
@@ -865,7 +865,7 @@ class _IslemBilgileriState extends State<IslemBilgileri> {
           primary: true,
           backgroundColor: const Color(0xFF976775),
           title: Text('İŞLEM BİLGİLERİ',
-              style: GoogleFonts.notoSansTaiLe(
+              style: GoogleFonts.raleway(
                 fontSize: 18,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,

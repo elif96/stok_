@@ -30,7 +30,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                 //   height: 5,
                 // ),
                 // Text('STOK TAKİP UYGULAMASI',
-                //     style: GoogleFonts.notoSansTaiLe(
+                //     style: GoogleFonts.raleway(
                 //       fontSize: 15,
                 //       fontWeight: FontWeight.bold,
                 //       color: const Color(0XFF976775),
@@ -56,6 +56,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                   MaterialPageRoute(builder: (context) => const Tanimlamalar()));
             },
           ),
+          const Divider(thickness: 2.0,),
           ExpansionTile(
             title: const Text("İŞLEMLER", style: TextStyle(
                 fontWeight: FontWeight.bold, color: Color(0XFF976775)),
@@ -165,38 +166,8 @@ class _DrawerMenuState extends State<DrawerMenu> {
           ),
 
           const Divider(thickness: 2.0,),
-          ListTile(
-            leading: const Icon(
-              Icons.edit_calendar,
-              color: Color(0XFF976775),
-            ),
-            title: const Text(
-              'İŞLEM TASLAKLARI',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, color: Color(0XFF976775)),
-            ),
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const IsTaslak()));
-            },
-          ),
-          const Divider(thickness: 2.0,),
-          ListTile(
-            leading: const Icon(
-              Icons.fact_check,
-              color: Color(0XFF976775),
-            ),
-            title: const Text(
-              'ONAY İŞLEMLERİ',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, color: Color(0XFF976775)),
-            ),
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const IsTaslak()));
-            },
-          ),
-          const Divider(thickness: 2.0,),
+
+
         ],
       ),
     );

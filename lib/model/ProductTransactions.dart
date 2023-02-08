@@ -1,5 +1,6 @@
 import 'package:stok_takip_uygulamasi/model/Product.dart';
 import 'package:stok_takip_uygulamasi/model/ProductProcess.dart';
+import 'package:stok_takip_uygulamasi/model/ProductTransationImages.dart';
 import 'package:stok_takip_uygulamasi/model/Warehouse.dart';
 
 class ProductTransactions{
@@ -26,7 +27,7 @@ class ProductTransactions{
   // int? id;
 
   // List<Null>? children;
-  List<Null>? productTransactionImages;
+  List<ProductTransactionImages>? productTransactionImages;
   Product? product;
   ProductProcess? productProcess;
   // Null? department;
@@ -66,9 +67,12 @@ class ProductTransactions{
         this.parentId,
         this.id});
   factory ProductTransactions.fromJson(Map<String, dynamic> json) {
+    final items = json['productTransactionImages']?.cast<Map<String, dynamic>>();
+
     return ProductTransactions(
         // children: json['children'],
-        // productTransactionImages: json['productTransactionImages'],
+        productTransactionImages: json['productTransactionImages'] != null ? List<ProductTransactionImages>.from(items?.map(
+                (itemsJson) => ProductTransactionImages.fromJsonModel(itemsJson))) : null,
         product: json['product'] != null ? Product.fromJson(json['product']) : null,
         productProcess: json['productProcess'] != null ? ProductProcess.fromJson(json['productProcess']) : null,
         // department: json['department'],

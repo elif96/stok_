@@ -43,7 +43,7 @@ class _OnayaGonderGridState extends State<OnayaGonderGrid> {
         primary: true,
         backgroundColor: const Color(0xFF976775),
         title: Text('SEÇİLEN ÜRÜNLER',
-            style: GoogleFonts.notoSansTaiLe(
+            style: GoogleFonts.raleway(
               fontSize: 18,
               color: Colors.white,
               fontWeight: FontWeight.bold,
@@ -142,7 +142,7 @@ class _OnayaGonderGridState extends State<OnayaGonderGrid> {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(onayaGidecekUrunler.data?[0].productName.toString() == null ? '' : onayaGidecekUrunler.data![0].productName, style: GoogleFonts.notoSansTaiLe(
+                      Text(onayaGidecekUrunler.data?[0].productName.toString() == null ? '' : onayaGidecekUrunler.data![0].productName, style: GoogleFonts.raleway(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
                         color: const Color(0XFF976775),

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -56,7 +55,6 @@ class _stokBulState extends State<stokBul> {
     });
   }
 
-  // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> scanBarcodeNormal() async {
     String barcodeScanRes;
     // Platform messages may fail, so we use a try/catch PlatformException.

@@ -287,13 +287,15 @@ class _IsBaslatState extends State<IsBaslat> {
         automaticallyImplyLeading: false,
         primary: true,
         backgroundColor: const Color(0xFF976775),
-        title: Text('STOK İŞLEMLERİ',
-            style: GoogleFonts.notoSansTaiLe(
-              fontSize: 18,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 2,
-            )),
+        title: Center(
+          child: Text('STOK İŞLEMLERİ',
+              style: GoogleFonts.raleway(
+                fontSize: 18,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 2,
+              )),
+        ),
       ),
       endDrawer: DrawerMenu(),
       body: Center(
@@ -359,7 +361,7 @@ class _IsBaslatState extends State<IsBaslat> {
                                                     title: Text(
                                                         'Lütfen işlem başlatmadan önce işlem bilgilerini girin.',
                                                         style: GoogleFonts
-                                                            .notoSansTaiLe(
+                                                            .raleway(
                                                           fontSize: 15,
                                                           color: const Color(
                                                               0XFF976775),
@@ -730,7 +732,7 @@ class _IsBaslatState extends State<IsBaslat> {
                                                     title: Text(
                                                         'Ana ve Hedef Nokta seçiniz.',
                                                         style: GoogleFonts
-                                                            .notoSansTaiLe(
+                                                            .jost(
                                                           fontSize: 15,
                                                           color: const Color(
                                                               0XFF976775),
@@ -1065,7 +1067,7 @@ class _IsBaslatState extends State<IsBaslat> {
                             //       //     ),
                             //       //     Text(
                             //       //         'Lütfen işlem başlatmadan önce işlem bilgilerini girin.',
-                            //       //         style: GoogleFonts.notoSansTaiLe(
+                            //       //         style: GoogleFonts.raleway(
                             //       //           fontSize: 15,
                             //       //           color: Color(0XFF976775),
                             //       //         )),
@@ -1422,7 +1424,7 @@ class _IsBaslatState extends State<IsBaslat> {
                             children: [
                               Text(
                                 'İŞLEM BAŞLAT ',
-                                style: GoogleFonts.notoSansTaiLe(
+                                style: GoogleFonts.raleway(
                                   fontSize: 18,
                                   color: const Color(0XFF976775),
                                   fontWeight: FontWeight.bold,
@@ -1455,7 +1457,7 @@ class _IsBaslatState extends State<IsBaslat> {
                             children: [
                               Text(
                                 'STOK BUL ',
-                                style: GoogleFonts.notoSansTaiLe(
+                                style: GoogleFonts.raleway(
                                   fontSize: 18,
                                   color: const Color(0XFF976775),
                                   fontWeight: FontWeight.bold,
@@ -1483,7 +1485,7 @@ class _IsBaslatState extends State<IsBaslat> {
                             children: [
                               Text(
                                 'Kayıtlı Envanter Sayısı',
-                                style: GoogleFonts.notoSansTaiLe(
+                                style: GoogleFonts.raleway(
                                   fontSize: 18,
                                   color: const Color(0XFF6E3F52),
                                   fontWeight: FontWeight.bold,
@@ -1492,7 +1494,7 @@ class _IsBaslatState extends State<IsBaslat> {
                               ),
                               Text(
                                 '7689',
-                                style: GoogleFonts.notoSansTaiLe(
+                                style: GoogleFonts.raleway(
                                   fontSize: 18,
                                   color: const Color(0XFF6E3F52),
                                   fontWeight: FontWeight.bold,
@@ -1519,7 +1521,7 @@ class _IsBaslatState extends State<IsBaslat> {
                             children: [
                               Text(
                                 'Kayıtlı Envanter Çeşidi',
-                                style: GoogleFonts.notoSansTaiLe(
+                                style: GoogleFonts.raleway(
                                   fontSize: 18,
                                   color: const Color(0XFF6E3F52),
                                   fontWeight: FontWeight.bold,
@@ -1528,7 +1530,7 @@ class _IsBaslatState extends State<IsBaslat> {
                               ),
                               Text(
                                 '7689',
-                                style: GoogleFonts.notoSansTaiLe(
+                                style: GoogleFonts.raleway(
                                   fontSize: 18,
                                   color: const Color(0XFF6E3F52),
                                   fontWeight: FontWeight.bold,
@@ -1555,7 +1557,7 @@ class _IsBaslatState extends State<IsBaslat> {
                             children: [
                               Text(
                                 'Kayıtlı Marka Sayısı',
-                                style: GoogleFonts.notoSansTaiLe(
+                                style: GoogleFonts.raleway(
                                   fontSize: 18,
                                   color: const Color(0XFF6E3F52),
                                   fontWeight: FontWeight.bold,
@@ -1564,7 +1566,7 @@ class _IsBaslatState extends State<IsBaslat> {
                               ),
                               Text(
                                 '7689',
-                                style: GoogleFonts.notoSansTaiLe(
+                                style: GoogleFonts.raleway(
                                   fontSize: 18,
                                   color: const Color(0XFF6E3F52),
                                   fontWeight: FontWeight.bold,
@@ -1591,7 +1593,7 @@ class _IsBaslatState extends State<IsBaslat> {
                             children: [
                               Text(
                                 'Kayıtlı Depo Sayısı',
-                                style: GoogleFonts.notoSansTaiLe(
+                                style: GoogleFonts.raleway(
                                   fontSize: 18,
                                   color: const Color(0XFF6E3F52),
                                   fontWeight: FontWeight.bold,
@@ -1600,7 +1602,7 @@ class _IsBaslatState extends State<IsBaslat> {
                               ),
                               Text(
                                 '7689',
-                                style: GoogleFonts.notoSansTaiLe(
+                                style: GoogleFonts.raleway(
                                   fontSize: 18,
                                   color: const Color(0XFF6E3F52),
                                   fontWeight: FontWeight.bold,
@@ -1653,7 +1655,7 @@ class _IsBaslatState extends State<IsBaslat> {
                       Step(
                         title: Text(
                             'Lütfen işlem başlatmadan önce işlem bilgilerini girin.',
-                            style: GoogleFonts.notoSansTaiLe(
+                            style: GoogleFonts.raleway(
                               fontSize: 15,
                               color: const Color(0XFF976775),
                             )),
@@ -1802,7 +1804,7 @@ class _IsBaslatState extends State<IsBaslat> {
                       ),
                       Step(
                         title: Text('İşlem Türü seçiniz.',
-                            style: GoogleFonts.notoSansTaiLe(
+                            style: GoogleFonts.raleway(
                               fontSize: 15,
                               color: const Color(0XFF976775),
                             )),
@@ -1889,7 +1891,7 @@ class _IsBaslatState extends State<IsBaslat> {
                       ),
                       Step(
                         title: Text('Ana ve Hedef Nokta seçiniz.',
-                            style: GoogleFonts.notoSansTaiLe(
+                            style: GoogleFonts.raleway(
                               fontSize: 15,
                               color: const Color(0XFF976775),
                             )),

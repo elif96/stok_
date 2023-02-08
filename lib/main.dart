@@ -116,7 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           height: 5,
                         ),
                         Text('STOK TAKİP UYGULAMASI',
-                            style: GoogleFonts.notoSansTaiLe(
+                            style: GoogleFonts.raleway(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
                               color: const Color(0XFF976775),
