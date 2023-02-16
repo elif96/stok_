@@ -7,6 +7,7 @@ import 'package:stok_takip_uygulamasi/is_baslat.dart';
 import 'package:stok_takip_uygulamasi/model/ProductProcess.dart';
 import 'package:stok_takip_uygulamasi/model/ProductTransactions.dart';
 import 'package:stok_takip_uygulamasi/model/myData.dart';
+import 'package:stok_takip_uygulamasi/myColors.dart';
 import 'package:stok_takip_uygulamasi/urun_ozet.dart';
 import 'package:stok_takip_uygulamasi/urun_ozet_depo.dart';
 import 'model/BaseCategory.dart';
@@ -78,7 +79,7 @@ class _DepodanUrunSecimiState extends State<DepodanUrunSecimi> {
     return Scaffold(
       appBar: AppBar(
         primary: true,
-        backgroundColor: const Color(0xFF976775),
+        backgroundColor: myColors.topColor,
         title: Text('Depodan Ürün Seçimi',
             style: GoogleFonts.raleway(
               fontSize: 18,
@@ -172,6 +173,8 @@ class _DepodanUrunSecimiState extends State<DepodanUrunSecimi> {
                                     urun.product?.productName.toString() == null
                                         ? ''
                                         : urun.product!.productName,
+                                    style: TextStyle( color: myColors.baslikColor,
+                                      fontWeight: FontWeight.bold,),
                                   ),
                                   subtitle: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -181,10 +184,10 @@ class _DepodanUrunSecimiState extends State<DepodanUrunSecimi> {
                                       //       ? ''
                                       //       : urun.product!.productName,
                                       // ),
-                                      Text("Ürün Adedi: ${urun.miktar.toString()}")
+                                      Text("Ürün Adedi: ${urun.miktar.toString()}",style: TextStyle(color: myColors.textColor,),)
                                     ],
                                   ),
-                                  trailing: Icon(Icons.arrow_forward),
+                                  trailing: Icon(Icons.arrow_forward, color: myColors.cardColor,),
                                   onTap: (){
 
                                     print(urun.product);

@@ -1,11 +1,13 @@
 import 'dart:convert';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stok_takip_uygulamasi/depodan_urun_secimi.dart';
 import 'package:stok_takip_uygulamasi/is_baslat.dart';
 import 'package:stok_takip_uygulamasi/model/ProductProcess.dart';
 import 'package:stok_takip_uygulamasi/model/myData.dart';
+import 'package:stok_takip_uygulamasi/myColors.dart';
 import 'package:stok_takip_uygulamasi/tif_kategori_urun_secimi.dart';
 
 import 'drawer_menu.dart';
@@ -68,8 +70,8 @@ class _onayaGonderileceklerListeState extends State<onayaGonderileceklerListe> {
     return Scaffold(
       appBar: AppBar(
         primary: true,
-        backgroundColor: const Color(0xFF976775),
-        title: Text('ONAYA GÖNDERLİCEKLER',
+        backgroundColor: myColors.topColor,
+        title: Text('ONAYA GÖNDERİLECEKLER',
             style: GoogleFonts.raleway(
               fontSize: 18,
               color: Colors.white,
@@ -82,7 +84,7 @@ class _onayaGonderileceklerListeState extends State<onayaGonderileceklerListe> {
         child: Column(
           children: [
             Container(
-                      height: 500,
+                      height: MediaQuery.of(context).size.height-200,
                       child: FutureBuilder(
                         builder: (context, snapshot) {
 
@@ -93,9 +95,22 @@ class _onayaGonderileceklerListeState extends State<onayaGonderileceklerListe> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('Ürün Adı: ${onayaGidecekUrunler.data?[0].productTransactions?[index].product?.productName}'),
-                                    Text('Ürün Miktarı: ${onayaGidecekUrunler.data?[0].productTransactions?[index].miktar}'),
-                                    Text((onayaGidecekUrunler?.data?[0].productTransactions?.length).toString())
+                                    Row(
+                                      children: [
+                                        Text("Ürün Adı: ",style: TextStyle(color: myColors.baslikColor, fontWeight: FontWeight.bold)),
+                                        Text('${onayaGidecekUrunler.data?[0].productTransactions?[index].product?.productName}',style: TextStyle(color: myColors.textColor, fontWeight: FontWeight.bold),),
+
+                                      ],
+                                    ),
+                                    SizedBox(height: 2,),
+                                    Row(
+                                      children: [
+                                        Text("Ürün Miktarı:", style: TextStyle(color: myColors.baslikColor, fontWeight: FontWeight.bold)),
+                                        Text('${onayaGidecekUrunler.data?[0].productTransactions?[index].miktar}',style: TextStyle(color: myColors.textColor, fontWeight: FontWeight.bold)),
+
+                                      ],
+                                    ),
+                                    // Text((onayaGidecekUrunler?.data?[0].productTransactions?.length).toString())
 
                                   ],
                                 ),
@@ -125,6 +140,7 @@ class _onayaGonderileceklerListeState extends State<onayaGonderileceklerListe> {
               //             }
               //         ),
                     ),
+            SizedBox(height: 10,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -133,13 +149,10 @@ class _onayaGonderileceklerListeState extends State<onayaGonderileceklerListe> {
                       .of(context)
                       .size
                       .width / 2,
-                  child: OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      backgroundColor: const Color(0XFF463848),
-                      side: const BorderSide(width: 1.0, color: Color(
-                          0XFF463848)),
-                    ),
-                    onPressed: () async {
+                  child: AnimatedButton(
+                    color: myColors.baslikColor,
+                    text: 'Daha Fazla\nÜrün Ekle',
+                    pressEvent: () async {
                       // final Future<SharedPreferences> _prefs =
                       // SharedPreferences.getInstance();
                       //
@@ -166,8 +179,8 @@ class _onayaGonderileceklerListeState extends State<onayaGonderileceklerListe> {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => DepodanUrunSecimi(
                           islemTuru: onayaGidecekUrunler.data![0].islemTuru.toString(),
                           islemId: widget.islemId, islemAciklamasi: onayaGidecekUrunler.data![0].islemAciklama,
-                            anaDepo: onayaGidecekUrunler.data?[0].anaDepoId, hedefDepo: onayaGidecekUrunler.data?[0]?.hedefDepoID,
-                            islemTarihi: onayaGidecekUrunler.data![0].islemTarihi,
+                          anaDepo: onayaGidecekUrunler.data?[0].anaDepoId, hedefDepo: onayaGidecekUrunler.data?[0]?.hedefDepoID,
+                          islemTarihi: onayaGidecekUrunler.data![0].islemTarihi,
                           islemAdi: onayaGidecekUrunler.data![0].islemAdi,
 
                         )));
@@ -181,30 +194,40 @@ class _onayaGonderileceklerListeState extends State<onayaGonderileceklerListe> {
                       }
 
                     },
-                    child: const Text("DAHA FAZLA\nÜRÜN EKLE",
-                        style: TextStyle(
-                            color: Color(0XFFDBDCE8),
-                            fontSize: 15,
-                            letterSpacing: 2.0)),
+
                   ),
                 ),
-                OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: const Color(0XFF463848),
-                    side: const BorderSide(
-                        width: 1.0, color: Color(0XFF463848)),
-                  ),
-                  onPressed: () {
-                    sendToAproval(int.parse(widget.islemId.toString()));
-                    // Navigator.push(context, MaterialPageRoute(builder: (context)=> OnayaGonderGrid()));
-                    setState(() {});
-                  },
-                  child: const Text("ONAYA GÖNDER",
-                      style: TextStyle(
-                          color: Color(0XFFDBDCE8),
-                          fontSize: 15,
-                          letterSpacing: 2.0)),
-                )
+                Container(
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width / 2,
+                  child: AnimatedButton(
+                      color: myColors.baslikColor,
+                      text: 'Onaya Gönder',
+                      pressEvent: () {
+                        sendToAproval(int.parse(widget.islemId.toString()));
+                        // Navigator.push(context, MaterialPageRoute(builder: (context)=> OnayaGonderGrid()));
+                        setState(() {});
+                      }),
+                ),
+                // OutlinedButton(
+                //   style: OutlinedButton.styleFrom(
+                //     backgroundColor: const Color(0XFF463848),
+                //     side: const BorderSide(
+                //         width: 1.0, color: Color(0XFF463848)),
+                //   ),
+                //   onPressed: () {
+                //     sendToAproval(int.parse(widget.islemId.toString()));
+                //     // Navigator.push(context, MaterialPageRoute(builder: (context)=> OnayaGonderGrid()));
+                //     setState(() {});
+                //   },
+                //   child: const Text("ONAYA GÖNDER",
+                //       style: TextStyle(
+                //           color: Color(0XFFDBDCE8),
+                //           fontSize: 15,
+                //           letterSpacing: 2.0)),
+                // )
 
               ],
             )

@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stok_takip_uygulamasi/drawer_menu.dart';
 import 'package:stok_takip_uygulamasi/Servis.dart';
 import 'package:stok_takip_uygulamasi/isTaslak.dart';
+import 'package:stok_takip_uygulamasi/myColors.dart';
 import 'package:stok_takip_uygulamasi/tanimlamalar.dart';
 import 'package:http/http.dart' as http;
 
@@ -61,7 +62,7 @@ class _MarkaTanimState extends State<MarkaTanim> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-          backgroundColor: const Color(0xFF976775), title: const Text('Marka Tanım')),
+          backgroundColor: myColors.topColor, title: const Text('Marka Tanım')),
       endDrawer: DrawerMenu(),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -72,15 +73,15 @@ class _MarkaTanimState extends State<MarkaTanim> {
               children: [
                 TextFormField(
                   controller: tfMarkaAdi,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                       prefixIcon: Icon(
                         Icons.branding_watermark_outlined,
-                        color: Color(0XFF6E3F52),
+                        color: myColors.baslikColor,
                       ),
-                      hintStyle: TextStyle(color: Color(0XFF976775)),
+                      hintStyle: TextStyle(color: myColors.baslikColor),
                       hintText: "Marka Adı",
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0XFF6E3F52)))),
+                          borderSide: BorderSide(color: myColors.baslikColor))),
                 ),
                 const SizedBox(
                   height: 10,
@@ -89,17 +90,17 @@ class _MarkaTanimState extends State<MarkaTanim> {
                   height: 50,
                   child: OutlinedButton(
                       style: OutlinedButton.styleFrom(
-                        backgroundColor: const Color(0XFF463848),
-                        side: const BorderSide(width: 1.0, color: Color(0XFF463848)),
+                        backgroundColor: myColors.baslikColor,
+                        side: BorderSide(width: 1.0, color: myColors.baslikColor),
                       ),
                       onPressed: () {
                         markaEkle();
 
 
                       },
-                      child: (const Text(
+                      child: (Text(
                         'MARKA EKLE',
-                        style: TextStyle(color: Color(0XFFDBDCE8), fontSize: 15, letterSpacing: 2.0),
+                        style: TextStyle(color: Colors.white, fontSize: 15, letterSpacing: 2.0),
                       ))),
                 )
               ],

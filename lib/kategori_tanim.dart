@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stok_takip_uygulamasi/drawer_menu.dart';
 import 'package:stok_takip_uygulamasi/isTaslak.dart';
+import 'package:stok_takip_uygulamasi/myColors.dart';
 import 'package:stok_takip_uygulamasi/tanimlamalar.dart';
 
 class KategoriTanim extends StatefulWidget {
@@ -26,7 +27,7 @@ class _KategoriTanimState extends State<KategoriTanim> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-          backgroundColor: const Color(0xFF976775), title: const Text('Kategori Tanım')),
+          backgroundColor: myColors.topColor, title: const Text('Kategori Tanım')),
       endDrawer: DrawerMenu(),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -37,33 +38,33 @@ class _KategoriTanimState extends State<KategoriTanim> {
               children: [
                 TextFormField(
                   controller: tfKategoriAdi,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                       prefixIcon: Icon(
                         Icons.category,
-                        color: Color(0XFF6E3F52),
+                        color: myColors.topColor,
                       ),
-                      hintStyle: TextStyle(color: Color(0XFF976775)),
+                      hintStyle: TextStyle(color: myColors.baslikColor),
                       hintText: "Kategori Adı",
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0XFF6E3F52)))),
+                          borderSide: BorderSide(color: myColors.baslikColor))),
                 ),
                 const SizedBox(
                   height: 10,
                 ),
                 DropdownButtonFormField(
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                       prefixIcon: Icon(Icons.branding_watermark_outlined,
-                          color: Color(0XFF6E3F52)),
-                      hintStyle: TextStyle(color: Color(0XFF976775)),
+                          color: myColors.baslikColor),
+                      hintStyle: TextStyle(color: myColors.baslikColor),
                       hintText: "Marka",
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0XFF6E3F52)))),
+                          borderSide: BorderSide(color: myColors.baslikColor))),
                   hint: const Text('Marka Seçiniz'),
                   items: [
-                    const DropdownMenuItem(
+                    DropdownMenuItem(
                         child: Text(
                       'Marka Seçiniz',
-                      style: TextStyle(color: Color(0XFF976775)),
+                      style: TextStyle(color: myColors.baslikColor),
                     )),
                   ],
                   onChanged: (newVal) {
@@ -76,19 +77,19 @@ class _KategoriTanimState extends State<KategoriTanim> {
                   height: 10,
                 ),
                 DropdownButtonFormField(
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                       prefixIcon:
-                          Icon(Icons.model_training, color: Color(0XFF6E3F52)),
-                      hintStyle: TextStyle(color: Color(0XFF976775)),
+                          Icon(Icons.model_training, color: myColors.baslikColor),
+                      hintStyle: TextStyle(color: myColors.baslikColor),
                       hintText: "Model",
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0XFF6E3F52)))),
+                          borderSide: BorderSide(color: myColors.baslikColor))),
                   hint: const Text('Model Seçiniz'),
                   items: [
-                    const DropdownMenuItem(
+                    DropdownMenuItem(
                         child: Text(
                       'Model Seçiniz',
-                      style: TextStyle(color: Color(0XFF976775)),
+                      style: TextStyle(color: myColors.baslikColor),
                     ))
                   ],
                   onChanged: (newVal) {
@@ -102,31 +103,31 @@ class _KategoriTanimState extends State<KategoriTanim> {
                 ),
                 TextFormField(
                   controller: tfBaseCategoryId,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                       prefixIcon: Icon(Icons.confirmation_number_sharp,
-                          color: Color(0XFF6E3F52)),
+                          color: myColors.baslikColor),
                       hintText: "BaseCategoryId",
-                      hintStyle: TextStyle(color: Color(0XFF976775)),
+                      hintStyle: TextStyle(color: myColors.baslikColor),
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0XFF6E3F52)))),
+                          borderSide: BorderSide(color: myColors.baslikColor))),
                 ),
                 const SizedBox(
                   height: 10,
                 ),
                 DropdownButtonFormField(
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                       prefixIcon: Icon(Icons.scatter_plot_outlined,
-                          color: Color(0XFF6E3F52)),
-                      hintStyle: TextStyle(color: Color(0XFF976775)),
+                          color: myColors.baslikColor),
+                      hintStyle: TextStyle(color: myColors.baslikColor),
                       hintText: "Birim",
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0XFF6E3F52)))),
+                          borderSide: BorderSide(color: myColors.baslikColor))),
                   hint: const Text('Birim Seçiniz'),
                   items: [
-                    const DropdownMenuItem(
+                    DropdownMenuItem(
                         child: Text(
                       'Birim Seçiniz',
-                      style: TextStyle(color: Color(0XFF976775)),
+                      style: TextStyle(color: myColors.baslikColor),
                     ))
                   ],
                   onChanged: (newVal) {
@@ -139,19 +140,19 @@ class _KategoriTanimState extends State<KategoriTanim> {
                   height: 10,
                 ),
                 DropdownButtonFormField(
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                       prefixIcon: Icon(Icons.inventory_outlined,
-                          color: Color(0XFF6E3F52)),
-                      hintStyle: TextStyle(color: Color(0XFF976775)),
+                          color: myColors.baslikColor),
+                      hintStyle: TextStyle(color: myColors.baslikColor),
                       hintText: "Envanter Türü",
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0XFF6E3F52)))),
+                          borderSide: BorderSide(color: myColors.baslikColor))),
                   hint: const Text('Envanter Seçiniz'),
                   items: [
-                    const DropdownMenuItem(
+                    DropdownMenuItem(
                         child: Text(
                       'Envanter Türü Seçiniz',
-                      style: TextStyle(color: Color(0XFF976775)),
+                      style: TextStyle(color: myColors.baslikColor),
                     ))
                   ],
                   onChanged: (newVal) {
@@ -165,33 +166,33 @@ class _KategoriTanimState extends State<KategoriTanim> {
                 ),
                 TextFormField(
                   controller: tfBarkod,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                       prefixIcon: Icon(
                         Icons.barcode_reader,
-                        color: Color(0XFF6E3F52),
+                        color: myColors.baslikColor,
                       ),
-                      hintStyle: TextStyle(color: Color(0XFF976775)),
+                      hintStyle: TextStyle(color: myColors.baslikColor),
                       hintText: "Barkod",
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0XFF6E3F52)))),
+                          borderSide: BorderSide(color: myColors.baslikColor))),
                 ),
                 const SizedBox(
                   height: 10,
                 ),
                 DropdownButtonFormField(
-                  decoration: const InputDecoration(
+                  decoration:  InputDecoration(
                       prefixIcon: Icon(Icons.account_tree_outlined,
-                          color: Color(0XFF6E3F52)),
-                      hintStyle: TextStyle(color: Color(0XFF976775)),
+                          color: myColors.baslikColor),
+                      hintStyle: TextStyle(color: myColors.baslikColor),
                       hintText: "Varyant",
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0XFF6E3F52)))),
+                          borderSide: BorderSide(color: myColors.baslikColor))),
                   hint: const Text('Varyant Seçiniz'),
                   items: [
-                    const DropdownMenuItem(
+                     DropdownMenuItem(
                         child: Text(
                       'Varyant Seçiniz',
-                      style: TextStyle(color: Color(0XFF976775)),
+                      style: TextStyle(color: myColors.baslikColor),
                     )),
                   ],
                   onChanged: (newVal) {
@@ -207,8 +208,8 @@ class _KategoriTanimState extends State<KategoriTanim> {
                   height: 50,
                   child: OutlinedButton(
                       style: OutlinedButton.styleFrom(
-                        backgroundColor: const Color(0XFF463848),
-                        side: const BorderSide(width: 1.0, color: Color(0XFF463848)),
+                        backgroundColor: myColors.baslikColor,
+                        side: BorderSide(width: 1.0, color: myColors.baslikColor),
                       ),
                       onPressed: () {
                         // kategori ekleme api
@@ -223,9 +224,9 @@ class _KategoriTanimState extends State<KategoriTanim> {
                           ));
                         }
                       },
-                      child: (const Text(
+                      child: ( Text(
                         'KATEGORİ EKLE',
-                        style: TextStyle(color: Color(0XFFDBDCE8), fontSize: 15, letterSpacing: 2.0),
+                        style: TextStyle(color: Colors.white, fontSize: 15, letterSpacing: 2.0),
                       ))),
                 )
               ],

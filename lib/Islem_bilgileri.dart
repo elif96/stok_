@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:searchfield/searchfield.dart';
 import 'package:stok_takip_uygulamasi/depodan_urun_secimi.dart';
 import 'package:stok_takip_uygulamasi/drawer_menu.dart';
+import 'package:stok_takip_uygulamasi/myColors.dart';
 import 'package:stok_takip_uygulamasi/tif_kategori_urun_secimi.dart';
 import 'package:http/http.dart' as http;
 
@@ -863,7 +864,7 @@ class _IslemBilgileriState extends State<IslemBilgileri> {
     return Scaffold(
         appBar: AppBar(
           primary: true,
-          backgroundColor: const Color(0xFF976775),
+          backgroundColor: myColors.topColor,
           title: Text('İŞLEM BİLGİLERİ',
               style: GoogleFonts.raleway(
                 fontSize: 18,
@@ -993,10 +994,10 @@ class _IslemBilgileriState extends State<IslemBilgileri> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     'Ürün Seçimi Yapmak İçin Arayın',
                     style: TextStyle(
-                        color: Color(0XFF976775),
+                        color: myColors.textColor,
                         fontWeight: FontWeight.bold,
                         fontSize: 18),
                   ),
@@ -1070,7 +1071,7 @@ class _IslemBilgileriState extends State<IslemBilgileri> {
                       // Navigator.push(context, MaterialPageRoute(builder: (context)=> Test(islemTuru: this.widget.islemTuru.toString(), islemAdi: this.widget.islemAdi.toString(), islemAciklamasi: this.widget.islemAciklamasi.toString(), anaDepo: int.parse(this.widget.anaDepo.toString()), hedefDepo: int.parse(this.widget.hedefDepo.toString()), islemTarihi: this.widget.islemTarihi.toString())));
                       //   showUrunAra();
                     },
-                    icon: const Icon(Icons.search_sharp),
+                    icon: Icon(Icons.search_sharp, color: myColors.textColor),
                     color: const Color(0XFF976775),
                     iconSize: 24,
                   ),

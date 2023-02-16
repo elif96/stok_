@@ -11,6 +11,7 @@ import 'package:stok_takip_uygulamasi/model/Warehouse.dart';
 import 'package:stok_takip_uygulamasi/model/myData.dart';
 import 'package:stok_takip_uygulamasi/model/myDataSingle.dart';
 import 'package:stok_takip_uygulamasi/model/myWareHouse.dart';
+import 'package:stok_takip_uygulamasi/myColors.dart';
 import 'package:stok_takip_uygulamasi/stokBul.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
@@ -286,9 +287,9 @@ class _IsBaslatState extends State<IsBaslat> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         primary: true,
-        backgroundColor: const Color(0xFF976775),
+        backgroundColor: myColors.topColor,
         title: Center(
-          child: Text('STOK İŞLEMLERİ',
+          child: Text('         STOK İŞLEMLERİ',
               style: GoogleFonts.raleway(
                 fontSize: 18,
                 color: Colors.white,
@@ -300,7 +301,7 @@ class _IsBaslatState extends State<IsBaslat> {
       endDrawer: DrawerMenu(),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(8.0),
           child: SingleChildScrollView(
             child: Container(
               width: MediaQuery.of(context).size.width,
@@ -315,8 +316,8 @@ class _IsBaslatState extends State<IsBaslat> {
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white,
-                              side: const BorderSide(
-                                  width: 2.0, color: Color(0XFF976775))),
+                              side: BorderSide(
+                                  width: 2.0, color: myColors.topColor)),
                           onPressed: () {
                             showDialog(
                               context: context,
@@ -338,8 +339,7 @@ class _IsBaslatState extends State<IsBaslat> {
                                                 colorScheme: Theme.of(context)
                                                     .colorScheme
                                                     .copyWith(
-                                                      primary: const Color(
-                                                          0xFF976775),
+                                                      primary:myColors.topColor,
                                                       background: Colors.red,
                                                       secondary: Colors.red,
                                                     ),
@@ -363,8 +363,7 @@ class _IsBaslatState extends State<IsBaslat> {
                                                         style: GoogleFonts
                                                             .raleway(
                                                           fontSize: 15,
-                                                          color: const Color(
-                                                              0XFF976775),
+                                                          color: myColors.baslikColor,
                                                         )),
                                                     content: Column(
                                                       children: <Widget>[
@@ -372,18 +371,16 @@ class _IsBaslatState extends State<IsBaslat> {
                                                           controller:
                                                               tfIslemAdi,
                                                           decoration:
-                                                              const InputDecoration(
+                                                          InputDecoration(
                                                             hintText:
                                                                 'İşlem Adı',
                                                             hintStyle: TextStyle(
-                                                                color: Color(
-                                                                    0XFF976775)),
+                                                                color: myColors.baslikColor),
                                                             enabledBorder:
                                                                 OutlineInputBorder(
                                                               borderSide: BorderSide(
                                                                   width: 1,
-                                                                  color: Color(
-                                                                      0XFF463848)),
+                                                                  color: myColors.baslikColor),
                                                             ),
                                                           ),
                                                         ),
@@ -394,18 +391,16 @@ class _IsBaslatState extends State<IsBaslat> {
                                                           controller:
                                                               tfIslemAciklamasi,
                                                           decoration:
-                                                              const InputDecoration(
+                                                               InputDecoration(
                                                             hintText:
                                                                 'İşlem Açıklaması',
                                                             hintStyle: TextStyle(
-                                                                color: Color(
-                                                                    0XFF976775)),
+                                                                color: myColors.baslikColor),
                                                             enabledBorder:
                                                                 OutlineInputBorder(
                                                               borderSide: BorderSide(
                                                                   width: 1,
-                                                                  color: Color(
-                                                                      0XFF463848)),
+                                                                  color: myColors.baslikColor),
                                                             ),
                                                           ),
                                                         ),
@@ -416,25 +411,23 @@ class _IsBaslatState extends State<IsBaslat> {
                                                           controller:
                                                               tfIslemTarihi,
                                                           decoration:
-                                                              const InputDecoration(
+                                                          InputDecoration(
                                                             hintText:
                                                                 'İşlem Tarihi',
                                                             hintStyle: TextStyle(
-                                                                color: Color(
-                                                                    0XFF976775)),
+                                                                color: myColors.baslikColor),
                                                             enabledBorder:
                                                                 OutlineInputBorder(
                                                               borderSide: BorderSide(
                                                                   width: 1,
-                                                                  color: Color(
-                                                                      0XFF463848)),
+                                                                  color: myColors.baslikColor),
                                                             ),
                                                           ),
                                                           readOnly: true,
                                                           onTap: () async {
                                                             DateTime? pickedDate =
                                                                 await showDatePicker(
-                                                                    locale: const Locale(
+                                                                    locale: Locale(
                                                                         "tr",
                                                                         "TR"),
                                                                     builder:
@@ -444,21 +437,21 @@ class _IsBaslatState extends State<IsBaslat> {
                                                                         data: Theme.of(context)
                                                                             .copyWith(
                                                                           colorScheme:
-                                                                              const ColorScheme.light(
+                                                                               ColorScheme.light(
                                                                             primary:
-                                                                                Color(0xFF976775),
+                                                                            myColors.baslikColor,
                                                                             // header background color
                                                                             onPrimary:
-                                                                                Color(0XFF463848),
+                                                                            Colors.white,
                                                                             // header text color
                                                                             onSurface:
-                                                                                Color(0XFF463848), // body text color
+                                                                            myColors.baslikColor, // body text color
                                                                           ),
                                                                           textButtonTheme:
                                                                               TextButtonThemeData(
                                                                             style:
                                                                                 TextButton.styleFrom(
-                                                                              foregroundColor: const Color(0XFF463848), // button text color
+                                                                              foregroundColor: myColors.baslikColor, // button text color
                                                                             ),
                                                                           ),
                                                                         ),
@@ -518,13 +511,11 @@ class _IsBaslatState extends State<IsBaslat> {
                                                                 style: OutlinedButton
                                                                     .styleFrom(
                                                                   backgroundColor:
-                                                                      const Color(
-                                                                          0XFF463848),
-                                                                  side: const BorderSide(
+                                                                  myColors.baslikColor,
+                                                                  side: BorderSide(
                                                                       width:
                                                                           1.0,
-                                                                      color: Color(
-                                                                          0XFF463848)),
+                                                                      color: myColors.baslikColor),
                                                                 ),
                                                                 onPressed: () {
                                                                   _currentStep >
@@ -534,11 +525,10 @@ class _IsBaslatState extends State<IsBaslat> {
                                                                               1)
                                                                       : null;
                                                                 },
-                                                                child: const Text(
+                                                                child: Text(
                                                                     "Geri",
                                                                     style: TextStyle(
-                                                                        color: Color(
-                                                                            0XFFDBDCE8),
+                                                                        color: Colors.white,
                                                                         fontSize:
                                                                             15,
                                                                         letterSpacing:
@@ -554,13 +544,11 @@ class _IsBaslatState extends State<IsBaslat> {
                                                                 style: OutlinedButton
                                                                     .styleFrom(
                                                                   backgroundColor:
-                                                                      const Color(
-                                                                          0XFF463848),
-                                                                  side: const BorderSide(
+                                                                  myColors.baslikColor,
+                                                                  side: BorderSide(
                                                                       width:
                                                                           1.0,
-                                                                      color: Color(
-                                                                          0XFF463848)),
+                                                                      color: myColors.baslikColor),
                                                                 ),
                                                                 onPressed: () {
                                                                   _currentStep <
@@ -598,22 +586,19 @@ class _IsBaslatState extends State<IsBaslat> {
                                                         style: GoogleFonts
                                                             .notoSansTaiLe(
                                                           fontSize: 15,
-                                                          color: const Color(
-                                                              0XFF976775),
+                                                          color: myColors.baslikColor,
                                                         )),
                                                     content: Column(
                                                       children: <Widget>[
                                                         DropdownButtonFormField(
-                                                          decoration: const InputDecoration(
+                                                          decoration: InputDecoration(
                                                               hintStyle: TextStyle(
-                                                                  color: Color(
-                                                                      0XFF976775)),
+                                                                  color: myColors.baslikColor),
                                                               hintText:
                                                                   "İşlem Türü",
                                                               border: OutlineInputBorder(
                                                                   borderSide: BorderSide(
-                                                                      color: Color(
-                                                                          0XFF6E3F52),
+                                                                      color: myColors.baslikColor,
                                                                       width:
                                                                           3))),
                                                           items:
@@ -623,9 +608,8 @@ class _IsBaslatState extends State<IsBaslat> {
                                                                   value['id'],
                                                               child: Text(
                                                                   value['name'],
-                                                                  style: const TextStyle(
-                                                                      color: Color(
-                                                                          0XFF976775))),
+                                                                  style: TextStyle(
+                                                                      color: myColors.baslikColor)),
                                                             );
                                                           }).toList(),
                                                           onChanged: (newVal) {
@@ -654,13 +638,11 @@ class _IsBaslatState extends State<IsBaslat> {
                                                                 style: OutlinedButton
                                                                     .styleFrom(
                                                                   backgroundColor:
-                                                                      const Color(
-                                                                          0XFF463848),
-                                                                  side: const BorderSide(
+                                                                  myColors.baslikColor,
+                                                                  side: BorderSide(
                                                                       width:
                                                                           1.0,
-                                                                      color: Color(
-                                                                          0XFF463848)),
+                                                                      color: myColors.baslikColor),
                                                                 ),
                                                                 onPressed: () {
                                                                   _currentStep >
@@ -670,11 +652,10 @@ class _IsBaslatState extends State<IsBaslat> {
                                                                               1)
                                                                       : null;
                                                                 },
-                                                                child: const Text(
+                                                                child: Text(
                                                                     "Geri",
                                                                     style: TextStyle(
-                                                                        color: Color(
-                                                                            0XFFDBDCE8),
+                                                                        color: Colors.white,
                                                                         fontSize:
                                                                             15,
                                                                         letterSpacing:
@@ -690,8 +671,7 @@ class _IsBaslatState extends State<IsBaslat> {
                                                                 style: OutlinedButton
                                                                     .styleFrom(
                                                                   backgroundColor:
-                                                                      const Color(
-                                                                          0XFF463848),
+                                                                  myColors.baslikColor,
                                                                   side: const BorderSide(
                                                                       width:
                                                                           1.0,
@@ -711,8 +691,7 @@ class _IsBaslatState extends State<IsBaslat> {
                                                                 child: const Text(
                                                                     "İleri",
                                                                     style: TextStyle(
-                                                                        color: Color(
-                                                                            0XFFDBDCE8),
+                                                                        color: Colors.white,
                                                                         fontSize:
                                                                             15,
                                                                         letterSpacing:
@@ -734,22 +713,19 @@ class _IsBaslatState extends State<IsBaslat> {
                                                         style: GoogleFonts
                                                             .jost(
                                                           fontSize: 15,
-                                                          color: const Color(
-                                                              0XFF976775),
+                                                          color: myColors.baslikColor,
                                                         )),
                                                     content: Column(
                                                       children: <Widget>[
                                                         DropdownButtonFormField(
-                                                          decoration: const InputDecoration(
+                                                          decoration: InputDecoration(
                                                               hintStyle: TextStyle(
-                                                                  color: Color(
-                                                                      0XFF976775)),
+                                                                  color: myColors.baslikColor),
                                                               hintText:
                                                                   "Ana Nokta",
                                                               border: OutlineInputBorder(
                                                                   borderSide: BorderSide(
-                                                                      color: Color(
-                                                                          0XFF6E3F52),
+                                                                      color:myColors.baslikColor,
                                                                       width:
                                                                           3))),
                                                           items: cevaps.data ==
@@ -766,9 +742,8 @@ class _IsBaslatState extends State<IsBaslat> {
                                                                     child: Text(
                                                                         value.ad
                                                                             .toString(),
-                                                                        style: const TextStyle(
-                                                                            color:
-                                                                                Color(0XFF976775))),
+                                                                        style: TextStyle(
+                                                                            color:myColors.baslikColor)),
                                                                   );
                                                                 }).toList(),
 
@@ -785,16 +760,14 @@ class _IsBaslatState extends State<IsBaslat> {
                                                           height: 15,
                                                         ),
                                                         DropdownButtonFormField(
-                                                          decoration: const InputDecoration(
+                                                          decoration: InputDecoration(
                                                               hintStyle: TextStyle(
-                                                                  color: Color(
-                                                                      0XFF976775)),
+                                                                  color:myColors.baslikColor),
                                                               hintText:
                                                                   "Hedef Nokta",
                                                               border: OutlineInputBorder(
                                                                   borderSide: BorderSide(
-                                                                      color: Color(
-                                                                          0XFF6E3F52),
+                                                                      color: myColors.baslikColor,
                                                                       width:
                                                                           3))),
                                                           items: cevapHedef.data
@@ -807,9 +780,8 @@ class _IsBaslatState extends State<IsBaslat> {
                                                               child: Text(
                                                                   value.ad
                                                                       .toString(),
-                                                                  style: const TextStyle(
-                                                                      color: Color(
-                                                                          0XFF976775))),
+                                                                  style: TextStyle(
+                                                                      color: myColors.baslikColor)),
                                                             );
                                                           }).toList(),
                                                           onChanged: (newVal) {
@@ -830,13 +802,11 @@ class _IsBaslatState extends State<IsBaslat> {
                                                                 style: OutlinedButton
                                                                     .styleFrom(
                                                                   backgroundColor:
-                                                                      const Color(
-                                                                          0XFF463848),
-                                                                  side: const BorderSide(
+                                                                  myColors.baslikColor,
+                                                                  side: BorderSide(
                                                                       width:
                                                                           1.0,
-                                                                      color: Color(
-                                                                          0XFF463848)),
+                                                                      color: myColors.baslikColor),
                                                                 ),
                                                                 onPressed: () {
                                                                   _currentStep >
@@ -849,8 +819,7 @@ class _IsBaslatState extends State<IsBaslat> {
                                                                 child: const Text(
                                                                     "Geri",
                                                                     style: TextStyle(
-                                                                        color: Color(
-                                                                            0XFFDBDCE8),
+                                                                        color: Colors.white,
                                                                         fontSize:
                                                                             15,
                                                                         letterSpacing:
@@ -865,14 +834,11 @@ class _IsBaslatState extends State<IsBaslat> {
                                                                   OutlinedButton(
                                                                 style: OutlinedButton
                                                                     .styleFrom(
-                                                                  backgroundColor:
-                                                                      const Color(
-                                                                          0XFF463848),
-                                                                  side: const BorderSide(
+                                                                  backgroundColor: myColors.baslikColor,
+                                                                  side: BorderSide(
                                                                       width:
                                                                           1.0,
-                                                                      color: Color(
-                                                                          0XFF463848)),
+                                                                      color: myColors.baslikColor),
                                                                 ),
                                                                 onPressed: () {
                                                                   if (tfIslemAdi
@@ -1025,8 +991,7 @@ class _IsBaslatState extends State<IsBaslat> {
                                                                 child: const Text(
                                                                     "Başlat",
                                                                     style: TextStyle(
-                                                                        color: Color(
-                                                                            0XFFDBDCE8),
+                                                                        color: Colors.white,
                                                                         fontSize:
                                                                             15,
                                                                         letterSpacing:
@@ -1426,14 +1391,14 @@ class _IsBaslatState extends State<IsBaslat> {
                                 'İŞLEM BAŞLAT ',
                                 style: GoogleFonts.raleway(
                                   fontSize: 18,
-                                  color: const Color(0XFF976775),
+                                  color: myColors.baslikColor,
                                   fontWeight: FontWeight.bold,
                                   letterSpacing: 2,
                                 ),
                               ),
-                              const Icon(
-                                Icons.play_circle,
-                                color: Color(0XFF976775),
+                              Icon(
+                                Icons.play_circle_outline,
+                                color: myColors.baslikColor,
                               ),
                             ],
                           ))),
@@ -1444,8 +1409,8 @@ class _IsBaslatState extends State<IsBaslat> {
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white,
-                              side: const BorderSide(
-                                  width: 2.0, color: Color(0XFF976775))),
+                              side: BorderSide(
+                                  width: 2.0, color: myColors.baslikColor)),
                           onPressed: () {
                             Navigator.push(
                                 context,
@@ -1459,56 +1424,20 @@ class _IsBaslatState extends State<IsBaslat> {
                                 'STOK BUL ',
                                 style: GoogleFonts.raleway(
                                   fontSize: 18,
-                                  color: const Color(0XFF976775),
+                                  color: myColors.baslikColor,
                                   fontWeight: FontWeight.bold,
                                   letterSpacing: 2,
                                 ),
                               ),
-                              const Icon(
-                                Icons.search_outlined,
-                                color: Color(0XFF976775),
+                              Icon(
+                                Icons.search_sharp,
+                                color: myColors.baslikColor,
                               ),
                             ],
                           ))),
                   const SizedBox(height: 25),
                   Card(
-                    color: const Color(0XFFDBDCE8),
-                    child: Container(
-                      height: MediaQuery.of(context).size.height / 8,
-                      width: MediaQuery.of(context).size.width,
-
-                      child: Container(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Kayıtlı Envanter Sayısı',
-                                style: GoogleFonts.raleway(
-                                  fontSize: 18,
-                                  color: const Color(0XFF6E3F52),
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 2,
-                                ),
-                              ),
-                              Text(
-                                '7689',
-                                style: GoogleFonts.raleway(
-                                  fontSize: 18,
-                                  color: const Color(0XFF6E3F52),
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 2,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ), //declare your widget here
-                    ),
-                  ),
-                  Card(
-                    color: const Color(0XFFDBDCE8),
+                    color: myColors.cardColor,
                     child: Container(
                       height: MediaQuery.of(context).size.height / 8,
                       width: MediaQuery.of(context).size.width,
@@ -1523,7 +1452,7 @@ class _IsBaslatState extends State<IsBaslat> {
                                 'Kayıtlı Envanter Çeşidi',
                                 style: GoogleFonts.raleway(
                                   fontSize: 18,
-                                  color: const Color(0XFF6E3F52),
+                                  color: myColors.baslikColor,
                                   fontWeight: FontWeight.bold,
                                   letterSpacing: 2,
                                 ),
@@ -1532,7 +1461,7 @@ class _IsBaslatState extends State<IsBaslat> {
                                 '7689',
                                 style: GoogleFonts.raleway(
                                   fontSize: 18,
-                                  color: const Color(0XFF6E3F52),
+                                  color: myColors.baslikColor,
                                   fontWeight: FontWeight.bold,
                                   letterSpacing: 2,
                                 ),
@@ -1544,7 +1473,7 @@ class _IsBaslatState extends State<IsBaslat> {
                     ),
                   ),
                   Card(
-                    color: const Color(0XFFDBDCE8),
+                    color: myColors.cardColor,
                     child: Container(
                       height: MediaQuery.of(context).size.height / 8,
                       width: MediaQuery.of(context).size.width,
@@ -1556,10 +1485,10 @@ class _IsBaslatState extends State<IsBaslat> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Kayıtlı Marka Sayısı',
+                                'Kayıtlı Envanter Çeşidi',
                                 style: GoogleFonts.raleway(
                                   fontSize: 18,
-                                  color: const Color(0XFF6E3F52),
+                                  color: myColors.baslikColor,
                                   fontWeight: FontWeight.bold,
                                   letterSpacing: 2,
                                 ),
@@ -1568,7 +1497,7 @@ class _IsBaslatState extends State<IsBaslat> {
                                 '7689',
                                 style: GoogleFonts.raleway(
                                   fontSize: 18,
-                                  color: const Color(0XFF6E3F52),
+                                  color: myColors.baslikColor,
                                   fontWeight: FontWeight.bold,
                                   letterSpacing: 2,
                                 ),
@@ -1580,7 +1509,7 @@ class _IsBaslatState extends State<IsBaslat> {
                     ),
                   ),
                   Card(
-                    color: const Color(0XFFDBDCE8),
+                    color: myColors.cardColor,
                     child: Container(
                       height: MediaQuery.of(context).size.height / 8,
                       width: MediaQuery.of(context).size.width,
@@ -1592,10 +1521,10 @@ class _IsBaslatState extends State<IsBaslat> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Kayıtlı Depo Sayısı',
+                                'Kayıtlı Envanter Çeşidi',
                                 style: GoogleFonts.raleway(
                                   fontSize: 18,
-                                  color: const Color(0XFF6E3F52),
+                                  color: myColors.baslikColor,
                                   fontWeight: FontWeight.bold,
                                   letterSpacing: 2,
                                 ),
@@ -1604,11 +1533,47 @@ class _IsBaslatState extends State<IsBaslat> {
                                 '7689',
                                 style: GoogleFonts.raleway(
                                   fontSize: 18,
-                                  color: const Color(0XFF6E3F52),
+                                  color: myColors.baslikColor,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 2,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ), //declare your widget here
+                    ),
+                  ),
+                  Card(
+                    color: myColors.cardColor,
+                    child: Container(
+                      height: MediaQuery.of(context).size.height / 8,
+                      width: MediaQuery.of(context).size.width,
+
+                      child: Container(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Kayıtlı Envanter Çeşidi',
+                                style: GoogleFonts.raleway(
+                                  fontSize: 18,
+                                  color: myColors.baslikColor,
                                   fontWeight: FontWeight.bold,
                                   letterSpacing: 2,
                                 ),
                               ),
+                              Text(
+                                '7689',
+                                style: GoogleFonts.raleway(
+                                  fontSize: 18,
+                                  color: myColors.baslikColor,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 2,
+                                ),
+                              )
                             ],
                           ),
                         ),
@@ -1636,7 +1601,7 @@ class _IsBaslatState extends State<IsBaslat> {
                 child: Theme(
                   data: ThemeData(
                     colorScheme: Theme.of(context).colorScheme.copyWith(
-                          primary: const Color(0xFF976775),
+                          primary: myColors.okButton,
                           background: Colors.red,
                           secondary: Colors.red,
                         ),
@@ -1657,18 +1622,18 @@ class _IsBaslatState extends State<IsBaslat> {
                             'Lütfen işlem başlatmadan önce işlem bilgilerini girin.',
                             style: GoogleFonts.raleway(
                               fontSize: 15,
-                              color: const Color(0XFF976775),
+                              color: myColors.okButton,
                             )),
                         content: Column(
                           children: <Widget>[
                             TextField(
                               controller: tfIslemAdi,
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                 hintText: 'İşlem Adı',
-                                hintStyle: TextStyle(color: Color(0XFF976775)),
+                                hintStyle: TextStyle(color:myColors.okButton),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      width: 1, color: Color(0XFF463848)),
+                                      width: 1, color: myColors.okButton),
                                 ),
                               ),
                             ),
@@ -1765,7 +1730,7 @@ class _IsBaslatState extends State<IsBaslat> {
                                     },
                                     child: const Text("Geri",
                                         style: TextStyle(
-                                            color: Color(0XFFDBDCE8),
+                                            color: Colors.white,
                                             fontSize: 15,
                                             letterSpacing: 2.0)),
                                   ),
@@ -1788,7 +1753,7 @@ class _IsBaslatState extends State<IsBaslat> {
                                     },
                                     child: const Text("İleri",
                                         style: TextStyle(
-                                            color: Color(0XFFDBDCE8),
+                                            color: Colors.white,
                                             fontSize: 15,
                                             letterSpacing: 2.0)),
                                   ),

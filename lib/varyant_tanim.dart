@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:stok_takip_uygulamasi/drawer_menu.dart';
 import 'package:http/http.dart' as http;
+import 'package:stok_takip_uygulamasi/myColors.dart';
 
 class VaryantTanim extends StatefulWidget {
   const VaryantTanim({Key? key}) : super(key: key);
@@ -66,7 +67,7 @@ class _VaryantTanimState extends State<VaryantTanim> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-          backgroundColor: const Color(0xFF976775), title: const Text('Varyant Tanım')),
+          backgroundColor: myColors.topColor, title: const Text('Varyant Tanım')),
       endDrawer: DrawerMenu(),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -77,15 +78,15 @@ class _VaryantTanimState extends State<VaryantTanim> {
               children: [
                 TextFormField(
                   controller: tfVaryantAdi,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                       prefixIcon: Icon(
                         Icons.view_in_ar,
-                        color: Color(0XFF6E3F52),
+                        color: myColors.baslikColor,
                       ),
-                      hintStyle: TextStyle(color: Color(0XFF976775)),
+                      hintStyle: TextStyle(color: Colors.white),
                       hintText: "Varyant Adı",
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0XFF6E3F52)))),
+                          borderSide: BorderSide(color: myColors.baslikColor))),
                 ),
                 const SizedBox(
                   height: 10,
@@ -94,8 +95,8 @@ class _VaryantTanimState extends State<VaryantTanim> {
                   height: 50,
                   child: OutlinedButton(
                       style: OutlinedButton.styleFrom(
-                        backgroundColor: const Color(0XFF463848),
-                        side: const BorderSide(width: 1.0, color: Color(0XFF463848)),
+                        backgroundColor: myColors.baslikColor,
+                        side: BorderSide(width: 1.0, color: myColors.baslikColor),
                       ),
                       onPressed: () {
                         varyantEkle(tfVaryantAdi.text);
@@ -104,7 +105,7 @@ class _VaryantTanimState extends State<VaryantTanim> {
                       },
                       child: (const Text(
                         'VARYANT EKLE',
-                        style: TextStyle(color: Color(0XFFDBDCE8), fontSize: 15, letterSpacing: 2.0),
+                        style: TextStyle(color: Colors.white, fontSize: 15, letterSpacing: 2.0),
                       ))),
                 )
               ],

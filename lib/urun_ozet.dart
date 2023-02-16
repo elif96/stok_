@@ -7,6 +7,7 @@ import 'package:stok_takip_uygulamasi/model/Product.dart';
 import 'package:stok_takip_uygulamasi/model/ProductCategory.dart';
 import 'package:stok_takip_uygulamasi/model/ProductVariantElements.dart';
 import 'package:stok_takip_uygulamasi/model/myData.dart';
+import 'package:stok_takip_uygulamasi/myColors.dart';
 import 'package:stok_takip_uygulamasi/onayaGonderileceklerListe.dart';
 import 'package:stok_takip_uygulamasi/onaya_gonder_grid.dart';
 import 'package:http/http.dart' as http;
@@ -155,7 +156,7 @@ class _UrunOzetState extends State<UrunOzet> {
     return Scaffold(
       appBar: AppBar(
         primary: true,
-        backgroundColor: const Color(0xFF976775),
+        backgroundColor: myColors.topColor,
         title: Text('ÜRÜN ÖZETİ',
             style: GoogleFonts.raleway(
               fontSize: 18,
@@ -177,16 +178,16 @@ class _UrunOzetState extends State<UrunOzet> {
                   children: [
                     Text("Kategori: ",
                         style: GoogleFonts.raleway(
-                          fontSize: 13,
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: const Color(0XFF463848),
+                          color: myColors.baslikColor,
                         )),
                     Text(
                         "${widget.selectedProduct?.data![0].category!.ad.toString()}",
                         style: GoogleFonts.raleway(
-                          fontSize: 15,
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: const Color(0XFF976775),
+                          color: myColors.textColor,
                         )),
                   ],
                 ),
@@ -196,16 +197,16 @@ class _UrunOzetState extends State<UrunOzet> {
                   children: [
                     Text("Ürün: ",
                         style: GoogleFonts.raleway(
-                          fontSize: 13,
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: const Color(0XFF463848),
+                          color: myColors.baslikColor,
                         )),
                     Text(
                         "${widget.selectedProduct?.data![0].productName.toString()}",
                         style: GoogleFonts.raleway(
-                          fontSize: 15,
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: const Color(0XFF976775),
+                          color: myColors.textColor,
                         )),
                   ],
                 ),
@@ -215,16 +216,16 @@ class _UrunOzetState extends State<UrunOzet> {
                   children: [
                     Text("Barkod: ",
                         style: GoogleFonts.raleway(
-                          fontSize: 13,
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: const Color(0XFF463848),
+                          color: myColors.baslikColor,
                         )),
                     Text(
                         "${widget.selectedProduct?.data![0].barkod.toString()}",
                         style: GoogleFonts.raleway(
-                          fontSize: 15,
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: const Color(0XFF976775),
+                          color: myColors.textColor,
                         )),
                   ],
                 ),
@@ -234,16 +235,16 @@ class _UrunOzetState extends State<UrunOzet> {
                   children: [
                     Text("Ürün Kimlik No: ",
                         style: GoogleFonts.raleway(
-                          fontSize: 13,
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: const Color(0XFF463848),
+                          color: myColors.baslikColor,
                         )),
                     Text(
                         "${widget.selectedProduct?.data![0].urunKimlikNo.toString()}",
                         style: GoogleFonts.raleway(
-                          fontSize: 15,
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: const Color(0XFF976775),
+                          color: myColors.textColor,
                         )),
                   ],
                 ),
@@ -253,25 +254,25 @@ class _UrunOzetState extends State<UrunOzet> {
                   children: [
                     Text("Sistem Seri No: ",
                         style: GoogleFonts.raleway(
-                          fontSize: 13,
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: const Color(0XFF463848),
+                          color: myColors.baslikColor,
                         )),
                     Text(
                         "${widget.selectedProduct?.data![0].sistemSeriNo.toString()}",
                         style: GoogleFonts.raleway(
-                          fontSize: 15,
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: const Color(0XFF976775),
+                          color: myColors.textColor,
                         )),
                   ],
                 ),
                 SizedBox(height: 10),
                 Text("Varyanlar:",
                     style: GoogleFonts.raleway(
-                      fontSize: 13,
+                      fontSize: 14,
                       fontWeight: FontWeight.bold,
-                      color: const Color(0XFF463848),
+                      color: myColors.baslikColor,
                     )),
                 ListView.builder(
                   shrinkWrap: true,
@@ -282,9 +283,9 @@ class _UrunOzetState extends State<UrunOzet> {
                         Text(
                             "${widget.selectedProduct?.data![0].productVariantElements![index].variantElement.variant.varyantAdi.toString()} - ${widget.selectedProduct?.data![0].productVariantElements![index].variantElement.varyantElemanAdi.toString()}",
                             style: GoogleFonts.raleway(
-                              fontSize: 15,
+                              fontSize: 14,
                               fontWeight: FontWeight.bold,
-                              color: const Color(0XFF976775),
+                              color: myColors.textColor,
                             )),
                         // Text(widget.productVariantElements![index].variantElement.varyantElemanAdi.toString()),
                       ],
@@ -298,15 +299,15 @@ class _UrunOzetState extends State<UrunOzet> {
                   children: [
                     Text("İşlem Türü: ",
                         style: GoogleFonts.raleway(
-                          fontSize: 13,
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: const Color(0XFF463848),
+                          color: myColors.baslikColor,
                         )),
                     Text("${widget.islemTuru.toString()}",
                         style: GoogleFonts.raleway(
-                          fontSize: 15,
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: const Color(0XFF976775),
+                          color: myColors.textColor,
                         )),
                   ],
                 ),
@@ -319,9 +320,9 @@ class _UrunOzetState extends State<UrunOzet> {
                     children: <Widget>[
                       Text('Miktar:',
                           style: GoogleFonts.raleway(
-                            fontSize: 13,
+                            fontSize: 14,
                             fontWeight: FontWeight.bold,
-                            color: const Color(0XFF463848),
+                            color: myColors.baslikColor,
                           )),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -335,11 +336,11 @@ class _UrunOzetState extends State<UrunOzet> {
                               decoration: InputDecoration(
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        width: 1, color: Color(0XFF976775)),
+                                        width: 1, color: myColors.topColor),
                                   ),
                                   filled: true,
                                   hintStyle:
-                                      TextStyle(color: Color(0XFF6E3F52)),
+                                      TextStyle(color: myColors.topColor),
                                   hintText: '**,**',
                                   fillColor: Colors.white70),
                             ),
@@ -402,9 +403,9 @@ class _UrunOzetState extends State<UrunOzet> {
                                                                               ? 'CM3'
                                                                               : '',
                               style: GoogleFonts.raleway(
-                                fontSize: 12,
+                                fontSize: 14,
                                 fontWeight: FontWeight.bold,
-                                color: const Color(0XFF976775),
+                                color: myColors.baslikColor,
                               )),
                         ],
                       ),
@@ -412,7 +413,7 @@ class _UrunOzetState extends State<UrunOzet> {
                         height: 10,
                       ),
                       AnimatedButton(
-                          color: const Color(0XFF463848),
+                          color: myColors.topColor,
                           text: 'İleri',
                           pressEvent: () {
                             // print(widget.selectedProduct?.data![0]

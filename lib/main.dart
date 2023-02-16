@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stok_takip_uygulamasi/is_baslat.dart';
+import 'package:stok_takip_uygulamasi/myColors.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,12 +29,12 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: Colors.white60,
-        inputDecorationTheme: const InputDecorationTheme(
+        inputDecorationTheme:  InputDecorationTheme(
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(width: 1, color: Color(0XFF463848)),
+            borderSide: BorderSide(width: 1, color: myColors.topColor),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(width: 1, color: Color(0XFF463848)),
+            borderSide: BorderSide(width: 1, color: myColors.topColor),
           ),
         ),
       ),
@@ -119,36 +120,36 @@ class _MyHomePageState extends State<MyHomePage> {
                             style: GoogleFonts.raleway(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
-                              color: const Color(0XFF976775),
+                              color: myColors.baslikColor,
                               letterSpacing: 2,
                             )),
                       ])),
                     )),
                 const SizedBox(height: 50),
-                const TextField(
-                  style: TextStyle(color: Color(0XFF976775)),
+                TextField(
+                  style: TextStyle(color: myColors.baslikColor),
                   controller: null,
                   decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderSide:
-                            BorderSide(width: 1, color: Color(0XFF976775)),
+                            BorderSide(width: 1, color: myColors.baslikColor),
                       ),
                       filled: true,
-                      hintStyle: TextStyle(color: Color(0XFF6E3F52)),
+                      hintStyle: TextStyle(color: myColors.baslikColor),
                       hintText: 'Kullanıcı Adı',
                       fillColor: Colors.white70),
                 ),
                 const SizedBox(height: 15),
-                const TextField(
-                  style: TextStyle(color: Color(0XFF976775)),
+                TextField(
+                  style: TextStyle(color: myColors.baslikColor),
                   controller: null,
                   decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderSide:
-                            BorderSide(width: 1, color: Color(0XFF976775)),
+                            BorderSide(width: 1, color: myColors.baslikColor),
                       ),
                       filled: true,
-                      hintStyle: TextStyle(color: Color(0XFF6E3F52)),
+                      hintStyle: TextStyle(color: myColors.baslikColor),
                       hintText: 'Şifre',
                       fillColor: Colors.white70),
                 ),
@@ -157,7 +158,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     width: MediaQuery.of(context).size.width,
                     height: 50.0,
                     child: AnimatedButton(
-                        color: const Color(0XFF6E3F52),
+                        color: myColors.topColor,
                         text: 'GİRİŞ',
                         pressEvent: () {
                           //kullanıcı kontrolü

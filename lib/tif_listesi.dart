@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:searchfield/searchfield.dart';
@@ -6,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stok_takip_uygulamasi/Islem_bilgileri.dart';
 import 'package:stok_takip_uygulamasi/model/myData.dart';
+import 'package:stok_takip_uygulamasi/myColors.dart';
 import 'package:stok_takip_uygulamasi/onaya_gonder_grid.dart';
 import 'package:stok_takip_uygulamasi/tif_kategori_urun_secimi.dart';
 import 'drawer_menu.dart';
@@ -273,7 +275,7 @@ class _TifListesiState extends State<TifListesi> {
         appBar: AppBar(
 
           primary: true,
-          backgroundColor: const Color(0xFF976775),
+          backgroundColor: myColors.topColor,
           title: Text('TİF LİSTESİ',
               style: GoogleFonts.raleway(
                 fontSize: 18,
@@ -284,391 +286,418 @@ class _TifListesiState extends State<TifListesi> {
         ),
         endDrawer: DrawerMenu(),
         body: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(8.0),
           child: SingleChildScrollView(
-              child: Center(
-                child: Column(children: [
-                  Text('Lütfen ürün seçimi yapınız.',
-                      style: GoogleFonts.raleway(
-                        fontSize: 15,
-                        color: const Color(0XFF976775),
-                      )),
 
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  SearchField<myData<BaseCategory>>(
-                    hint: 'Hesap Kodu Seçiniz',
-                    suggestions:  baseCategory.data == null ? [] : baseCategory.data
-                        ?.map(
-                          (e) =>
-                          SearchFieldListItem<myData<BaseCategory>>(
-                              e.hesapKodu.toString(),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment
-                                    .spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(e.malzemeAdi.toString(),
-                                        style: const TextStyle(
-                                            color: Color(0XFF6E3F52))),
-                                  ),
-                                ],
-                              ),
-                              key: Key(e.id.toString())),
-                    )
-                        .toList() ?? [],
-                    onSuggestionTap: (e) {
-                      print(e.key.toString());
-                      print(e.searchKey);
-                      urunhks = e.searchKey;
-                      // print("hk: ${urunhk}");
-                      setState(() {
-                        // print(e.key);
-                        // print("urun: ${urun}");
-                        urunhk = e.key.toString();
-                        print("hk: ${urunhk}");
-                      });
-                      // print( ((((urun.replaceAll('[', '')).replaceAll(']', ''))
-                      //     .replaceAll('<', ''))
-                      //     .replaceAll('>', ''))
-                      //     .replaceAll("'", ''));
-                      duzey1Listele(int.parse(
-                          ((((urunhk.replaceAll('[', '')).replaceAll(']', ''))
-                              .replaceAll('<', ''))
-                              .replaceAll('>', ''))
-                              .replaceAll("'", '')));
+              child: Column(children: [
+                Text('Lütfen ürün seçimi yapınız.',
+                    style: GoogleFonts.raleway(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: myColors.textColor,
+                    )),
 
-                      setState(() {});
-                    },
-                    suggestionAction: SuggestionAction.unfocus,
-                    itemHeight: 50,
-                    searchStyle: const TextStyle(color: Color(0XFF976775)),
-                    suggestionStyle: const TextStyle(color: Color(0XFF976775)),
-                    // suggestionsDecoration: BoxDecoration(color: Colors.red),
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-
-                  SearchField<myData<BaseCategory>>(
-                    hint: 'Düzey 1 Seçiniz',
-                    suggestions:  duzey1.data == null ? [] : duzey1.data
-                        ?.map(
-                          (e) =>
-                          SearchFieldListItem<myData<BaseCategory>>(e.duzey1.toString(),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment
-                                    .spaceBetween,
-                                children: [
-                                  Container(
-                                    width: MediaQuery
-                                        .of(context)
-                                        .size
-                                        .width / 1.5,
-                                    child: Text(e.malzemeAdi.toString(),
-                                        softWrap: true,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                            color: Color(0XFF6E3F52),
-                                            fontSize: 12)),
-                                  ),
-                                ],
-                              ),
-                              key: Key(e.id.toString())),
-                    )
-                        .toList() ?? [],
-                    onSuggestionTap: (e) {
-                      urun1s = e.searchKey;
-                      setState(() {
-                        // print(e.key);
-                        // print("urun1: ${urun1}");
-                        urun1 = e.key.toString();
-                      });
-                      // print(urun1);
-                      // print(((((urun1.replaceAll('[', '')).replaceAll(']', ''))
-                      //     .replaceAll('<', ''))
-                      //     .replaceAll('>', ''))
-                      //     .replaceAll("'", ''));
-                      duzey2Listele(int.parse(
-                          ((((urun1.replaceAll('[', '')).replaceAll(']', ''))
-                              .replaceAll('<', ''))
-                              .replaceAll('>', ''))
-                              .replaceAll("'", '')));
-                      setState(() {});
-                    },
-                    suggestionAction: SuggestionAction.unfocus,
-                    itemHeight: 50,
-                    searchStyle: const TextStyle(color: Color(0XFF976775)),
-                    suggestionStyle: const TextStyle(color: Color(0XFF976775)),
-                    // suggestionsDecoration: BoxDecoration(color: Colors.red),
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  SearchField<myData<BaseCategory>>(
-                    hint: 'Düzey 2 Seçiniz',
-                    suggestions:  duzey2.data == null ? [] : duzey2.data
-                        ?.map(
-                          (e) =>
-                          SearchFieldListItem<myData<BaseCategory>>(e.duzey2.toString(),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment
-                                    .spaceBetween,
-                                children: [
-                                  Container(
-                                    width: MediaQuery
-                                        .of(context)
-                                        .size
-                                        .width / 1.5,
-                                    child: Text(e.malzemeAdi.toString(),
-                                        softWrap: true,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.fade,
-                                        style: const TextStyle(
-                                            color: Color(0XFF6E3F52),
-                                            fontSize: 12)),
-                                  ),
-                                ],
-                              ),
-                              key: Key(e.id.toString())),
-                    )
-                        .toList() ?? [],
-                    onSuggestionTap: (e) {
-                      urun2s = e.searchKey;
-                      setState(() {
-                        // print(e.key);
-                        // print("urun2: ${urun2}");
-                        urun2 = e.key.toString();
-                      });
-
-                      // print(urun2);
-                      // print( ((((urun2.replaceAll('[', '')).replaceAll(']', ''))
-                      //     .replaceAll('<', ''))
-                      //     .replaceAll('>', ''))
-                      //     .replaceAll("'", ''));
-                      duzey3Listele(int.parse(
-                          ((((urun2.replaceAll('[', '')).replaceAll(']', ''))
-                              .replaceAll('<', ''))
-                              .replaceAll('>', ''))
-                              .replaceAll("'", '')));
-                      setState(() {});
-                    },
-                    suggestionAction: SuggestionAction.unfocus,
-                    itemHeight: 50,
-                    searchStyle: const TextStyle(color: Color(0XFF976775)),
-                    suggestionStyle: const TextStyle(color: Color(0XFF976775)),
-                    // suggestionsDecoration: BoxDecoration(color: Colors.red),
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  SearchField<myData<BaseCategory>>(
-                    hint: 'Düzey 3 Seçiniz',
-                    suggestions:  duzey3.data == null ? [] : duzey3.data
-                        ?.map(
-                          (e) =>
-                          SearchFieldListItem<myData<BaseCategory>>(e.duzey3.toString(),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment
-                                    .spaceBetween,
-                                children: [
-                                  Container(
-                                    width: MediaQuery
-                                        .of(context)
-                                        .size
-                                        .width / 1.5,
-                                    child: Text(e.malzemeAdi.toString(),
-                                        softWrap: true,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.fade,
-                                        style: const TextStyle(
-                                            color: Color(0XFF6E3F52),
-                                            fontSize: 12)),
-                                  ),
-                                ],
-                              ),
-                              key: Key(e.id.toString())),
-                    )
-                        .toList() ?? [],
-                    onSuggestionTap: (e) {
-                      urun3s = e.searchKey;
-                      setState(() {
-                        // print(e.key);
-                        // print("urun3: ${urun3}");
-                        urun3 = e.key.toString();
-                      });
-                      // print(urun3);
-                      // print( ((((urun3.replaceAll('[', '')).replaceAll(']', ''))
-                      //     .replaceAll('<', ''))
-                      //     .replaceAll('>', ''))
-                      //     .replaceAll("'", ''));
-                      duzey4Listele(int.parse(
-                          ((((urun3.replaceAll('[', '')).replaceAll(']', ''))
-                              .replaceAll('<', ''))
-                              .replaceAll('>', ''))
-                              .replaceAll("'", '')));
-                      setState(() {});
-                    },
-                    suggestionAction: SuggestionAction.unfocus,
-                    itemHeight: 50,
-                    searchStyle: const TextStyle(color: Color(0XFF976775)),
-                    suggestionStyle: const TextStyle(color: Color(0XFF976775)),
-                    // suggestionsDecoration: BoxDecoration(color: Colors.red),
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  SearchField<myData<BaseCategory>>(
-                    hint: 'Düzey 4 Seçiniz',
-                    suggestions:  duzey4.data == null ? [] : duzey4.data
-                        ?.map(
-                          (e) =>
-                          SearchFieldListItem<myData<BaseCategory>>(e.duzey4.toString(),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment
-                                    .spaceBetween,
-                                children: [
-                                  Container(
-                                    width: MediaQuery
-                                        .of(context)
-                                        .size
-                                        .width / 1.5,
-                                    child: Text(e.malzemeAdi.toString(),
-                                        softWrap: true,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.fade,
-                                        style: const TextStyle(
-                                            color: Color(0XFF6E3F52),
-                                            fontSize: 12)),
-                                  ),
-                                ],
-                              ),
-                              key: Key(e.id.toString())),
-                    )
-                        .toList() ?? [],
-                    onSuggestionTap: (e) {
-                      urun4s = e.searchKey;
-                      setState(() {
-                        // print(e.key);
-                        // print("urun4: ${urun4}");
-                        urun4 = e.key.toString();
-                      });
-                      duzey5Listele(int.parse(
-                          ((((urun4.replaceAll('[', '')).replaceAll(']', ''))
-                              .replaceAll('<', ''))
-                              .replaceAll('>', ''))
-                              .replaceAll("'", '')));
-                      setState(() {});
-                    },
-                    suggestionAction: SuggestionAction.unfocus,
-                    itemHeight: 50,
-                    searchStyle: const TextStyle(color: Color(0XFF976775)),
-                    suggestionStyle: const TextStyle(color: Color(0XFF976775)),
-                    // suggestionsDecoration: BoxDecoration(color: Colors.red),
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  SearchField<myData<BaseCategory>>(
-                    hint: 'Düzey 5 Seçiniz',
-                    suggestions:  duzey5.data == null ? [] : duzey5.data
-                        ?.map(
-                          (e) =>
-                          SearchFieldListItem<myData<BaseCategory>>(e.duzey5.toString(),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment
-                                    .spaceBetween,
-                                children: [
-                                  Container(
-                                    width: MediaQuery
-                                        .of(context)
-                                        .size
-                                        .width / 1.5,
-                                    child: Text(e.malzemeAdi.toString(),
-                                        softWrap: true,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.fade,
-                                        style: const TextStyle(
-                                            color: Color(0XFF6E3F52),
-                                            fontSize: 12)),
-                                  ),
-                                ],
-                              ),
-                              key: Key(e.id.toString())),
-                    )
-                        .toList() ?? [],
-                    onSuggestionTap: (e) {
-                      urun5s = e.searchKey;
-                      setState(() {
-                        // print(e.key);
-                        // print("urun5: ${urun5}");
-                        urun5 = e.key.toString();
-                      });
-                      // print(urun5);
-                      // print( ((((urun5.replaceAll('[', '')).replaceAll(']', ''))
-                      //     .replaceAll('<', ''))
-                      //     .replaceAll('>', ''))
-                      //     .replaceAll("'", ''));
-                      // duzey5Listele(int.parse(((((urun5.replaceAll('[', '')).replaceAll(']', ''))
-                      //     .replaceAll('<', ''))
-                      //     .replaceAll('>', ''))
-                      //     .replaceAll("'", '')));
-                      print('Bitti');
-                      setState(() {});
-                    },
-                    suggestionAction: SuggestionAction.unfocus,
-                    itemHeight: 50,
-                    searchStyle: const TextStyle(color: Color(0XFF976775)),
-                    suggestionStyle: const TextStyle(color: Color(0XFF976775)),
-                    // suggestionsDecoration: BoxDecoration(color: Colors.red),
-                  ),
-                  OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      backgroundColor: const Color(0XFF463848),
-                      side: const BorderSide(
-                          width: 1.0, color: Color(0XFF463848)),
-                    ),
-                    onPressed: () async {
-                      setState(() {});
-                    },
-                    child: GestureDetector(
-                      onTap: () {
-
-                        _isButtonDisabled ==true ? null :
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>TifKategoriUrunSecimi(islemTuru: this.widget.islemTuru.toString(),
-                            islemAdi: this.widget.islemAdi.toString(),
-                            islemAciklamasi:
-                            this.widget.islemAciklamasi.toString(),
-                            anaDepo: int.parse(
-                                this.widget.anaDepo.toString()),
-                            hedefDepo: int.parse(
-                                this.widget.hedefDepo.toString()),
-                            islemTarihi:
-                            this.widget.islemTarihi.toString(), sonuc: selected,islemId: widget.islemId,)));
-
-                        // Navigator.push(context, MaterialPageRoute(builder: (context)=>TifKategoriUrunSecimi(islemTuru: this.widget.islemTuru.toString(),
-                        //     islemAdi: this.widget.islemAdi.toString(),
-                        //     islemAciklamasi:
-                        //     this.widget.islemAciklamasi.toString(),
-                        //     anaDepo: int.parse(
-                        //         this.widget.anaDepo.toString()),
-                        //     hedefDepo: int.parse(
-                        //         this.widget.hedefDepo.toString()),
-                        //     islemTarihi:
-                        //     this.widget.islemTarihi.toString(), sonuc: selected,islemId: widget.islemId,)));
-                      },
-                      child: Text("SEÇ",
-                          style: const TextStyle(
-                              color: Color(0XFFDBDCE8),
-                              fontSize: 15,
-                              letterSpacing: 2.0)),
-                    ),
+                const SizedBox(
+                  height: 40,
+                ),
+                SearchField<myData<BaseCategory>>(
+                  hint: 'Hesap Kodu Seçiniz',
+                  suggestions:  baseCategory.data == null ? [] : baseCategory.data
+                      ?.map(
+                        (e) =>
+                        SearchFieldListItem<myData<BaseCategory>>(
+                            e.hesapKodu.toString(),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment
+                                  .spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(e.malzemeAdi.toString(),
+                                      style: TextStyle(
+                                          color: myColors.textColor, fontWeight: FontWeight.bold)),
+                                ),
+                              ],
+                            ),
+                            key: Key(e.id.toString())),
                   )
-                ]),
-              )),
+                      .toList() ?? [],
+                  onSuggestionTap: (e) {
+                    print(e.key.toString());
+                    print(e.searchKey);
+                    urunhks = e.searchKey;
+                    // print("hk: ${urunhk}");
+                    setState(() {
+                      // print(e.key);
+                      // print("urun: ${urun}");
+                      urunhk = e.key.toString();
+                      print("hk: ${urunhk}");
+                    });
+                    // print( ((((urun.replaceAll('[', '')).replaceAll(']', ''))
+                    //     .replaceAll('<', ''))
+                    //     .replaceAll('>', ''))
+                    //     .replaceAll("'", ''));
+                    duzey1Listele(int.parse(
+                        ((((urunhk.replaceAll('[', '')).replaceAll(']', ''))
+                            .replaceAll('<', ''))
+                            .replaceAll('>', ''))
+                            .replaceAll("'", '')));
+
+                    setState(() {});
+                  },
+                  suggestionAction: SuggestionAction.unfocus,
+                  itemHeight: 50,
+                  searchStyle: TextStyle(color: myColors.textColor),
+                  suggestionStyle: TextStyle( color: myColors.textColor),
+                  // suggestionsDecoration: BoxDecoration(color: Colors.red),
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+
+                SearchField<myData<BaseCategory>>(
+                  hint: 'Düzey 1 Seçiniz',
+                  suggestions:  duzey1.data == null ? [] : duzey1.data
+                      ?.map(
+                        (e) =>
+                        SearchFieldListItem<myData<BaseCategory>>(e.duzey1.toString(),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment
+                                  .spaceBetween,
+                              children: [
+                                Container(
+                                  width: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width / 1.5,
+                                  child: Text(e.malzemeAdi.toString(),
+                                      softWrap: true,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          color: myColors.textColor, fontWeight: FontWeight.bold,
+                                          fontSize: 12)),
+                                ),
+                              ],
+                            ),
+                            key: Key(e.id.toString())),
+                  )
+                      .toList() ?? [],
+                  onSuggestionTap: (e) {
+                    urun1s = e.searchKey;
+                    setState(() {
+                      // print(e.key);
+                      // print("urun1: ${urun1}");
+                      urun1 = e.key.toString();
+                    });
+                    // print(urun1);
+                    // print(((((urun1.replaceAll('[', '')).replaceAll(']', ''))
+                    //     .replaceAll('<', ''))
+                    //     .replaceAll('>', ''))
+                    //     .replaceAll("'", ''));
+                    duzey2Listele(int.parse(
+                        ((((urun1.replaceAll('[', '')).replaceAll(']', ''))
+                            .replaceAll('<', ''))
+                            .replaceAll('>', ''))
+                            .replaceAll("'", '')));
+                    setState(() {});
+                  },
+                  suggestionAction: SuggestionAction.unfocus,
+                  itemHeight: 50,
+                  searchStyle: TextStyle( color: myColors.textColor),
+                  suggestionStyle: TextStyle(color: myColors.textColor),
+                  // suggestionsDecoration: BoxDecoration(color: Colors.red),
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                SearchField<myData<BaseCategory>>(
+                  hint: 'Düzey 2 Seçiniz',
+                  suggestions:  duzey2.data == null ? [] : duzey2.data
+                      ?.map(
+                        (e) =>
+                        SearchFieldListItem<myData<BaseCategory>>(e.duzey2.toString(),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment
+                                  .spaceBetween,
+                              children: [
+                                Container(
+                                  width: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width / 1.5,
+                                  child: Text(e.malzemeAdi.toString(),
+                                      softWrap: true,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.fade,
+                                      style: TextStyle(
+                                          color: myColors.textColor, fontWeight: FontWeight.bold,
+                                          fontSize: 12)),
+                                ),
+                              ],
+                            ),
+                            key: Key(e.id.toString())),
+                  )
+                      .toList() ?? [],
+                  onSuggestionTap: (e) {
+                    urun2s = e.searchKey;
+                    setState(() {
+                      // print(e.key);
+                      // print("urun2: ${urun2}");
+                      urun2 = e.key.toString();
+                    });
+
+                    // print(urun2);
+                    // print( ((((urun2.replaceAll('[', '')).replaceAll(']', ''))
+                    //     .replaceAll('<', ''))
+                    //     .replaceAll('>', ''))
+                    //     .replaceAll("'", ''));
+                    duzey3Listele(int.parse(
+                        ((((urun2.replaceAll('[', '')).replaceAll(']', ''))
+                            .replaceAll('<', ''))
+                            .replaceAll('>', ''))
+                            .replaceAll("'", '')));
+                    setState(() {});
+                  },
+                  suggestionAction: SuggestionAction.unfocus,
+                  itemHeight: 50,
+                  searchStyle: TextStyle(color: myColors.textColor),
+                  suggestionStyle:  TextStyle( color: myColors.textColor),
+                  // suggestionsDecoration: BoxDecoration(color: Colors.red),
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                SearchField<myData<BaseCategory>>(
+                  hint: 'Düzey 3 Seçiniz',
+                  suggestions:  duzey3.data == null ? [] : duzey3.data
+                      ?.map(
+                        (e) =>
+                        SearchFieldListItem<myData<BaseCategory>>(e.duzey3.toString(),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment
+                                  .spaceBetween,
+                              children: [
+                                Container(
+                                  width: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width / 1.5,
+                                  child: Text(e.malzemeAdi.toString(),
+                                      softWrap: true,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.fade,
+                                      style: TextStyle(
+                                          color: myColors.textColor, fontWeight: FontWeight.bold,
+                                          fontSize: 12)),
+                                ),
+                              ],
+                            ),
+                            key: Key(e.id.toString())),
+                  )
+                      .toList() ?? [],
+                  onSuggestionTap: (e) {
+                    urun3s = e.searchKey;
+                    setState(() {
+                      // print(e.key);
+                      // print("urun3: ${urun3}");
+                      urun3 = e.key.toString();
+                    });
+                    // print(urun3);
+                    // print( ((((urun3.replaceAll('[', '')).replaceAll(']', ''))
+                    //     .replaceAll('<', ''))
+                    //     .replaceAll('>', ''))
+                    //     .replaceAll("'", ''));
+                    duzey4Listele(int.parse(
+                        ((((urun3.replaceAll('[', '')).replaceAll(']', ''))
+                            .replaceAll('<', ''))
+                            .replaceAll('>', ''))
+                            .replaceAll("'", '')));
+                    setState(() {});
+                  },
+                  suggestionAction: SuggestionAction.unfocus,
+                  itemHeight: 50,
+                  searchStyle: TextStyle(color: myColors.textColor),
+                  suggestionStyle: TextStyle(color: myColors.textColor),
+                  // suggestionsDecoration: BoxDecoration(color: Colors.red),
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                SearchField<myData<BaseCategory>>(
+                  hint: 'Düzey 4 Seçiniz',
+                  suggestions:  duzey4.data == null ? [] : duzey4.data
+                      ?.map(
+                        (e) =>
+                        SearchFieldListItem<myData<BaseCategory>>(e.duzey4.toString(),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment
+                                  .spaceBetween,
+                              children: [
+                                Container(
+                                  width: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width / 1.5,
+                                  child: Text(e.malzemeAdi.toString(),
+                                      softWrap: true,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.fade,
+                                      style: TextStyle(
+                                          color: myColors.textColor, fontWeight: FontWeight.bold,
+                                          fontSize: 12)),
+                                ),
+                              ],
+                            ),
+                            key: Key(e.id.toString())),
+                  )
+                      .toList() ?? [],
+                  onSuggestionTap: (e) {
+                    urun4s = e.searchKey;
+                    setState(() {
+                      // print(e.key);
+                      // print("urun4: ${urun4}");
+                      urun4 = e.key.toString();
+                    });
+                    duzey5Listele(int.parse(
+                        ((((urun4.replaceAll('[', '')).replaceAll(']', ''))
+                            .replaceAll('<', ''))
+                            .replaceAll('>', ''))
+                            .replaceAll("'", '')));
+                    setState(() {});
+                  },
+                  suggestionAction: SuggestionAction.unfocus,
+                  itemHeight: 50,
+                  searchStyle: TextStyle( color: myColors.textColor),
+                  suggestionStyle: TextStyle( color: myColors.textColor),
+                  // suggestionsDecoration: BoxDecoration(color: Colors.red),
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                SearchField<myData<BaseCategory>>(
+                  hint: 'Düzey 5 Seçiniz',
+                  suggestions:  duzey5.data == null ? [] : duzey5.data
+                      ?.map(
+                        (e) =>
+                        SearchFieldListItem<myData<BaseCategory>>(e.duzey5.toString(),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment
+                                  .spaceBetween,
+                              children: [
+                                Container(
+                                  width: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width / 1.5,
+                                  child: Text(e.malzemeAdi.toString(),
+                                      softWrap: true,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.fade,
+                                      style: TextStyle(
+                                          color: myColors.textColor, fontWeight: FontWeight.bold,
+                                          fontSize: 12)),
+                                ),
+                              ],
+                            ),
+                            key: Key(e.id.toString())),
+                  )
+                      .toList() ?? [],
+                  onSuggestionTap: (e) {
+                    urun5s = e.searchKey;
+                    setState(() {
+                      // print(e.key);
+                      // print("urun5: ${urun5}");
+                      urun5 = e.key.toString();
+                    });
+                    // print(urun5);
+                    // print( ((((urun5.replaceAll('[', '')).replaceAll(']', ''))
+                    //     .replaceAll('<', ''))
+                    //     .replaceAll('>', ''))
+                    //     .replaceAll("'", ''));
+                    // duzey5Listele(int.parse(((((urun5.replaceAll('[', '')).replaceAll(']', ''))
+                    //     .replaceAll('<', ''))
+                    //     .replaceAll('>', ''))
+                    //     .replaceAll("'", '')));
+                    print('Bitti');
+                    setState(() {});
+                  },
+                  suggestionAction: SuggestionAction.unfocus,
+                  itemHeight: 50,
+                  searchStyle: TextStyle( color: myColors.textColor),
+                  suggestionStyle: TextStyle( color: myColors.textColor),
+                  // suggestionsDecoration: BoxDecoration(color: Colors.red),
+                ),
+                SizedBox(height: 20,),
+                AnimatedButton( color: myColors.topColor,
+                    text: 'Seç',pressEvent: (){
+
+                  _isButtonDisabled ==true ? null :
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>TifKategoriUrunSecimi(islemTuru: this.widget.islemTuru.toString(),
+                    islemAdi: this.widget.islemAdi.toString(),
+                    islemAciklamasi:
+                    this.widget.islemAciklamasi.toString(),
+                    anaDepo: int.parse(
+                        this.widget.anaDepo.toString()),
+                    hedefDepo: int.parse(
+                        this.widget.hedefDepo.toString()),
+                    islemTarihi:
+                    this.widget.islemTarihi.toString(), sonuc: selected,islemId: widget.islemId,)));
+
+                  // Navigator.push(context, MaterialPageRoute(builder: (context)=>TifKategoriUrunSecimi(islemTuru: this.widget.islemTuru.toString(),
+                  //     islemAdi: this.widget.islemAdi.toString(),
+                  //     islemAciklamasi:
+                  //     this.widget.islemAciklamasi.toString(),
+                  //     anaDepo: int.parse(
+                  //         this.widget.anaDepo.toString()),
+                  //     hedefDepo: int.parse(
+                  //         this.widget.hedefDepo.toString()),
+                  //     islemTarihi:
+                  //     this.widget.islemTarihi.toString(), sonuc: selected,islemId: widget.islemId,)));
+                }),
+                // OutlinedButton(
+                //   style: OutlinedButton.styleFrom(
+                //     backgroundColor: myColors.topColor,
+                //     side: BorderSide(
+                //         width: 1.0, color: myColors.topColor),
+                //   ),
+                //   onPressed: () async {
+                //     setState(() {});
+                //   },
+                //   child: GestureDetector(
+                //     onTap: () {
+                //
+                //       _isButtonDisabled ==true ? null :
+                //       Navigator.push(context, MaterialPageRoute(builder: (context)=>TifKategoriUrunSecimi(islemTuru: this.widget.islemTuru.toString(),
+                //           islemAdi: this.widget.islemAdi.toString(),
+                //           islemAciklamasi:
+                //           this.widget.islemAciklamasi.toString(),
+                //           anaDepo: int.parse(
+                //               this.widget.anaDepo.toString()),
+                //           hedefDepo: int.parse(
+                //               this.widget.hedefDepo.toString()),
+                //           islemTarihi:
+                //           this.widget.islemTarihi.toString(), sonuc: selected,islemId: widget.islemId,)));
+                //
+                //       // Navigator.push(context, MaterialPageRoute(builder: (context)=>TifKategoriUrunSecimi(islemTuru: this.widget.islemTuru.toString(),
+                //       //     islemAdi: this.widget.islemAdi.toString(),
+                //       //     islemAciklamasi:
+                //       //     this.widget.islemAciklamasi.toString(),
+                //       //     anaDepo: int.parse(
+                //       //         this.widget.anaDepo.toString()),
+                //       //     hedefDepo: int.parse(
+                //       //         this.widget.hedefDepo.toString()),
+                //       //     islemTarihi:
+                //       //     this.widget.islemTarihi.toString(), sonuc: selected,islemId: widget.islemId,)));
+                //     },
+                //     child: Text("SEÇ",
+                //         style: const TextStyle(
+                //             color: Colors.white,
+                //             fontSize: 15,
+                //             letterSpacing: 2.0)),
+                //   ),
+                // )
+              ])),
         ));
     // return AwesomeDialog(
     //   context: context,

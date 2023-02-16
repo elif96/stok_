@@ -8,6 +8,7 @@ import 'package:stok_takip_uygulamasi/drawer_menu.dart';
 import 'package:stok_takip_uygulamasi/model/ProductCategory.dart';
 import 'package:stok_takip_uygulamasi/model/Product.dart';
 import 'package:stok_takip_uygulamasi/model/myData.dart';
+import 'package:stok_takip_uygulamasi/myColors.dart';
 import 'package:stok_takip_uygulamasi/tif_listesi.dart';
 import 'package:stok_takip_uygulamasi/urun_ozet.dart';
 import 'model/BaseCategory.dart';
@@ -188,7 +189,7 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
     return Scaffold(
       appBar: AppBar(
         primary: true,
-        backgroundColor: const Color(0xFF976775),
+        backgroundColor: myColors.topColor,
         title: Text('TİF-KATEGORİ-ÜRÜN',
             style: GoogleFonts.raleway(
               fontSize: 18,
@@ -198,356 +199,354 @@ class _TifKategoriUrunSecimiState extends State<TifKategoriUrunSecimi> {
             )),
       ),
       endDrawer: DrawerMenu(),
-      body: Container(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 10,
-                ),
-                TextField(
-                  controller: tfTif,
-                  decoration: InputDecoration(
-                    hintText: this.widget.sonuc?.data![0].malzemeAdi.toString(),
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => TifListesi(
-                                    islemTuru: this.widget.islemTuru.toString(),
-                                    islemAdi: this.widget.islemAdi.toString(),
-                                    islemAciklamasi:
-                                        this.widget.islemAciklamasi.toString(),
-                                    anaDepo: int.parse(
-                                        this.widget.anaDepo.toString()) ?? 0,
-                                    hedefDepo: int.parse(
-                                        this.widget.hedefDepo.toString()),
-                                    islemTarihi:
-                                        this.widget.islemTarihi.toString(),
-                                islemId: this.widget.islemId)));
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 10,
+              ),
+              TextField(
+                controller: tfTif,
+                decoration: InputDecoration(
+                  hintText: this.widget.sonuc?.data![0].malzemeAdi.toString(),
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TifListesi(
+                                  islemTuru: this.widget.islemTuru.toString(),
+                                  islemAdi: this.widget.islemAdi.toString(),
+                                  islemAciklamasi:
+                                      this.widget.islemAciklamasi.toString(),
+                                  anaDepo: int.parse(
+                                      this.widget.anaDepo.toString()) ?? 0,
+                                  hedefDepo: int.parse(
+                                      this.widget.hedefDepo.toString()),
+                                  islemTarihi:
+                                      this.widget.islemTarihi.toString(),
+                              islemId: this.widget.islemId)));
 
-                        },
-                      icon: Icon(Icons.search_sharp),
-                    ),
+                      },
+                    icon: Icon(Icons.search_sharp, color: myColors.textColor,),
                   ),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                FutureBuilder<myData<ProductCategory>>(
-                  future: categoryListele(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: 1,
-                        itemBuilder: (context, index) {
-                          return SearchField<myData<ProductCategory>>(
-                            autoCorrect: true,
-                            hint: 'Kategori Seçiniz',
-                            onSuggestionTap: (e) {
-                              dropdownvalue = e.searchKey;
-                              setState(() {
-                                dropdownvalue = e.key.toString();
-                              });
-                            },
-                            suggestionAction: SuggestionAction.unfocus,
-                            itemHeight: 50,
-                            searchStyle:
-                                const TextStyle(color: Color(0XFF976775)),
-                            suggestionStyle:
-                                const TextStyle(color: Color(0XFF976775)),
-                            // suggestionsDecoration: BoxDecoration(color: Colors.red),
-                            suggestions: snapshot.data == null
-                                ? []
-                                : snapshot.data!.data!
-                                    .map(
-                                      (e) => SearchFieldListItem<
-                                              myData<ProductCategory>>(
-                                          e.ad.toString(),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(e.ad.toString(),
-                                                    style: const TextStyle(
-                                                        color:
-                                                            Color(0XFF6E3F52))),
-                                              ),
-                                            ],
-                                          ),
-                                          key: Key(e.ad.toString())),
-                                    )
-                                    .toList(),
-                          );
-                        },
-                      );
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              FutureBuilder<myData<ProductCategory>>(
+                future: categoryListele(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: 1,
+                      itemBuilder: (context, index) {
+                        return SearchField<myData<ProductCategory>>(
+                          autoCorrect: true,
+                          hint: 'Kategori Seçiniz',
+                          onSuggestionTap: (e) {
+                            dropdownvalue = e.searchKey;
+                            setState(() {
+                              dropdownvalue = e.key.toString();
+                            });
+                          },
+                          suggestionAction: SuggestionAction.unfocus,
+                          itemHeight: 50,
+                          searchStyle:
+                              TextStyle(color: myColors.textColor),
+                          suggestionStyle:
+                              TextStyle(color: myColors.textColor),
+                          // suggestionsDecoration: BoxDecoration(color: Colors.red),
+                          suggestions: snapshot.data == null
+                              ? []
+                              : snapshot.data!.data!
+                                  .map(
+                                    (e) => SearchFieldListItem<
+                                            myData<ProductCategory>>(
+                                        e.ad.toString(),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Text(e.ad.toString(),
+                                                  style: TextStyle(
+                                                      color:
+                                                      myColors.textColor)),
+                                            ),
+                                          ],
+                                        ),
+                                        key: Key(e.ad.toString())),
+                                  )
+                                  .toList(),
+                        );
+                      },
+                    );
+                  }
+                  return SearchField<myData<BaseCategory>>(
+                      autoCorrect: true,
+                      hint: 'Kategori Seçiniz',
+                      onSuggestionTap: (e) {
+                        dropdownvalue = e.searchKey;
+                        setState(() {
+                          dropdownvalue = e.key.toString();
+                        });
+                      },
+                      suggestionAction: SuggestionAction.unfocus,
+                      itemHeight: 50,
+                      searchStyle: TextStyle(color: myColors.textColor),
+                      suggestionStyle:
+                            TextStyle(color: myColors.textColor),
+                      // suggestionsDecoration: BoxDecoration(color: Colors.red),
+                      suggestions: []);
+                },
+              ),
+              // const SizedBox(
+              //   height: 40,
+              // ),
+              const SizedBox(
+                height: 10,
+              ),
+
+              FutureBuilder<myData<Product>>(
+                future: productListele(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: 1,
+                      itemBuilder: (context, index) {
+                        return SearchField<myData<Product>>(
+                          autoCorrect: true,
+                          hint: 'Ürün Seçiniz',
+                          onSuggestionTap: (e) {
+                            setState(() {});
+                            dropdownvalue = e.searchKey;
+                            setState(() {
+                              dropdownvalue = e.key.toString();
+                            });
+                            print(((((dropdownvalue.replaceAll('[', '')).replaceAll(']', ''))
+                                            .replaceAll('<', ''))
+                                        .replaceAll('>', ''))
+                                    .replaceAll("'", ''));
+
+                            getSelected(((((dropdownvalue.replaceAll('[', '')).replaceAll(']', ''))
+                                .replaceAll('<', ''))
+                                .replaceAll('>', ''))
+                                .replaceAll("'", ''));
+                          },
+                          suggestionAction: SuggestionAction.unfocus,
+                          itemHeight: 50,
+                          searchStyle:
+                               TextStyle(color: myColors.textColor),
+                          suggestionStyle:
+                               TextStyle(color: myColors.textColor),
+                          // suggestionsDecoration: BoxDecoration(color: Colors.red),
+                          suggestions: snapshot.data == null
+                              ? []
+                              : snapshot.data!.data!
+                                  .map(
+                                    (e) => SearchFieldListItem<
+                                            myData<Product>>(
+                                        e.productName.toString(),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Text(
+                                                  e.productName.toString(),
+                                                  style: TextStyle(
+                                                      color:
+                                                      myColors.textColor)),
+                                            ),
+                                          ],
+                                        ),
+                                        key: Key(e.id.toString())),
+                                  )
+                                  .toList(),
+                        );
+                      },
+                    );
+                  }
+                  return SearchField<myData<Product>>(
+                      autoCorrect: true,
+                      hint: 'Ürün Seçiniz',
+                      onSuggestionTap: (e) {
+                        dropdownvalue = e.searchKey;
+                        setState(() {
+                          dropdownvalue = e.key.toString();
+                        });
+                      },
+                      suggestionAction: SuggestionAction.unfocus,
+                      itemHeight: 50,
+                      searchStyle: TextStyle(color: myColors.textColor),
+                      suggestionStyle:
+                           TextStyle(color: myColors.textColor),
+                      // suggestionsDecoration: BoxDecoration(color: Colors.red),
+                      suggestions: []);
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              // SearchField<myData<BaseCategory>>(
+              //   hint: 'Kategori Seçiniz',
+              //
+              //   onSuggestionTap: (e) {
+              //     urun = e.searchKey;
+              //
+              //     setState(() {
+              //       urun = e.key.toString();
+              //     });
+              //   },
+              //   suggestionAction: SuggestionAction.unfocus,
+              //   itemHeight: 50,
+              //   searchStyle: const TextStyle(color: Color(0XFF976775)),
+              //   suggestionStyle: const TextStyle(color: Color(0XFF976775)),
+              //   // suggestionsDecoration: BoxDecoration(color: Colors.red),
+              //   suggestions: baseCategory.data!
+              //       .map(
+              //         (e) => SearchFieldListItem<myData<BaseCategory>>(
+              //             e.toString(),
+              //             child: Row(
+              //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //               children: [
+              //                 Padding(
+              //                   padding: const EdgeInsets.all(8.0),
+              //                   child: Text(e.hesapKodu.toString(),
+              //                       style: const TextStyle(
+              //                           color: Color(0XFF6E3F52))),
+              //                 ),
+              //               ],
+              //             ),
+              //             key: Key(e.toString())),
+              //       )
+              //       .toList(),
+              // ),
+              // SearchField<myData<BaseCategory>>(
+              //   hint: 'Ürün Seçiniz',
+              //
+              //   onSuggestionTap: (e) {
+              //     urun = e.searchKey;
+              //
+              //     setState(() {
+              //       urun = e.key.toString();
+              //     });
+              //   },
+              //   suggestionAction: SuggestionAction.unfocus,
+              //   itemHeight: 50,
+              //   searchStyle: const TextStyle(color: Color(0XFF976775)),
+              //   suggestionStyle: const TextStyle(color: Color(0XFF976775)),
+              //   // suggestionsDecoration: BoxDecoration(color: Colors.red),
+              //   suggestions: baseCategory.data!
+              //       .map(
+              //         (e) => SearchFieldListItem<myData<BaseCategory>>(
+              //             e.toString(),
+              //             child: Row(
+              //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //               children: [
+              //                 Padding(
+              //                   padding: const EdgeInsets.all(8.0),
+              //                   child: Text(e.hesapKodu.toString(),
+              //                       style: const TextStyle(
+              //                           color: Color(0XFF6E3F52))),
+              //                 ),
+              //               ],
+              //             ),
+              //             key: Key(e.toString())),
+              //       )
+              //       .toList(),
+              // ),
+
+              Align(
+                alignment: Alignment.topRight,
+                child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          width: 2, color: myColors.topColor),
+                      color: myColors.topColor,
+                      shape: BoxShape.rectangle,
+                    ),
+                    child: IconButton(
+                        icon: const Icon(Icons.barcode_reader),
+                        color: Colors.white,
+                        onPressed: () {
+                          scanQR();
+                          // categoryListele();
+                        })),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              AnimatedButton(
+                  color: myColors.topColor,
+                  text: 'Seç',
+                  pressEvent: () {
+                    // print(product.data![0].productName);
+                    // print(product.data![0].categoryId);
+                    // print(product.data![0].barkod);
+                    // print(product.data![0].urunKimlikNo);
+                    // print(product.data![0].sistemSeriNo);
+                    // print(product.data![0].id);
+                    // print(product.data![1].id);
+                    // print(product.data?[0].productVariantElements?[0]);
+                    // print(product.data?[0].category?.ad);
+                    // print(product.data?[0].productVariantElements?[0].id);
+                    // print(product
+                    //     .data![0].productVariantElements![0].productId);
+                    // print(product.data![0].productVariantElements![0]
+                    //     .variantElementId);
+                    // print(product.data?[0].productVariantElements[0].variantElement.varyantElemanAdi);
+                    if(product.data?[0].category?.ad == null || product.data?[0].category?.ad ==""){
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("Lütfen menüden seçim yapınız."),
+                        backgroundColor: Colors.red,
+                      ));
                     }
-                    return SearchField<myData<BaseCategory>>(
-                        autoCorrect: true,
-                        hint: 'Kategori Seçiniz',
-                        onSuggestionTap: (e) {
-                          dropdownvalue = e.searchKey;
-                          setState(() {
-                            dropdownvalue = e.key.toString();
-                          });
-                        },
-                        suggestionAction: SuggestionAction.unfocus,
-                        itemHeight: 50,
-                        searchStyle: const TextStyle(color: Color(0XFF976775)),
-                        suggestionStyle:
-                            const TextStyle(color: Color(0XFF976775)),
-                        // suggestionsDecoration: BoxDecoration(color: Colors.red),
-                        suggestions: []);
-                  },
-                ),
-                // const SizedBox(
-                //   height: 40,
-                // ),
-                const SizedBox(
-                  height: 10,
-                ),
+                    else{
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => UrunOzet(
+                                  islemTuru: widget.islemTuru,
+                                  productVariantElements:
+                                  product.data?[0].productVariantElements,
+                                  productName: product.data?[0].productName,
+                                  categoryAdi: product.data?[0].category?.ad,
+                                  categorybirim:
+                                  product.data?[0].category?.birim,
+                                  categoryEnvanterTuru:
+                                  product.data?[0].category?.envanterTuru,
+                                  barkod: product.data?[0].barkod,
+                                  urunKimlikNo: product.data?[0].urunKimlikNo,
+                                  sistemSeriNo: product.data?[0].sistemSeriNo,
+                                  id: product.data?[0].id,
 
-                FutureBuilder<myData<Product>>(
-                  future: productListele(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: 1,
-                        itemBuilder: (context, index) {
-                          return SearchField<myData<Product>>(
-                            autoCorrect: true,
-                            hint: 'Ürün Seçiniz',
-                            onSuggestionTap: (e) {
-                              setState(() {});
-                              dropdownvalue = e.searchKey;
-                              setState(() {
-                                dropdownvalue = e.key.toString();
-                              });
-                              print(((((dropdownvalue.replaceAll('[', '')).replaceAll(']', ''))
-                                              .replaceAll('<', ''))
-                                          .replaceAll('>', ''))
-                                      .replaceAll("'", ''));
-
-                              getSelected(((((dropdownvalue.replaceAll('[', '')).replaceAll(']', ''))
-                                  .replaceAll('<', ''))
-                                  .replaceAll('>', ''))
-                                  .replaceAll("'", ''));
-                            },
-                            suggestionAction: SuggestionAction.unfocus,
-                            itemHeight: 50,
-                            searchStyle:
-                                const TextStyle(color: Color(0XFF976775)),
-                            suggestionStyle:
-                                const TextStyle(color: Color(0XFF976775)),
-                            // suggestionsDecoration: BoxDecoration(color: Colors.red),
-                            suggestions: snapshot.data == null
-                                ? []
-                                : snapshot.data!.data!
-                                    .map(
-                                      (e) => SearchFieldListItem<
-                                              myData<Product>>(
-                                          e.productName.toString(),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                    e.productName.toString(),
-                                                    style: const TextStyle(
-                                                        color:
-                                                            Color(0XFF6E3F52))),
-                                              ),
-                                            ],
-                                          ),
-                                          key: Key(e.id.toString())),
-                                    )
-                                    .toList(),
-                          );
-                        },
-                      );
+                                  islemId: widget.islemId,
+                                  selectedProduct:selectedProduct)));
                     }
-                    return SearchField<myData<Product>>(
-                        autoCorrect: true,
-                        hint: 'Ürün Seçiniz',
-                        onSuggestionTap: (e) {
-                          dropdownvalue = e.searchKey;
-                          setState(() {
-                            dropdownvalue = e.key.toString();
-                          });
-                        },
-                        suggestionAction: SuggestionAction.unfocus,
-                        itemHeight: 50,
-                        searchStyle: const TextStyle(color: Color(0XFF976775)),
-                        suggestionStyle:
-                            const TextStyle(color: Color(0XFF976775)),
-                        // suggestionsDecoration: BoxDecoration(color: Colors.red),
-                        suggestions: []);
-                  },
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                // SearchField<myData<BaseCategory>>(
-                //   hint: 'Kategori Seçiniz',
-                //
-                //   onSuggestionTap: (e) {
-                //     urun = e.searchKey;
-                //
-                //     setState(() {
-                //       urun = e.key.toString();
-                //     });
-                //   },
-                //   suggestionAction: SuggestionAction.unfocus,
-                //   itemHeight: 50,
-                //   searchStyle: const TextStyle(color: Color(0XFF976775)),
-                //   suggestionStyle: const TextStyle(color: Color(0XFF976775)),
-                //   // suggestionsDecoration: BoxDecoration(color: Colors.red),
-                //   suggestions: baseCategory.data!
-                //       .map(
-                //         (e) => SearchFieldListItem<myData<BaseCategory>>(
-                //             e.toString(),
-                //             child: Row(
-                //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //               children: [
-                //                 Padding(
-                //                   padding: const EdgeInsets.all(8.0),
-                //                   child: Text(e.hesapKodu.toString(),
-                //                       style: const TextStyle(
-                //                           color: Color(0XFF6E3F52))),
-                //                 ),
-                //               ],
-                //             ),
-                //             key: Key(e.toString())),
-                //       )
-                //       .toList(),
-                // ),
-                // SearchField<myData<BaseCategory>>(
-                //   hint: 'Ürün Seçiniz',
-                //
-                //   onSuggestionTap: (e) {
-                //     urun = e.searchKey;
-                //
-                //     setState(() {
-                //       urun = e.key.toString();
-                //     });
-                //   },
-                //   suggestionAction: SuggestionAction.unfocus,
-                //   itemHeight: 50,
-                //   searchStyle: const TextStyle(color: Color(0XFF976775)),
-                //   suggestionStyle: const TextStyle(color: Color(0XFF976775)),
-                //   // suggestionsDecoration: BoxDecoration(color: Colors.red),
-                //   suggestions: baseCategory.data!
-                //       .map(
-                //         (e) => SearchFieldListItem<myData<BaseCategory>>(
-                //             e.toString(),
-                //             child: Row(
-                //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //               children: [
-                //                 Padding(
-                //                   padding: const EdgeInsets.all(8.0),
-                //                   child: Text(e.hesapKodu.toString(),
-                //                       style: const TextStyle(
-                //                           color: Color(0XFF6E3F52))),
-                //                 ),
-                //               ],
-                //             ),
-                //             key: Key(e.toString())),
-                //       )
-                //       .toList(),
-                // ),
-
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            width: 2, color: const Color(0XFF6E3F52)),
-                        color: const Color(0XFF976775),
-                        shape: BoxShape.rectangle,
-                      ),
-                      child: IconButton(
-                          icon: const Icon(Icons.barcode_reader),
-                          color: const Color(0XFF463848),
-                          onPressed: () {
-                            scanQR();
-                            // categoryListele();
-                          })),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                AnimatedButton(
-                    color: const Color(0XFF463848),
-                    text: 'Seç',
-                    pressEvent: () {
-                      // print(product.data![0].productName);
-                      // print(product.data![0].categoryId);
-                      // print(product.data![0].barkod);
-                      // print(product.data![0].urunKimlikNo);
-                      // print(product.data![0].sistemSeriNo);
-                      // print(product.data![0].id);
-                      // print(product.data![1].id);
-                      // print(product.data?[0].productVariantElements?[0]);
-                      // print(product.data?[0].category?.ad);
-                      // print(product.data?[0].productVariantElements?[0].id);
-                      // print(product
-                      //     .data![0].productVariantElements![0].productId);
-                      // print(product.data![0].productVariantElements![0]
-                      //     .variantElementId);
-                      // print(product.data?[0].productVariantElements[0].variantElement.varyantElemanAdi);
-                      if(product.data?[0].category?.ad == null || product.data?[0].category?.ad ==""){
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text("Lütfen menüden seçim yapınız."),
-                          backgroundColor: Colors.red,
-                        ));
-                      }
-                      else{
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => UrunOzet(
-                                    islemTuru: widget.islemTuru,
-                                    productVariantElements:
-                                    product.data?[0].productVariantElements,
-                                    productName: product.data?[0].productName,
-                                    categoryAdi: product.data?[0].category?.ad,
-                                    categorybirim:
-                                    product.data?[0].category?.birim,
-                                    categoryEnvanterTuru:
-                                    product.data?[0].category?.envanterTuru,
-                                    barkod: product.data?[0].barkod,
-                                    urunKimlikNo: product.data?[0].urunKimlikNo,
-                                    sistemSeriNo: product.data?[0].sistemSeriNo,
-                                    id: product.data?[0].id,
-
-                                    islemId: widget.islemId,
-                                    selectedProduct:selectedProduct)));
-                      }
 
 
-                      // builder: (context) => VaryantSecimi(variantAdi: product.data![0].productName, varyantElemanAdi: product.data![0].productVariantElements,productName: product.data![0].productName)));
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => OnayaGonderGrid(
-                      //             sonuc: this.widget.sonuc,
-                      //             kategori: kategori,
-                      //             urunler: urunler)));
-                      setState(() {});
-                    })
-              ],
-            ),
+                    // builder: (context) => VaryantSecimi(variantAdi: product.data![0].productName, varyantElemanAdi: product.data![0].productVariantElements,productName: product.data![0].productName)));
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => OnayaGonderGrid(
+                    //             sonuc: this.widget.sonuc,
+                    //             kategori: kategori,
+                    //             urunler: urunler)));
+                    setState(() {});
+                  })
+            ],
           ),
         ),
       ),

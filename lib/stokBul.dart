@@ -1,8 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:flutter_beep/flutter_beep.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:searchfield/searchfield.dart';
 import 'package:stok_takip_uygulamasi/drawer_menu.dart';
+import 'package:stok_takip_uygulamasi/model/Product.dart';
+import 'package:stok_takip_uygulamasi/model/myData.dart';
+import 'package:stok_takip_uygulamasi/myColors.dart';
 
 class stokBul extends StatefulWidget {
   const stokBul({Key? key}) : super(key: key);
@@ -28,6 +34,10 @@ class _stokBulState extends State<stokBul> {
       print(barcodeScanRes);
     } catch (e) {
       barcodeScanRes = 'Failed to get platform version.';
+    }
+    if (barcodeScanRes != null || barcodeScanRes != "") {
+      stokBul(barcodeScanRes);
+      FlutterBeep.beep();
     }
     setState(() {
       _scanBarcode = barcodeScanRes;
@@ -74,6 +84,41 @@ class _stokBulState extends State<stokBul> {
     setState(() {
       _scanBarcode = barcodeScanRes;
     });
+    stokBul(barcodeScanRes);
+  }
+
+  myData<Product> stokBilgileri = myData<Product>();
+
+  Future<myData<Product>> stokBul(String barkod) async {
+    var url = Uri.parse(
+        'https://stok.bahcelievler.bel.tr/api/Products/GetAll?BarkodFilter=$barkod&CategoryIdFilter=0&BrandIdFilter=0&BrandModelIdFilter=0&Id=0&Page=1&PageSize=12&Orderby=Id&Desc=false&isDeleted=false&includeParents=true&includeChildren=true');
+    http.Response response = await http.get(
+      url,
+      headers: {'Accept': '*/*', 'Content-Type': 'application/json'},
+    );
+    print('object');
+    print(response.body);
+
+    stokBilgileri = myData<Product>.fromJson(
+        json.decode(response.body), Product.fromJsonModel);
+    print(stokBilgileri.data?.length);
+
+    setState(() {});
+    return stokBilgileri;
+  }
+
+  showWidget() {
+    if (stokBilgileri != null) {
+      print('SDFsdfsdf');
+
+      return StokSonucWidget();
+    } else {
+      return Center();
+    }
+  }
+
+  Future<void> _refresh() async {
+    await Future.delayed(const Duration(seconds: 0, milliseconds: 2000));
   }
 
   @override
@@ -83,74 +128,69 @@ class _stokBulState extends State<stokBul> {
     return Scaffold(
       appBar: AppBar(
           primary: true,
-          backgroundColor: Color(0XFF976775),
+          backgroundColor: myColors.topColor,
           title: Text('Stok Bul')),
       endDrawer: DrawerMenu(),
-      body: Column(
-        children: [
-          Row(
-            children: [
-              IconButton(
-                onPressed: () => startBarcodeScanStream(),
-                icon: Icon(Icons.barcode_reader),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SearchField<String>(
-              hint: 'Ürün Ara',
+      body: RefreshIndicator(
+        onRefresh: _refresh,
+        child: Column(
+          children: [
+            Row(
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    stokBul("4005900008862");
+                  },
+                  child: Text('test'),
+                ),
+                Visibility(
+                    visible: stokBilgileri.data?.length == 0 ? false : true,
+                    child: Card(
+                      child: Column(
+                        children: [
+                          Text(
+                              stokBilgileri.data?[0].productName.toString() == null
+                                  ? 'Henüz tarama yapılmadı.'
+                                  : stokBilgileri.data![0].productName.toString()),
+                          Text(
+                              stokBilgileri.data?[0].barkod.toString() == null
+                                  ? 'Henüz tarama yapılmadı.'
+                                  : stokBilgileri.data![0].barkod.toString()),
+                          Text(
+                              stokBilgileri.data?[0].sistemSeriNo.toString() == null
+                                  ? 'Henüz tarama yapılmadı.'
+                                  : stokBilgileri.data![0].sistemSeriNo.toString()),
+                          Text(
+                              stokBilgileri.data?[0].urunKimlikNo.toString() == null
+                                  ? 'Henüz tarama yapılmadı.'
+                                  : stokBilgileri.data![0].urunKimlikNo.toString()),
 
-              onSuggestionTap: (e) {
-                varyant = e.searchKey;
 
-                setState(() {
-                  varyant = e.key.toString();
-                  //detay getir apisi çalışacak widget ın içine basacak.
-                });
-              },
-              suggestionAction: SuggestionAction.unfocus,
-              itemHeight: 50,
-              searchStyle: TextStyle(color: Color(0XFF976775)),
-              suggestionStyle: TextStyle(color: Color(0XFF976775)),
-              // suggestionsDecoration: BoxDecoration(color: Colors.red),
-              suggestions: liste
-                  .map(
-                    (e) => SearchFieldListItem<String>(e.toString(),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(e.toString(),
-                                  style: TextStyle(color: Color(0XFF6E3F52))),
-                            ),
-                          ],
-                        ),
-                        key: Key(e.toString())),
-                  )
-                  .toList(),
+                        ],
+                      ),
+                    ))
+              ],
             ),
-          ),
-          Container(
-              alignment: Alignment.center,
-              child: Flex(
-                  direction: Axis.vertical,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    ElevatedButton(
-                        onPressed: () => scanBarcodeNormal(),
-                        child: Text('Start barcode scan')),
-                    ElevatedButton(
-                        onPressed: () => scanQR(),
-                        child: Text('Start QR scan')),
-                    ElevatedButton(
-                        onPressed: () => startBarcodeScanStream(),
-                        child: Text('Start barcode scan stream')),
-                    Text('Scan result : $_scanBarcode\n',
-                        style: TextStyle(fontSize: 20))
-                  ]))
-        ],
+            Container(
+                alignment: Alignment.center,
+                child: Flex(
+                    direction: Axis.vertical,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      // ElevatedButton(
+                      //     onPressed: () => scanBarcodeNormal(),
+                      //     child: Text('Start barcode scan')),
+                      // ElevatedButton(
+                      //     onPressed: () => scanQR(),
+                      //     child: Text('Start QR scan')),
+                      ElevatedButton(
+                          onPressed: () => startBarcodeScanStream(),
+                          child: Text('Barkodu Tarayın')),
+                      Text('Okunan Barkod : $_scanBarcode\n',
+                          style: TextStyle(fontSize: 20))
+                    ]))
+          ],
+        ),
       ),
 
       // ListView(
@@ -260,5 +300,36 @@ class _stokBulState extends State<stokBul> {
       //   ],
       // )
     );
+  }
+}
+
+class StokSonucWidget extends StatefulWidget {
+  const StokSonucWidget({Key? key}) : super(key: key);
+
+  @override
+  State<StokSonucWidget> createState() => _StokSonucWidgetState();
+}
+
+class _StokSonucWidgetState extends State<StokSonucWidget> {
+  var title = 'İşlem Taslakları';
+  late ScrollController scrollController;
+
+  @override
+  initState() {
+    super.initState();
+    setState(() {});
+  }
+
+  Future<void> _refresh() async {
+    await Future.delayed(const Duration(seconds: 0, milliseconds: 2000));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return RefreshIndicator(
+        onRefresh: _refresh,
+        child: Card(
+          child: Text('kjdsfl'),
+        ));
   }
 }
